@@ -1,9 +1,6 @@
 package de.cpht.haushalter.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class PlanItem {
@@ -12,6 +9,15 @@ public class PlanItem {
     private Long id;
     private String title;
     private String description;
+
+    @ManyToOne
+    private Plan plan;
+
+    public PlanItem(String title, String description, Plan plan) {
+        this.title = title;
+        this.description = description;
+        this.plan = plan;
+    }
 
     public Long getId() {
         return id;
