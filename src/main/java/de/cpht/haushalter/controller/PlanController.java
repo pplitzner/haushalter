@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@RequestMapping("/plans")
 public class PlanController {
     private PlanRepository planRepository;
 
@@ -17,13 +18,13 @@ public class PlanController {
         this.planRepository = planRepository;
     }
 
-    @RequestMapping(value = "/plans", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String listPlans(Model model){
         model.addAttribute("plans", planRepository.findAll());
         return "plans";
     }
 
-    @RequestMapping(value = "/plans", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public String addPlan(Plan plan) {
         planRepository.save(plan);
         return "redirect:/plans";
