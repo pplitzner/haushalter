@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Planübersicht</title>
+</head>
+<body>
+<h2>Alle Pläne</h2>
+<div th:unless="${#lists.isEmpty(plans)}">
+    <dl th:each="plan : ${plans}">
+        <dt>
+            <span th:text="${plan.title}">Name</span>
+        </dt>
+        <dd>
+            <span th:if="${plan.description}" th:text="${plan.description}">Description</span>
+            <span th:if="${plan.description eq null}">Keine Beschreibung vorhanden</span>
+        </dd>
+    </dl>
+</div>
+<div th:if="${#lists.isEmpty(plans)}">
+    <p>Noch keine Pläne vorhanden</p>
+</div>
+<hr/>
+<h3>Plan erstellen</h3>
+<form method="POST">
+    <label for="title">Name:</label>
+    <input type="text" name="title" size="50"></input><br/>
+    <label for="description">Beschreibung:</label><br/>
+    <textarea name="description" cols="80" rows="5">
+</textarea><br/>
+    <input type="submit"></input>
+</form>
+
+</body>
+</html>
