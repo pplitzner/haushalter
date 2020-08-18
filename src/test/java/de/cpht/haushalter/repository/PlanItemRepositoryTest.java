@@ -21,18 +21,23 @@ public class PlanItemRepositoryTest {
 
     @Test
     public void addPlanItem(){
-        Plan plan = new Plan("Küche", "Oben und unten");
+        Plan plan = new Plan();
+        plan.setTitle("Küche");
+        plan.setDescription("Oben und unten");
         planRepository.save(plan);
         assertFalse(planRepository.findAll().isEmpty());
 
-        PlanItem item = new PlanItem(
-                "Spülmaschine",
-                "Tassen mit dem Handtuch trocknen!",
-                plan);
+        PlanItem item = new PlanItem();
+        item.setTitle("Spülmaschine");
+        item.setDescription("Tassen mit dem Handtuch trocknen!");
+        item.setPlan(plan);
         planItemRepository.save(item);
         List<PlanItem> items = planItemRepository.findByPlan(plan);
         assertFalse(items.isEmpty());
         assertEquals(1, items.size());
-        assertEquals(item, items.iterator().next());
+        PlanItem next = items.iterator().next();
+        assertEquals("Spülmaschine", next.getTitle());
+        assertEquals("Tassen mit dem Handtuch trocknen!", next.getDescription());
+        assertEquals(plan, next.getPlan());
     }
 }

@@ -13,12 +13,6 @@ public class PlanItem {
     @ManyToOne
     private Plan plan;
 
-    public PlanItem(String title, String description, Plan plan) {
-        this.title = title;
-        this.description = description;
-        this.plan = plan;
-    }
-
     public Long getId() {
         return id;
     }
@@ -41,5 +35,13 @@ public class PlanItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
     }
 }
