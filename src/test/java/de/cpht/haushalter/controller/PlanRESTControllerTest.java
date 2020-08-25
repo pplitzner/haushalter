@@ -29,7 +29,6 @@ public class PlanRESTControllerTest {
         Plan plan = new Plan();
         plan.setTitle("Test Plan");
         plan.setDescription("Test Description");
-        planRepository.save(plan);
         given(planRepository.findAll()).willReturn(List.of(plan));
         mvc.perform(get("/plans"))
                 .andExpect(status().isOk())
