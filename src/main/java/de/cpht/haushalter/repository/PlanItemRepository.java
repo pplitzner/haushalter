@@ -1,7 +1,7 @@
 package de.cpht.haushalter.repository;
 
-import de.cpht.haushalter.model.Plan;
-import de.cpht.haushalter.model.PlanItem;
+import de.cpht.haushalter.domain.entities.Plan;
+import de.cpht.haushalter.domain.entities.PlanItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

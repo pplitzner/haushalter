@@ -1,7 +1,7 @@
 package de.cpht.haushalter.controller;
 
 import de.cpht.haushalter.exception.PlanNotFoundException;
-import de.cpht.haushalter.model.Plan;
+import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.repository.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
