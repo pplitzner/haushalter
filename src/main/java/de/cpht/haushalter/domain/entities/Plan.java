@@ -38,7 +38,7 @@ public class Plan {
         this.description = description;
     }
 
-    public void update(Plan updatedPlan) {
+    public void update(PlanDTO updatedPlan) {
         this.title = updatedPlan.title;
         this.description = updatedPlan.description;
     }

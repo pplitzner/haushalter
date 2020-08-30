@@ -1,5 +1,6 @@
 package de.cpht.haushalter.service;
 
+import de.cpht.haushalter.domain.entities.PlanDTO;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.adapters.repository.PlanRepository;
@@ -39,8 +40,9 @@ public class PlanService implements PlanUseCase {
     }
 
     @Override
-    public void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException {
+    public void updatePlan(Long id, PlanDTO updatedPlan) throws PlanNotFoundException {
         Plan plan = repository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         plan.update(updatedPlan);
+        repository.save(plan);
     }
 }
