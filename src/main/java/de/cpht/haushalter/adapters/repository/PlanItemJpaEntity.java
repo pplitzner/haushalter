@@ -1,14 +1,16 @@
-package de.cpht.haushalter.domain.entities;
-
-import de.cpht.haushalter.adapters.repository.PlanJpaEntity;
+package de.cpht.haushalter.adapters.repository;
 
 import javax.persistence.*;
 
-public class PlanItem {
+@Entity
+public class PlanItemJpaEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
     private String description;
 
+    @ManyToOne
     private PlanJpaEntity plan;
 
     public Long getId() {

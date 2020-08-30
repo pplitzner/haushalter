@@ -1,5 +1,6 @@
 package de.cpht.haushalter.repository;
 
+import de.cpht.haushalter.adapters.repository.PlanItemJpaEntity;
 import de.cpht.haushalter.adapters.repository.PlanItemRepository;
 import de.cpht.haushalter.adapters.repository.PlanRepository;
 import de.cpht.haushalter.adapters.repository.PlanJpaEntity;
@@ -29,15 +30,15 @@ public class PlanItemRepositoryTest {
         planRepository.save(plan);
         assertFalse(planRepository.findAll().isEmpty());
 
-        PlanItem item = new PlanItem();
+        PlanItemJpaEntity item = new PlanItemJpaEntity();
         item.setTitle("Spülmaschine");
         item.setDescription("Tassen mit dem Handtuch trocknen!");
         item.setPlan(plan);
         planItemRepository.save(item);
-        List<PlanItem> items = planItemRepository.findByPlan(plan);
+        List<PlanItemJpaEntity> items = planItemRepository.findByPlan(plan);
         assertFalse(items.isEmpty());
         assertEquals(1, items.size());
-        PlanItem next = items.iterator().next();
+        PlanItemJpaEntity next = items.iterator().next();
         assertEquals("Spülmaschine", next.getTitle());
         assertEquals("Tassen mit dem Handtuch trocknen!", next.getDescription());
         assertEquals(plan, next.getPlan());
