@@ -1,4 +1,4 @@
-package de.cpht.haushalter.adapters.repository;
+package de.cpht.haushalter.adapters.db.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

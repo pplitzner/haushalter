@@ -1,8 +1,9 @@
-package de.cpht.haushalter.adapters.repository;
+package de.cpht.haushalter.adapters.db.jpa;
 
 import de.cpht.haushalter.domain.entities.Plan;
+import de.cpht.haushalter.domain.entities.PlanItem;
+import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.exception.PlanNotFoundException;
-import de.cpht.haushalter.service.PlanGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +11,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class JpaPlanGateway implements PlanGateway {
+public class JpaPlanGateway implements PlanUseCase {
 
     @Autowired
     PlanRepository planRepository;
+    @Autowired
+    PlanItemRepository itemRepository;
 
     @Override
     public List<Plan> showAllPlans() {
@@ -44,5 +47,10 @@ public class JpaPlanGateway implements PlanGateway {
         PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         plan.update(updatedPlan);
         planRepository.save(plan);
+    }
+
+    @Override
+    public List<PlanItem> getItems(Long planId) {
+        return itemRepository.findByPlanId(planId).stream().map(item->item.dto()).collect(Collectors.toList());
     }
 }

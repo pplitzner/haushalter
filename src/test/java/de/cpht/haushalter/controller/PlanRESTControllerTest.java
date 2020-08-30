@@ -1,6 +1,5 @@
 package de.cpht.haushalter.controller;
 
-import de.cpht.haushalter.adapters.repository.PlanJpaEntity;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import org.junit.jupiter.api.Test;

@@ -1,10 +1,9 @@
 package de.cpht.haushalter.repository;
 
-import de.cpht.haushalter.adapters.repository.PlanItemJpaEntity;
-import de.cpht.haushalter.adapters.repository.PlanItemRepository;
-import de.cpht.haushalter.adapters.repository.PlanRepository;
-import de.cpht.haushalter.adapters.repository.PlanJpaEntity;
-import de.cpht.haushalter.domain.entities.PlanItem;
+import de.cpht.haushalter.adapters.db.jpa.PlanItemJpaEntity;
+import de.cpht.haushalter.adapters.db.jpa.PlanItemRepository;
+import de.cpht.haushalter.adapters.db.jpa.PlanRepository;
+import de.cpht.haushalter.adapters.db.jpa.PlanJpaEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -35,7 +34,7 @@ public class PlanItemRepositoryTest {
         item.setDescription("Tassen mit dem Handtuch trocknen!");
         item.setPlan(plan);
         planItemRepository.save(item);
-        List<PlanItemJpaEntity> items = planItemRepository.findByPlan(plan);
+        List<PlanItemJpaEntity> items = planItemRepository.findByPlanId(plan.getId());
         assertFalse(items.isEmpty());
         assertEquals(1, items.size());
         PlanItemJpaEntity next = items.iterator().next();

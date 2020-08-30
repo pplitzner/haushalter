@@ -1,6 +1,7 @@
-package de.cpht.haushalter.service;
+package de.cpht.haushalter.port.db;
 
 import de.cpht.haushalter.domain.entities.Plan;
+import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface PlanGateway {
     public void deletePlan(Long id);
 
     public void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException;
+
+    public List<PlanItem> getItems(Long planId);
 }

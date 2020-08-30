@@ -1,17 +1,20 @@
-package de.cpht.haushalter.adapters.repository;
+package de.cpht.haushalter.adapters.db.jpa;
 
-import javax.persistence.*;
+import de.cpht.haushalter.domain.entities.Plan;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-public class PlanItemJpaEntity {
+public class PlanJpaEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
     private String description;
-
-    @ManyToOne
-    private PlanJpaEntity plan;
 
     public Long getId() {
         return id;
@@ -37,11 +40,16 @@ public class PlanItemJpaEntity {
         this.description = description;
     }
 
-    public PlanJpaEntity getPlan() {
-        return plan;
+    public void update(Plan updatedPlan) {
+        this.title = updatedPlan.title;
+        this.description = updatedPlan.description;
     }
 
-    public void setPlan(PlanJpaEntity plan) {
-        this.plan = plan;
+    public Plan dto(){
+        Plan dto = new Plan();
+        dto.id = this.id;
+        dto.title = this.title;
+        dto.description = this.description;
+        return dto;
     }
 }
