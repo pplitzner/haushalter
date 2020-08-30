@@ -5,6 +5,7 @@ import de.cpht.haushalter.domain.entities.PlanItem;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "plan_item")
 public class PlanItemJpaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

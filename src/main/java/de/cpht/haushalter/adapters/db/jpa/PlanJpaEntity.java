@@ -2,12 +2,10 @@ package de.cpht.haushalter.adapters.db.jpa;
 
 import de.cpht.haushalter.domain.entities.Plan;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "plan")
 public class PlanJpaEntity {
 
     @Id
