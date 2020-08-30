@@ -1,4 +1,4 @@
-package de.cpht.haushalter.repository;
+package de.cpht.haushalter.adapters.repository;
 
 import de.cpht.haushalter.domain.entities.Plan;
 import org.springframework.data.jpa.repository.JpaRepository;

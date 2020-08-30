@@ -38,4 +38,8 @@ public class Plan {
         this.description = description;
     }
 
+    public void update(Plan updatedPlan) {
+        this.title = updatedPlan.title;
+        this.description = updatedPlan.description;
+    }
 }

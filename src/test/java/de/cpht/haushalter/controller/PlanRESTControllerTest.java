@@ -1,7 +1,7 @@
 package de.cpht.haushalter.controller;
 
 import de.cpht.haushalter.domain.entities.Plan;
-import de.cpht.haushalter.repository.PlanRepository;
+import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,14 +22,14 @@ public class PlanRESTControllerTest {
     @Autowired
     MockMvc mvc;
     @MockBean
-    private PlanRepository planRepository;
+    private PlanUseCase planUseCase;
 
     @Test
     public void testPlanIndex() throws Exception {
         Plan plan = new Plan();
         plan.setTitle("Test Plan");
         plan.setDescription("Test Description");
-        given(planRepository.findAll()).willReturn(List.of(plan));
+        given(planUseCase.showAllPlans()).willReturn(List.of(plan));
         mvc.perform(get("/plans"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
