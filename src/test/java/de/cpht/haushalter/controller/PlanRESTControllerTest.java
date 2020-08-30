@@ -1,6 +1,6 @@
 package de.cpht.haushalter.controller;
 
-import de.cpht.haushalter.domain.entities.Plan;
+import de.cpht.haushalter.adapters.repository.Plan;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,15 +1,14 @@
 package de.cpht.haushalter.service;
 
-import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanDTO;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 
 import java.util.List;
 
 public interface PlanGateway {
-    public List<Plan> showAllPlans();
+    public List<PlanDTO> showAllPlans();
 
-    public Plan getPlanById(Long id);
+    public PlanDTO getPlanById(Long id);
 
     public Long startPlan(String title, String description);
 

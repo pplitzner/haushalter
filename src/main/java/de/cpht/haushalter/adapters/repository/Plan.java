@@ -1,4 +1,6 @@
-package de.cpht.haushalter.domain.entities;
+package de.cpht.haushalter.adapters.repository;
+
+import de.cpht.haushalter.domain.entities.PlanDTO;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,5 +43,13 @@ public class Plan {
     public void update(PlanDTO updatedPlan) {
         this.title = updatedPlan.title;
         this.description = updatedPlan.description;
+    }
+
+    public PlanDTO dto(){
+        PlanDTO dto = new PlanDTO();
+        dto.id = this.id;
+        dto.title = this.title;
+        dto.description = this.description;
+        return dto;
     }
 }

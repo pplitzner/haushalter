@@ -1,5 +1,7 @@
 package de.cpht.haushalter.domain.entities;
 
+import de.cpht.haushalter.adapters.repository.Plan;
+
 import javax.persistence.*;
 
 @Entity

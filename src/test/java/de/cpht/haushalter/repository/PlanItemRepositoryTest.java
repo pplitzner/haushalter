@@ -2,7 +2,7 @@ package de.cpht.haushalter.repository;
 
 import de.cpht.haushalter.adapters.repository.PlanItemRepository;
 import de.cpht.haushalter.adapters.repository.PlanRepository;
-import de.cpht.haushalter.domain.entities.Plan;
+import de.cpht.haushalter.adapters.repository.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

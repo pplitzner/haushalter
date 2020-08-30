@@ -1,7 +1,7 @@
 package de.cpht.haushalter.controller;
 
 import de.cpht.haushalter.domain.entities.PlanDTO;
-import de.cpht.haushalter.domain.entities.Plan;
+import de.cpht.haushalter.adapters.repository.Plan;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ public class PlanRESTController {
     private PlanUseCase planUseCase;
 
     @GetMapping
-    public List<Plan> index(Model model){
+    public List<PlanDTO> index(Model model){
         return planUseCase.showAllPlans();
     }
 
@@ -27,7 +27,7 @@ public class PlanRESTController {
     }
 
     @GetMapping("/{id}")
-    public Plan show(@PathVariable Long id){
+    public PlanDTO show(@PathVariable Long id){
         return planUseCase.getPlanById(id);
     }
 

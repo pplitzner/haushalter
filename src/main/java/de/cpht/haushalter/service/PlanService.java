@@ -1,6 +1,5 @@
 package de.cpht.haushalter.service;
 
-import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanDTO;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.exception.PlanNotFoundException;
@@ -16,12 +15,12 @@ public class PlanService implements PlanUseCase {
     PlanGateway planGateway;
 
     @Override
-    public List<Plan> showAllPlans() {
+    public List<PlanDTO> showAllPlans() {
         return planGateway.showAllPlans();
     }
 
     @Override
-    public Plan getPlanById(Long id) throws PlanNotFoundException {
+    public PlanDTO getPlanById(Long id) throws PlanNotFoundException {
         return planGateway.getPlanById(id);
     }
 
