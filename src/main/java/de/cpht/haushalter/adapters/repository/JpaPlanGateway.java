@@ -1,6 +1,6 @@
 package de.cpht.haushalter.adapters.repository;
 
-import de.cpht.haushalter.domain.entities.PlanDTO;
+import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 import de.cpht.haushalter.service.PlanGateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +16,19 @@ public class JpaPlanGateway implements PlanGateway {
     PlanRepository planRepository;
 
     @Override
-    public List<PlanDTO> showAllPlans() {
+    public List<Plan> showAllPlans() {
         return planRepository.findAll().stream().map(plan -> plan.dto()).collect(Collectors.toList());
     }
 
     @Override
-    public PlanDTO getPlanById(Long id) {
-        Plan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+    public Plan getPlanById(Long id) {
+        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         return plan.dto();
     }
 
     @Override
     public Long startPlan(String title, String description) {
-        Plan plan = new Plan();
+        PlanJpaEntity plan = new PlanJpaEntity();
         plan.setTitle(title);
         plan.setDescription(description);
         return planRepository.save(plan).getId();
@@ -40,8 +40,8 @@ public class JpaPlanGateway implements PlanGateway {
     }
 
     @Override
-    public void updatePlan(Long id, PlanDTO updatedPlan) throws PlanNotFoundException {
-        Plan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+    public void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException {
+        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         plan.update(updatedPlan);
         planRepository.save(plan);
     }

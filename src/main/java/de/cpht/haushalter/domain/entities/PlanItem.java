@@ -1,6 +1,6 @@
 package de.cpht.haushalter.domain.entities;
 
-import de.cpht.haushalter.adapters.repository.Plan;
+import de.cpht.haushalter.adapters.repository.PlanJpaEntity;
 
 import javax.persistence.*;
 
@@ -13,7 +13,7 @@ public class PlanItem {
     private String description;
 
     @ManyToOne
-    private Plan plan;
+    private PlanJpaEntity plan;
 
     public Long getId() {
         return id;
@@ -39,11 +39,11 @@ public class PlanItem {
         this.description = description;
     }
 
-    public Plan getPlan() {
+    public PlanJpaEntity getPlan() {
         return plan;
     }
 
-    public void setPlan(Plan plan) {
+    public void setPlan(PlanJpaEntity plan) {
         this.plan = plan;
     }
 }

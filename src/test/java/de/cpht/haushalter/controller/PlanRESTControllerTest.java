@@ -1,6 +1,7 @@
 package de.cpht.haushalter.controller;
 
-import de.cpht.haushalter.adapters.repository.Plan;
+import de.cpht.haushalter.adapters.repository.PlanJpaEntity;
+import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class PlanRESTControllerTest {
     @Test
     public void testPlanIndex() throws Exception {
         Plan plan = new Plan();
-        plan.setTitle("Test Plan");
-        plan.setDescription("Test Description");
+        plan.title = "Test Plan";
+        plan.description = "Test Description";
         given(planUseCase.showAllPlans()).willReturn(List.of(plan));
         mvc.perform(get("/plans"))
                 .andExpect(status().isOk())

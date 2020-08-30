@@ -1,6 +1,6 @@
 package de.cpht.haushalter.service;
 
-import de.cpht.haushalter.domain.entities.PlanDTO;
+import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,12 @@ public class PlanService implements PlanUseCase {
     PlanGateway planGateway;
 
     @Override
-    public List<PlanDTO> showAllPlans() {
+    public List<Plan> showAllPlans() {
         return planGateway.showAllPlans();
     }
 
     @Override
-    public PlanDTO getPlanById(Long id) throws PlanNotFoundException {
+    public Plan getPlanById(Long id) throws PlanNotFoundException {
         return planGateway.getPlanById(id);
     }
 
@@ -35,7 +35,7 @@ public class PlanService implements PlanUseCase {
     }
 
     @Override
-    public void updatePlan(Long id, PlanDTO updatedPlan) throws PlanNotFoundException {
+    public void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException {
         planGateway.updatePlan(id, updatedPlan);
     }
 }

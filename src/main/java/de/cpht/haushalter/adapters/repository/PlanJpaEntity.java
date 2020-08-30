@@ -1,6 +1,6 @@
 package de.cpht.haushalter.adapters.repository;
 
-import de.cpht.haushalter.domain.entities.PlanDTO;
+import de.cpht.haushalter.domain.entities.Plan;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Plan {
+public class PlanJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,13 +40,13 @@ public class Plan {
         this.description = description;
     }
 
-    public void update(PlanDTO updatedPlan) {
+    public void update(Plan updatedPlan) {
         this.title = updatedPlan.title;
         this.description = updatedPlan.description;
     }
 
-    public PlanDTO dto(){
-        PlanDTO dto = new PlanDTO();
+    public Plan dto(){
+        Plan dto = new Plan();
         dto.id = this.id;
         dto.title = this.title;
         dto.description = this.description;
