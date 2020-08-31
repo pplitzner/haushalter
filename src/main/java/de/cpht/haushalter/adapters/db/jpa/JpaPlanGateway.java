@@ -1,7 +1,7 @@
 package de.cpht.haushalter.adapters.db.jpa;
 
-import de.cpht.haushalter.adapters.db.jpa.entity.PlanItemJpaEntity;
-import de.cpht.haushalter.adapters.db.jpa.entity.PlanJpaEntity;
+import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlanItem;
+import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlan;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
 import de.cpht.haushalter.domain.entities.Plan;
@@ -30,13 +30,13 @@ public class JpaPlanGateway implements PlanUseCase {
 
     @Override
     public Plan getPlanById(Long id) {
-        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         return plan.dto();
     }
 
     @Override
     public Long startPlan(String title, String description) {
-        PlanJpaEntity plan = new PlanJpaEntity();
+        JpaPlan plan = new JpaPlan();
         plan.setTitle(title);
         plan.setDescription(description);
         return planRepository.save(plan).getId();
@@ -44,34 +44,34 @@ public class JpaPlanGateway implements PlanUseCase {
 
     @Override
     public void deletePlan(Long id) {
-        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         planRepository.delete(plan);
     }
 
     @Override
     public void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException {
-        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         plan.update(updatedPlan);
         planRepository.save(plan);
     }
 
     @Override
     public void finishPlan(Long id) throws PlanNotFoundException {
-        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         plan.setDone(true);
         planRepository.save(plan);
     }
 
     @Override
     public List<PlanItem> getItems(Long id) throws PlanNotFoundException{
-        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         return itemRepository.findByPlan(plan).stream().map(item->item.dto()).collect(Collectors.toList());
     }
 
     @Override
     public Long addItem(Long id, PlanItem item) throws PlanNotFoundException{
-        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
-        PlanItemJpaEntity jpaItem = new PlanItemJpaEntity();
+        JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        JpaPlanItem jpaItem = new JpaPlanItem();
         jpaItem.setTitle(item.title);
         jpaItem.setDescription(item.description);
         jpaItem.setPlan(plan);
@@ -80,14 +80,14 @@ public class JpaPlanGateway implements PlanUseCase {
 
     @Override
     public void updateItem(Long id, PlanItem item) throws PlanNotFoundException {
-        PlanItemJpaEntity jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
+        JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         jpaItem.update(item);
         itemRepository.save(jpaItem);
     }
 
     @Override
     public void deleteItem(Long id) throws PlanItemNotFoundException {
-        PlanItemJpaEntity jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
+        JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         itemRepository.delete(jpaItem);
     }
 }

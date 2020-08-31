@@ -1,9 +1,9 @@
 package de.cpht.haushalter.repository;
 
-import de.cpht.haushalter.adapters.db.jpa.entity.PlanItemJpaEntity;
+import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlanItem;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
-import de.cpht.haushalter.adapters.db.jpa.entity.PlanJpaEntity;
+import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlan;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,21 +23,21 @@ public class PlanItemRepositoryTest {
 
     @Test
     public void addPlanItem(){
-        PlanJpaEntity plan = new PlanJpaEntity();
+        JpaPlan plan = new JpaPlan();
         plan.setTitle("Küche");
         plan.setDescription("Oben und unten");
         planRepository.save(plan);
         assertFalse(planRepository.findAll().isEmpty());
 
-        PlanItemJpaEntity item = new PlanItemJpaEntity();
+        JpaPlanItem item = new JpaPlanItem();
         item.setTitle("Spülmaschine");
         item.setDescription("Tassen mit dem Handtuch trocknen!");
         item.setPlan(plan);
         planItemRepository.save(item);
-        List<PlanItemJpaEntity> items = planItemRepository.findByPlan(plan);
+        List<JpaPlanItem> items = planItemRepository.findByPlan(plan);
         assertFalse(items.isEmpty());
         assertEquals(1, items.size());
-        PlanItemJpaEntity next = items.iterator().next();
+        JpaPlanItem next = items.iterator().next();
         assertEquals("Spülmaschine", next.getTitle());
         assertEquals("Tassen mit dem Handtuch trocknen!", next.getDescription());
         assertEquals(plan, next.getPlan());

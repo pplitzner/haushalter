@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "plan_item")
-public class PlanItemJpaEntity {
+public class JpaPlanItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -14,7 +14,7 @@ public class PlanItemJpaEntity {
     private String description;
 
     @ManyToOne
-    private PlanJpaEntity plan;
+    private JpaPlan plan;
 
     public Long getId() {
         return id;
@@ -40,11 +40,11 @@ public class PlanItemJpaEntity {
         this.description = description;
     }
 
-    public PlanJpaEntity getPlan() {
+    public JpaPlan getPlan() {
         return plan;
     }
 
-    public void setPlan(PlanJpaEntity plan) {
+    public void setPlan(JpaPlan plan) {
         this.plan = plan;
     }
 
