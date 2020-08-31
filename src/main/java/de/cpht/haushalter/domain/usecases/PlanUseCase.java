@@ -13,6 +13,7 @@ public interface PlanUseCase {
     Long startPlan(String title, String description);
     void deletePlan(Long id) throws PlanNotFoundException;
     void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException;
+    void finishPlan(Long id) throws PlanNotFoundException;
 
     List<PlanItem> getItems(Long planId) throws PlanNotFoundException;
     Long addItem(Long planId, PlanItem item) throws PlanNotFoundException;

@@ -14,6 +14,8 @@ public class PlanJpaEntity {
     private String title;
     private String description;
 
+    private boolean done;
+
     public Long getId() {
         return id;
     }
@@ -38,6 +40,14 @@ public class PlanJpaEntity {
         this.description = description;
     }
 
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     public void update(Plan updatedPlan) {
         this.title = updatedPlan.title;
         this.description = updatedPlan.description;
@@ -48,6 +58,7 @@ public class PlanJpaEntity {
         dto.id = this.id;
         dto.title = this.title;
         dto.description = this.description;
+        dto.done = this.done;
         return dto;
     }
 }

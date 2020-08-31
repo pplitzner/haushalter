@@ -56,6 +56,13 @@ public class JpaPlanGateway implements PlanUseCase {
     }
 
     @Override
+    public void finishPlan(Long id) throws PlanNotFoundException {
+        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        plan.setDone(true);
+        planRepository.save(plan);
+    }
+
+    @Override
     public List<PlanItem> getItems(Long id) throws PlanNotFoundException{
         PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         return itemRepository.findByPlan(plan).stream().map(item->item.dto()).collect(Collectors.toList());
