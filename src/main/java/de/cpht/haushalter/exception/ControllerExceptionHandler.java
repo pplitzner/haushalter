@@ -12,7 +12,14 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ExceptionHandler(PlanNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(PlanNotFoundException ex) {
+    String planNotFoundHandler(PlanNotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(PlanItemNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String itemNotFoundHandler(PlanItemNotFoundException ex) {
         return ex.getMessage();
     }
 }

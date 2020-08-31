@@ -3,6 +3,7 @@ package de.cpht.haushalter.adapters.db.jpa;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
+import de.cpht.haushalter.exception.PlanItemNotFoundException;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,8 @@ public class JpaPlanGateway implements PlanUseCase {
 
     @Override
     public void deletePlan(Long id) {
-        planRepository.deleteById(id);
+        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        planRepository.delete(plan);
     }
 
     @Override
@@ -50,7 +52,31 @@ public class JpaPlanGateway implements PlanUseCase {
     }
 
     @Override
-    public List<PlanItem> getItems(Long planId) {
-        return itemRepository.findByPlanId(planId).stream().map(item->item.dto()).collect(Collectors.toList());
+    public List<PlanItem> getItems(Long id) throws PlanNotFoundException{
+        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        return itemRepository.findByPlan(plan).stream().map(item->item.dto()).collect(Collectors.toList());
+    }
+
+    @Override
+    public Long addItem(Long id, PlanItem item) throws PlanNotFoundException{
+        PlanJpaEntity plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        PlanItemJpaEntity jpaItem = new PlanItemJpaEntity();
+        jpaItem.setTitle(item.title);
+        jpaItem.setDescription(item.description);
+        jpaItem.setPlan(plan);
+        return itemRepository.save(jpaItem).getId();
+    }
+
+    @Override
+    public void updateItem(Long id, PlanItem item) throws PlanNotFoundException {
+        PlanItemJpaEntity jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
+        jpaItem.update(item);
+        itemRepository.save(jpaItem);
+    }
+
+    @Override
+    public void deleteItem(Long id) throws PlanItemNotFoundException {
+        PlanItemJpaEntity jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
+        itemRepository.delete(jpaItem);
     }
 }

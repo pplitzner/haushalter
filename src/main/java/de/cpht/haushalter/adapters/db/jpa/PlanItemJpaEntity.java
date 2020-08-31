@@ -53,6 +53,12 @@ public class PlanItemJpaEntity {
         item.id = this.id;
         item.title = this.title;
         item.description = this.description;
+        item.planId = this.plan.getId();
         return item;
+    }
+
+    public void update(PlanItem item) {
+        this.title = item.title;
+        this.description = item.description;
     }
 }

@@ -34,7 +34,7 @@ public class PlanItemRepositoryTest {
         item.setDescription("Tassen mit dem Handtuch trocknen!");
         item.setPlan(plan);
         planItemRepository.save(item);
-        List<PlanItemJpaEntity> items = planItemRepository.findByPlanId(plan.getId());
+        List<PlanItemJpaEntity> items = planItemRepository.findByPlan(plan);
         assertFalse(items.isEmpty());
         assertEquals(1, items.size());
         PlanItemJpaEntity next = items.iterator().next();
