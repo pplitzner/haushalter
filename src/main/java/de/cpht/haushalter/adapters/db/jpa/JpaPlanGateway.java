@@ -1,5 +1,9 @@
 package de.cpht.haushalter.adapters.db.jpa;
 
+import de.cpht.haushalter.adapters.db.jpa.entity.PlanItemJpaEntity;
+import de.cpht.haushalter.adapters.db.jpa.entity.PlanJpaEntity;
+import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
+import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;

@@ -1,4 +1,4 @@
-package de.cpht.haushalter.adapters.db.jpa;
+package de.cpht.haushalter.adapters.db.jpa.entity;
 
 import de.cpht.haushalter.domain.entities.PlanItem;
 

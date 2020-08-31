@@ -1,9 +1,9 @@
 package de.cpht.haushalter.repository;
 
-import de.cpht.haushalter.adapters.db.jpa.PlanItemJpaEntity;
-import de.cpht.haushalter.adapters.db.jpa.PlanItemRepository;
-import de.cpht.haushalter.adapters.db.jpa.PlanRepository;
-import de.cpht.haushalter.adapters.db.jpa.PlanJpaEntity;
+import de.cpht.haushalter.adapters.db.jpa.entity.PlanItemJpaEntity;
+import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
+import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
+import de.cpht.haushalter.adapters.db.jpa.entity.PlanJpaEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
