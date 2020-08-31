@@ -16,7 +16,7 @@ public class PlanRESTController {
     private PlanUseCase planUseCase;
 
     @GetMapping
-    public List<Plan> index(Model model){
+    public List<Plan> index(){
         return planUseCase.showAllPlans();
     }
 
