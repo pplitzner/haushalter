@@ -90,4 +90,18 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         itemRepository.delete(jpaItem);
     }
+
+    @Override
+    public void checkItem(Long id) throws PlanItemNotFoundException {
+        JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
+        jpaItem.setChecked(true);
+        itemRepository.save(jpaItem);
+    }
+
+    @Override
+    public void uncheckItem(Long id) throws PlanItemNotFoundException {
+        JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
+        jpaItem.setChecked(false);
+        itemRepository.save(jpaItem);
+    }
 }

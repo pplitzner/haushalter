@@ -5,5 +5,15 @@ public class PlanItem {
     public String title;
     public String description;
 
+    public boolean checked;
+
     public Long planId;
+
+    public PlanItem(){
+
+    }
+
+    public PlanItem(String title, String description) {
+
+    }
 }

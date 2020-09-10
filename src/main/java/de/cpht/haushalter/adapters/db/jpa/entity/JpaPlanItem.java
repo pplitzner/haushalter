@@ -13,6 +13,8 @@ public class JpaPlanItem {
     private String title;
     private String description;
 
+    private boolean checked;
+
     @ManyToOne
     private JpaPlan plan;
 
@@ -48,12 +50,21 @@ public class JpaPlanItem {
         this.plan = plan;
     }
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
     public PlanItem dto(){
         PlanItem item = new PlanItem();
         item.id = this.id;
         item.title = this.title;
         item.description = this.description;
         item.planId = this.plan.getId();
+        item.checked = this.checked;
         return item;
     }
 

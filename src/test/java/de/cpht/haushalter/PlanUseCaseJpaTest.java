@@ -1,5 +1,6 @@
 package de.cpht.haushalter;
 
+import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
@@ -8,7 +9,6 @@ import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,6 +21,8 @@ public class PlanUseCaseJpaTest {
 
     @Autowired
     private PlanUseCase planUseCase;
+    @Autowired
+    PlanItemRepository itemRepository;
 
     @Test
     public void testStartPlanShowAllPlans(){
@@ -96,9 +98,7 @@ public class PlanUseCaseJpaTest {
         List<PlanItem> items = planUseCase.getItems(plan);
         assertTrue(items.isEmpty());
 
-        PlanItem item = new PlanItem();
-        item.title = "item title";
-        item.description = "item description";
+        PlanItem item = new PlanItem("it", "id");
         planUseCase.addItem(plan, item);
         items = planUseCase.getItems(plan);
         assertFalse(items.isEmpty());
@@ -116,9 +116,7 @@ public class PlanUseCaseJpaTest {
     @Test
     public void testDeleteItem(){
         Long plan = planUseCase.startPlan("t", "d");
-        PlanItem item = new PlanItem();
-        item.title = "item title";
-        item.description = "item description";
+        PlanItem item = new PlanItem("it", "id");
         Long itemId = planUseCase.addItem(plan, item);
         assertFalse(planUseCase.getItems(plan).isEmpty());
         planUseCase.deleteItem(itemId);
@@ -133,15 +131,10 @@ public class PlanUseCaseJpaTest {
     @Test
     public void testUpdateItem(){
         Long plan = planUseCase.startPlan("t", "d");
-        PlanItem item = new PlanItem();
-        item.title = "item title";
-        item.description = "item description";
-        Long itemId = planUseCase.addItem(plan, item);
-        PlanItem item2 = new PlanItem();
-        item2.title = "item title2";
-        item2.description = "item description2";
+        Long itemId = planUseCase.addItem(plan, new PlanItem("it", "id"));
+        PlanItem item2 = new PlanItem("item title2", "item description2");
         planUseCase.updateItem(itemId, item2);
-        PlanItem updatedItem = planUseCase.getItems(plan).iterator().next();
+        PlanItem updatedItem = itemRepository.findById(itemId).get().dto();
         assertEquals(itemId, updatedItem.id);
         assertEquals(item2.title, updatedItem.title);
         assertEquals(item2.description, updatedItem.description);
@@ -151,4 +144,21 @@ public class PlanUseCaseJpaTest {
     public void testUpdatePlanItemNotFoundException() {
         assertThrows(PlanItemNotFoundException.class, ()->planUseCase.updateItem(1L, new PlanItem()));
     }
+
+    @Test
+    public void testCheckItem(){
+        Long itemId = planUseCase.addItem(planUseCase.startPlan("t", "d"), new PlanItem("it", "id"));
+        assertFalse(itemRepository.findById(itemId).get().dto().checked);
+        planUseCase.checkItem(itemId);
+        assertTrue(itemRepository.findById(itemId).get().dto().checked);
+        planUseCase.uncheckItem(itemId);
+        assertFalse(itemRepository.findById(itemId).get().dto().checked);
+    }
+
+    @Test
+    public void testCheckItemPlanItemNotFoundException() {
+        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.checkItem(1L));
+        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.uncheckItem(1L));
+    }
+
 }
