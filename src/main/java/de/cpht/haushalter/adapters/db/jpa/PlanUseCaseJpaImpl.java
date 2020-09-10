@@ -7,6 +7,7 @@ import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
+import de.cpht.haushalter.exception.PlanFinishedException;
 import de.cpht.haushalter.exception.PlanItemNotFoundException;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,11 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException {
+    public void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException {
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        if(plan.isDone()){
+            throw new PlanFinishedException(plan.getId());
+        }
         plan.update(updatedPlan);
         planRepository.save(plan);
     }

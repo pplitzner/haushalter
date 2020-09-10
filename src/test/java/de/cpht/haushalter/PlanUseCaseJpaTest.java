@@ -4,6 +4,7 @@ import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
+import de.cpht.haushalter.exception.PlanFinishedException;
 import de.cpht.haushalter.exception.PlanItemNotFoundException;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -75,6 +76,13 @@ public class PlanUseCaseJpaTest {
     @Test
     public void testUpdatePlanNotFoundException() {
         assertThrows(PlanNotFoundException.class, ()->planUseCase.updatePlan(1L, new Plan()));
+    }
+
+    @Test
+    public void testUpdatePlanFinishedException() {
+        Long plan = planUseCase.startPlan("t", "d");
+        planUseCase.finishPlan(plan);
+        assertThrows(PlanFinishedException.class, ()->planUseCase.updatePlan(plan, new Plan()));
     }
 
     @Test
