@@ -8,6 +8,7 @@ import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -65,8 +66,8 @@ public class PlanUseCaseJpaTest {
         Plan planById = planUseCase.getPlanById(plan);
         assertNotNull(planById);
         assertEquals(plan, planById.id);
-        assertEquals("Test Title2", planById.title);
-        assertEquals("Test description2", planById.description);
+        assertEquals(updatedPlan.title, planById.title);
+        assertEquals(updatedPlan.description, planById.description);
     }
 
     @Test
@@ -89,7 +90,6 @@ public class PlanUseCaseJpaTest {
         assertThrows(PlanNotFoundException.class, ()->planUseCase.finishPlan(1L));
     }
 
-
     @Test
     public void testGetItemsAddItem(){
         Long plan = planUseCase.startPlan("t", "d");
@@ -107,9 +107,9 @@ public class PlanUseCaseJpaTest {
         assertEquals("item description", next.description);
     }
 
-
     @Test
     public void testAddItemPlanNotFoundException() {
+        assertThrows(PlanNotFoundException.class, ()->planUseCase.getItems(1L));
         assertThrows(PlanNotFoundException.class, ()->planUseCase.addItem(1L, new PlanItem()));
     }
 
@@ -125,9 +125,30 @@ public class PlanUseCaseJpaTest {
         assertTrue(planUseCase.getItems(plan).isEmpty());
     }
 
-
     @Test
     public void testDeletePlanItemNotFoundException() {
         assertThrows(PlanItemNotFoundException.class, ()->planUseCase.deleteItem(1L));
+    }
+
+    @Test
+    public void testUpdateItem(){
+        Long plan = planUseCase.startPlan("t", "d");
+        PlanItem item = new PlanItem();
+        item.title = "item title";
+        item.description = "item description";
+        Long itemId = planUseCase.addItem(plan, item);
+        PlanItem item2 = new PlanItem();
+        item2.title = "item title2";
+        item2.description = "item description2";
+        planUseCase.updateItem(itemId, item2);
+        PlanItem updatedItem = planUseCase.getItems(plan).iterator().next();
+        assertEquals(itemId, updatedItem.id);
+        assertEquals(item2.title, updatedItem.title);
+        assertEquals(item2.description, updatedItem.description);
+    }
+
+    @Test
+    public void testUpdatePlanItemNotFoundException() {
+        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.updateItem(1L, new PlanItem()));
     }
 }
