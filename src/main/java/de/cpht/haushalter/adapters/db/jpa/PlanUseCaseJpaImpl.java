@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class PlanUseCaseImpl implements PlanUseCase {
+public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Autowired
     PlanRepository planRepository;
