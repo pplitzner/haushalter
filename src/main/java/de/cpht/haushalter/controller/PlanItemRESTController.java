@@ -24,7 +24,7 @@ public class PlanItemRESTController {
         return planUseCase.addItem(planId, item);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public void update(@PathVariable Long id, @RequestBody PlanItem updatedItem){
         planUseCase.updateItem(id, updatedItem);
     }
