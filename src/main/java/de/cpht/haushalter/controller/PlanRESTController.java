@@ -20,7 +20,7 @@ public class PlanRESTController {
     }
 
     @PostMapping
-    public Long store(@RequestBody Plan plan) {
+    public Plan store(@RequestBody Plan plan) {
         return planUseCase.startPlan(plan.title, plan.description);
     }
 

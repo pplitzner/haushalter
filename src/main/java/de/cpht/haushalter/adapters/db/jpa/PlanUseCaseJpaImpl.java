@@ -36,11 +36,11 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public Long startPlan(String title, String description) {
+    public Plan startPlan(String title, String description) {
         JpaPlan plan = new JpaPlan();
         plan.setTitle(title);
         plan.setDescription(description);
-        return planRepository.save(plan).getId();
+        return planRepository.save(plan).dto();
     }
 
     @Override

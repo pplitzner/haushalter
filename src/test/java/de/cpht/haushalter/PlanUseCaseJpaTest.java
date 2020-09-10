@@ -34,9 +34,9 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testDeletePlan(){
-        Long plan = planUseCase.startPlan("Test Title", "Test description");
+        Plan plan = planUseCase.startPlan("Test Title", "Test description");
         assertEquals(1, planUseCase.showAllPlans().size());
-        planUseCase.deletePlan(plan);
+        planUseCase.deletePlan(plan.id);
         assertTrue(planUseCase.showAllPlans().isEmpty());
     }
 
@@ -47,8 +47,8 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testGetPlanById(){
-        Long plan = planUseCase.startPlan("Test Title", "Test description");
-        Plan planById = planUseCase.getPlanById(plan);
+        Plan plan = planUseCase.startPlan("Test Title", "Test description");
+        Plan planById = planUseCase.getPlanById(plan.id);
         assertNotNull(planById);
         assertEquals("Test Title", planById.title);
         assertEquals("Test description", planById.description);
@@ -61,12 +61,12 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testUpdatePlan(){
-        Long plan = planUseCase.startPlan("Test Title1", "Test description1");
+        Plan plan = planUseCase.startPlan("Test Title1", "Test description1");
         Plan updatedPlan = new Plan();
         updatedPlan.title = "Test Title2";
         updatedPlan.description = "Test description2";
-        planUseCase.updatePlan(plan, updatedPlan);
-        Plan planById = planUseCase.getPlanById(plan);
+        planUseCase.updatePlan(plan.id, updatedPlan);
+        Plan planById = planUseCase.getPlanById(plan.id);
         assertNotNull(planById);
         assertEquals(plan, planById.id);
         assertEquals(updatedPlan.title, planById.title);
@@ -80,18 +80,18 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testUpdatePlanFinishedException() {
-        Long plan = planUseCase.startPlan("t", "d");
-        planUseCase.finishPlan(plan);
-        assertThrows(PlanFinishedException.class, ()->planUseCase.updatePlan(plan, new Plan()));
+        Plan plan = planUseCase.startPlan("t", "d");
+        planUseCase.finishPlan(plan.id);
+        assertThrows(PlanFinishedException.class, ()->planUseCase.updatePlan(plan.id, new Plan()));
     }
 
     @Test
     public void testFinishPlan(){
-        Long plan = planUseCase.startPlan("t", "d");
-        Plan planById = planUseCase.getPlanById(plan);
+        Plan plan = planUseCase.startPlan("t", "d");
+        Plan planById = planUseCase.getPlanById(plan.id);
         assertFalse(planById.done);
-        planUseCase.finishPlan(plan);
-        planById = planUseCase.getPlanById(plan);
+        planUseCase.finishPlan(plan.id);
+        planById = planUseCase.getPlanById(plan.id);
         assertTrue(planById.done);
     }
 
@@ -102,13 +102,13 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testGetItemsAddItem(){
-        Long plan = planUseCase.startPlan("t", "d");
-        List<PlanItem> items = planUseCase.getItems(plan);
+        Plan plan = planUseCase.startPlan("t", "d");
+        List<PlanItem> items = planUseCase.getItems(plan.id);
         assertTrue(items.isEmpty());
 
         PlanItem item = new PlanItem("it", "id");
-        planUseCase.addItem(plan, item);
-        items = planUseCase.getItems(plan);
+        planUseCase.addItem(plan.id, item);
+        items = planUseCase.getItems(plan.id);
         assertFalse(items.isEmpty());
         PlanItem next = items.iterator().next();
         assertEquals("item title", next.title);
@@ -123,12 +123,12 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testDeleteItem(){
-        Long plan = planUseCase.startPlan("t", "d");
+        Plan plan = planUseCase.startPlan("t", "d");
         PlanItem item = new PlanItem("it", "id");
-        Long itemId = planUseCase.addItem(plan, item);
-        assertFalse(planUseCase.getItems(plan).isEmpty());
+        Long itemId = planUseCase.addItem(plan.id, item);
+        assertFalse(planUseCase.getItems(plan.id).isEmpty());
         planUseCase.deleteItem(itemId);
-        assertTrue(planUseCase.getItems(plan).isEmpty());
+        assertTrue(planUseCase.getItems(plan.id).isEmpty());
     }
 
     @Test
@@ -138,8 +138,8 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testUpdateItem(){
-        Long plan = planUseCase.startPlan("t", "d");
-        Long itemId = planUseCase.addItem(plan, new PlanItem("it", "id"));
+        Plan plan = planUseCase.startPlan("t", "d");
+        Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id"));
         PlanItem item2 = new PlanItem("item title2", "item description2");
         planUseCase.updateItem(itemId, item2);
         PlanItem updatedItem = itemRepository.findById(itemId).get().dto();
@@ -155,7 +155,7 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testCheckItem(){
-        Long itemId = planUseCase.addItem(planUseCase.startPlan("t", "d"), new PlanItem("it", "id"));
+        Long itemId = planUseCase.addItem(planUseCase.startPlan("t", "d").id, new PlanItem("it", "id"));
         assertFalse(itemRepository.findById(itemId).get().dto().checked);
         planUseCase.checkItem(itemId);
         assertTrue(itemRepository.findById(itemId).get().dto().checked);

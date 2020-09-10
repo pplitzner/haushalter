@@ -11,7 +11,7 @@ import java.util.List;
 public interface PlanUseCase {
     List<Plan> showAllPlans();
     Plan getPlanById(Long id) throws PlanNotFoundException;
-    Long startPlan(String title, String description);
+    Plan startPlan(String title, String description);
     void deletePlan(Long id) throws PlanNotFoundException;
     void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException;
     void finishPlan(Long id) throws PlanNotFoundException;
