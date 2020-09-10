@@ -29,9 +29,9 @@ public class PlanRESTController {
         return planUseCase.getPlanById(id);
     }
 
-    @PostMapping("/{id}")
-    public void update(@PathVariable Long id, @RequestBody Plan updatedPlan){
-        planUseCase.updatePlan(id, updatedPlan);
+    @PutMapping("/{id}")
+    public Plan update(@PathVariable Long id, @RequestBody Plan updatedPlan){
+        return planUseCase.updatePlan(id, updatedPlan);
     }
 
     @PostMapping("/{id}/done")

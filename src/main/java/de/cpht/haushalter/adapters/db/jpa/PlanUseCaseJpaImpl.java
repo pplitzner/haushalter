@@ -50,13 +50,13 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public void updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException {
+    public Plan updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException {
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         if(plan.isDone()){
             throw new PlanFinishedException(plan.getId());
         }
         plan.update(updatedPlan);
-        planRepository.save(plan);
+        return planRepository.save(plan).dto();
     }
 
     @Override
