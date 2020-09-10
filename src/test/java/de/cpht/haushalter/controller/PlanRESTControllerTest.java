@@ -33,7 +33,7 @@ public class PlanRESTControllerTest {
     @Test
     public void testPlanIndex() throws Exception {
         Plan plan = new Plan("Test Plan", "Test Description");
-        given(planUseCase.showAllPlans()).willReturn(List.of(plan));
+        when(planUseCase.showAllPlans()).thenReturn(List.of(plan));
         mvc.perform(get("/plans").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
@@ -44,9 +44,9 @@ public class PlanRESTControllerTest {
     }
 
     @Test
-    public void testStartPlan() throws Exception {
+    public void testStore() throws Exception {
         Plan plan = new Plan("Test Plan", "Test Description");
-        when(planUseCase.startPlan(any(String.class), any(String.class))).thenReturn(plan);
+        when(planUseCase.startPlan(any(), any())).thenReturn(plan);
         mvc.perform(post("/plans")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(new Plan("title", "description")))
