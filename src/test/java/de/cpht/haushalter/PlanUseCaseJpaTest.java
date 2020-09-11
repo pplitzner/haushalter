@@ -68,7 +68,7 @@ public class PlanUseCaseJpaTest {
         planUseCase.updatePlan(plan.id, updatedPlan);
         Plan planById = planUseCase.getPlanById(plan.id);
         assertNotNull(planById);
-        assertEquals(plan, planById.id);
+        assertEquals(plan.id, planById.id);
         assertEquals(updatedPlan.title, planById.title);
         assertEquals(updatedPlan.description, planById.description);
     }
@@ -111,8 +111,8 @@ public class PlanUseCaseJpaTest {
         items = planUseCase.getItems(plan.id);
         assertFalse(items.isEmpty());
         PlanItem next = items.iterator().next();
-        assertEquals("item title", next.title);
-        assertEquals("item description", next.description);
+        assertEquals(item.title, next.title);
+        assertEquals(item.description, next.description);
     }
 
     @Test
@@ -125,7 +125,7 @@ public class PlanUseCaseJpaTest {
     public void testDeleteItem(){
         Plan plan = planUseCase.startPlan("t", "d");
         PlanItem item = new PlanItem("it", "id");
-        Long itemId = planUseCase.addItem(plan.id, item);
+        Long itemId = planUseCase.addItem(plan.id, item).id;
         assertFalse(planUseCase.getItems(plan.id).isEmpty());
         planUseCase.deleteItem(itemId);
         assertTrue(planUseCase.getItems(plan.id).isEmpty());
@@ -139,7 +139,7 @@ public class PlanUseCaseJpaTest {
     @Test
     public void testUpdateItem(){
         Plan plan = planUseCase.startPlan("t", "d");
-        Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id"));
+        Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item2 = new PlanItem("item title2", "item description2");
         planUseCase.updateItem(itemId, item2);
         PlanItem updatedItem = itemRepository.findById(itemId).get().dto();
@@ -155,7 +155,7 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testCheckItem(){
-        Long itemId = planUseCase.addItem(planUseCase.startPlan("t", "d").id, new PlanItem("it", "id"));
+        Long itemId = planUseCase.addItem(planUseCase.startPlan("t", "d").id, new PlanItem("it", "id")).id;
         assertFalse(itemRepository.findById(itemId).get().dto().checked);
         planUseCase.checkItem(itemId);
         assertTrue(itemRepository.findById(itemId).get().dto().checked);

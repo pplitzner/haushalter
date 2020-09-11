@@ -20,13 +20,13 @@ public class PlanItemRESTController {
     }
 
     @PostMapping
-    public Long store(@PathVariable Long planId, @RequestBody PlanItem item) {
+    public PlanItem store(@PathVariable Long planId, @RequestBody PlanItem item) {
         return planUseCase.addItem(planId, item);
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable Long id, @RequestBody PlanItem updatedItem){
-        planUseCase.updateItem(id, updatedItem);
+    public PlanItem update(@PathVariable Long id, @RequestBody PlanItem updatedItem){
+        return planUseCase.updateItem(id, updatedItem);
     }
 
     @DeleteMapping("{id}")
