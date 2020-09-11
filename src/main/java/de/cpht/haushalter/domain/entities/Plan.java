@@ -6,9 +6,7 @@ public class Plan {
     public String description;
     public boolean done;
 
-    public Plan(){
-
-    }
+    public Plan(){}
 
     public Plan(String title, String description) {
         this.title = title;
