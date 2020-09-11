@@ -9,11 +9,10 @@ public class PlanItem {
 
     public Long planId;
 
-    public PlanItem(){
-
-    }
+    public PlanItem(){}
 
     public PlanItem(String title, String description) {
-
+        this.title = title;
+        this.description = description;
     }
 }
