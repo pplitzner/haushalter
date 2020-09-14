@@ -221,7 +221,9 @@ public class PlanUseCaseTest {
 
         final List<PlanItem> remainingItems = planUseCase.getItems(remainingItemsPlan.id);
         assertEquals(1, remainingItems.size());
-        remainingItems.stream().forEach(item->assertFalse(item.checked));
+        final PlanItem uncheckedItem = remainingItems.iterator().next();
+        assertFalse(uncheckedItem.checked);
+        assertEquals(unchecked_item, uncheckedItem.title);
 
     }
 
