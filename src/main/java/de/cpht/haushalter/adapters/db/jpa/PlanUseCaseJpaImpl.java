@@ -36,6 +36,11 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
+    public List<Plan> showNonDefaultPlans() {
+        return planRepository.findByIsDefault(false).stream().map(plan->plan.dto()).collect(Collectors.toList());
+    }
+
+    @Override
     public Plan getPlanById(Long id) {
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         return plan.dto();

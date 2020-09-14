@@ -58,6 +58,22 @@ public class PlanUseCaseTest {
     }
 
     @Test
+    public void testShowNonDefaultPlans(){
+        planUseCase.startDefaultPlan("", "");
+        planUseCase.startDefaultPlan("", "");
+        final Plan nonDefaultPlan = planUseCase.startPlan("ND1","NDD1");
+        final Plan nonDefaultPlan2 = planUseCase.startPlan("ND2","NDD2");
+        final List<Plan> nonDefaultPlans = planUseCase.showNonDefaultPlans();
+        assertEquals(2, nonDefaultPlans.size());
+        assertTrue(nonDefaultPlans.stream().noneMatch(plan->plan.title.equals("")));
+        assertTrue(nonDefaultPlans.stream().noneMatch(plan->plan.description.equals("")));
+        assertTrue(nonDefaultPlans.stream().anyMatch(plan->plan.title.equals(nonDefaultPlan.title)));
+        assertTrue(nonDefaultPlans.stream().anyMatch(plan->plan.description.equals(nonDefaultPlan.description)));
+        assertTrue(nonDefaultPlans.stream().anyMatch(plan->plan.title.equals(nonDefaultPlan2.title)));
+        assertTrue(nonDefaultPlans.stream().anyMatch(plan->plan.description.equals(nonDefaultPlan2.description)));
+    }
+
+    @Test
     public void testDeletePlan(){
         Plan plan = planUseCase.startPlan("Test Title", "Test description");
         assertEquals(1, planUseCase.showAllPlans().size());

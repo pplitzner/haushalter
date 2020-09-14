@@ -12,6 +12,7 @@ import java.util.List;
 public interface PlanUseCase {
     List<Plan> showAllPlans();
     List<Plan> showDefaultPlans();
+    List<Plan> showNonDefaultPlans();
     Plan getPlanById(Long id) throws PlanNotFoundException;
     Plan startPlan(String title, String description);
     Plan startDefaultPlan(String title, String description);
