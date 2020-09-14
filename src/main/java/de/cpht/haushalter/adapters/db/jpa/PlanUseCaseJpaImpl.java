@@ -1,7 +1,7 @@
 package de.cpht.haushalter.adapters.db.jpa;
 
-import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlanItem;
 import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlan;
+import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlanItem;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
 import de.cpht.haushalter.domain.entities.Plan;
@@ -47,14 +47,6 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         JpaPlan plan = createJpaPlan(title, description);
         return planRepository.save(plan).dto();
     }
-
-    private JpaPlan createJpaPlan(String title, String description) {
-        JpaPlan plan = new JpaPlan();
-        plan.setTitle(title);
-        plan.setDescription(description);
-        return plan;
-    }
-
 
     @Override
     public void deletePlan(Long id) {
@@ -120,5 +112,19 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         jpaItem.setChecked(false);
         itemRepository.save(jpaItem);
+    }
+
+    @Override
+    public Plan makePlanFromDefault(Plan defaultPlan) {
+        JpaPlan jpaPlan = planRepository.save(createJpaPlan(defaultPlan.title, defaultPlan.description));
+        getItems(defaultPlan.id).stream().forEach(item->addItem(jpaPlan.getId(), item));
+        return planRepository.save(jpaPlan).dto();
+    }
+
+    private JpaPlan createJpaPlan(String title, String description) {
+        JpaPlan plan = new JpaPlan();
+        plan.setTitle(title);
+        plan.setDescription(description);
+        return plan;
     }
 }

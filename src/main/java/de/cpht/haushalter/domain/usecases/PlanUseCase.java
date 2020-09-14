@@ -25,4 +25,5 @@ public interface PlanUseCase {
     void uncheckItem(Long id) throws  PlanItemNotFoundException;
 
 
+    Plan makePlanFromDefault(Plan defaultPlan);
 }

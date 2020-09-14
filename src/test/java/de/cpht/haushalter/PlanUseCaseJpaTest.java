@@ -36,6 +36,14 @@ public class PlanUseCaseJpaTest {
     }
 
     @Test
+    public void testStartDefaultPlan(){
+        Plan plan = planUseCase.startDefaultPlan("t", "d");
+        Plan planById = planUseCase.getPlanById(plan.id);
+        assertFalse(planById.done);
+        assertTrue(planById.isDefault);
+    }
+
+    @Test
     public void testDeletePlan(){
         Plan plan = planUseCase.startPlan("Test Title", "Test description");
         assertEquals(1, planUseCase.showAllPlans().size());
@@ -170,6 +178,21 @@ public class PlanUseCaseJpaTest {
     public void testCheckItemPlanItemNotFoundException() {
         assertThrows(PlanItemNotFoundException.class, ()->planUseCase.checkItem(1L));
         assertThrows(PlanItemNotFoundException.class, ()->planUseCase.uncheckItem(1L));
+    }
+
+    @Test
+    public void testMakePlanFromDefault(){
+        Plan defaultPlan = planUseCase.startDefaultPlan("Default", "plan");
+        planUseCase.addItem(defaultPlan.id, new PlanItem("Item1", "Description1"));
+        planUseCase.addItem(defaultPlan.id, new PlanItem("Item2", "Description2"));
+        Plan plan = planUseCase.makePlanFromDefault(defaultPlan);
+        assertEquals(defaultPlan.title, plan.title);
+        assertEquals(defaultPlan.description, plan.description);
+        assertNotEquals(defaultPlan.id, plan.id);
+        assertFalse(plan.isDefault);
+
+        assertEquals(planUseCase.getItems(defaultPlan.id).iterator().next(), planUseCase.getItems(plan.id).iterator().next());
+
     }
 
 }
