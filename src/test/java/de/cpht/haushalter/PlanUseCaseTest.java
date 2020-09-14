@@ -42,6 +42,22 @@ public class PlanUseCaseTest {
     }
 
     @Test
+    public void testShowDefaultPlans(){
+        final Plan defaultPlan = planUseCase.startDefaultPlan("D1", "DD1");
+        final Plan defaultPlan2 = planUseCase.startDefaultPlan("D2", "DD2");
+        planUseCase.startPlan("","");
+        planUseCase.startPlan("","");
+        final List<Plan> defaultPlans = planUseCase.showDefaultPlans();
+        assertEquals(2, defaultPlans.size());
+        assertTrue(defaultPlans.stream().noneMatch(plan->plan.title.equals("")));
+        assertTrue(defaultPlans.stream().noneMatch(plan->plan.description.equals("")));
+        assertTrue(defaultPlans.stream().anyMatch(plan->plan.title.equals(defaultPlan.title)));
+        assertTrue(defaultPlans.stream().anyMatch(plan->plan.description.equals(defaultPlan.description)));
+        assertTrue(defaultPlans.stream().anyMatch(plan->plan.title.equals(defaultPlan2.title)));
+        assertTrue(defaultPlans.stream().anyMatch(plan->plan.description.equals(defaultPlan2.description)));
+    }
+
+    @Test
     public void testDeletePlan(){
         Plan plan = planUseCase.startPlan("Test Title", "Test description");
         assertEquals(1, planUseCase.showAllPlans().size());
@@ -224,9 +240,7 @@ public class PlanUseCaseTest {
         final PlanItem uncheckedItem = remainingItems.iterator().next();
         assertFalse(uncheckedItem.checked);
         assertEquals(unchecked_item, uncheckedItem.title);
-
     }
-
 
     @Test
     public void testStartPlanForRemainingItemsPlanNotFoundException(){
