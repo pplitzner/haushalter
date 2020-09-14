@@ -28,8 +28,11 @@ public class PlanUseCaseJpaTest {
     @Test
     public void testStartPlanShowAllPlans(){
         assertTrue(planUseCase.showAllPlans().isEmpty());
-        planUseCase.startPlan("Test Title", "Test description");
-        assertEquals(1, planUseCase.showAllPlans().size());
+        Plan plan = planUseCase.startPlan("Test Title", "Test description");
+        List<Plan> plans = planUseCase.showAllPlans();
+        assertEquals(1, plans.size());
+        assertFalse(plan.done);
+        assertFalse(plan.isDefault);
     }
 
     @Test
@@ -98,13 +101,6 @@ public class PlanUseCaseJpaTest {
     @Test
     public void testFinishPlanNotFoundException() {
         assertThrows(PlanNotFoundException.class, ()->planUseCase.finishPlan(1L));
-    }
-
-    @Test
-    public void testStartDefaultPlan(){
-        Plan plan = planUseCase.startDefaultPlan("t", "d");
-        Plan planById = planUseCase.getPlanById(plan.id);
-        assertTrue(planById.isDefault);
     }
 
     @Test
