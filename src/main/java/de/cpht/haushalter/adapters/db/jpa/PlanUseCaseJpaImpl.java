@@ -14,6 +14,7 @@ import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -123,6 +124,14 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         jpaItem.setChecked(false);
         itemRepository.save(jpaItem);
+    }
+
+    @Override
+    public PlanItem setTimeInterval(Long id, Date startDate, long interval) throws PlanItemNotFoundException {
+        JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
+        jpaItem.setStartDate(startDate);
+        jpaItem.setTimeInterval(interval);
+        return itemRepository.save(jpaItem).dto();
     }
 
     @Override

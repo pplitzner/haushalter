@@ -1,5 +1,6 @@
 package de.cpht.haushalter.domain.entities;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class PlanItem {
@@ -10,6 +11,9 @@ public class PlanItem {
     public boolean checked;
 
     public Long planId;
+
+    public Long timeInterval;
+    public Date startDate;
 
     public PlanItem(){}
 

@@ -3,6 +3,7 @@ package de.cpht.haushalter.adapters.db.jpa.entity;
 import de.cpht.haushalter.domain.entities.PlanItem;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "plan_item")
@@ -14,6 +15,9 @@ public class JpaPlanItem {
     private String description;
 
     private boolean checked;
+
+    private Date startDate;
+    private Long timeInterval; // variable can not be called "interval" -> SQL exception
 
     @ManyToOne
     private JpaPlan plan;
@@ -58,6 +62,22 @@ public class JpaPlanItem {
         this.checked = checked;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Long getTimeInterval() {
+        return timeInterval;
+    }
+
+    public void setTimeInterval(Long timeInterval) {
+        this.timeInterval = timeInterval;
+    }
+
     public PlanItem dto(){
         PlanItem item = new PlanItem();
         item.id = this.id;
@@ -65,6 +85,8 @@ public class JpaPlanItem {
         item.description = this.description;
         item.planId = this.plan.getId();
         item.checked = this.checked;
+        item.startDate = this.startDate;
+        item.timeInterval = this.timeInterval;
         return item;
     }
 

@@ -4,9 +4,10 @@ import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.exception.PlanFinishedException;
 import de.cpht.haushalter.exception.PlanItemNotFoundException;
-import de.cpht.haushalter.exception.PlanNotFoundException;
 import de.cpht.haushalter.exception.PlanNotDefaultException;
+import de.cpht.haushalter.exception.PlanNotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PlanUseCase {
@@ -19,6 +20,8 @@ public interface PlanUseCase {
     void deletePlan(Long id) throws PlanNotFoundException;
     Plan updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException;
     void finishPlan(Long id) throws PlanNotFoundException;
+    Plan makePlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
+    Plan startPlanForRemainingItems(Long id, String title, String description) throws PlanNotDefaultException;
 
     List<PlanItem> getItems(Long planId) throws PlanNotFoundException;
     PlanItem addItem(Long planId, PlanItem item) throws PlanNotFoundException;
@@ -26,9 +29,5 @@ public interface PlanUseCase {
     void deleteItem(Long id) throws PlanItemNotFoundException;
     void checkItem(Long id) throws  PlanItemNotFoundException;
     void uncheckItem(Long id) throws  PlanItemNotFoundException;
-
-
-    Plan makePlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
-
-    Plan startPlanForRemainingItems(Long id, String title, String description) throws PlanNotDefaultException;
+    PlanItem setTimeInterval(Long id, Date startDate, long interval) throws PlanItemNotFoundException;
 }
