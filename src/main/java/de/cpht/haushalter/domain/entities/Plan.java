@@ -5,6 +5,7 @@ public class Plan {
     public String title;
     public String description;
     public boolean done;
+    public boolean isDefault;
 
     public Plan(){}
 
@@ -12,4 +13,5 @@ public class Plan {
         this.title = title;
         this.description = description;
     }
+
 }

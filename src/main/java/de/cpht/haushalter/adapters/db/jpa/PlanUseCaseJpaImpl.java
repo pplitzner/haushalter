@@ -36,12 +36,25 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
+    public Plan startDefaultPlan(String title, String description) {
+        JpaPlan plan = createJpaPlan(title, description);
+        plan.setDefault(true);
+        return planRepository.save(plan).dto();
+    }
+
+    @Override
     public Plan startPlan(String title, String description) {
+        JpaPlan plan = createJpaPlan(title, description);
+        return planRepository.save(plan).dto();
+    }
+
+    private JpaPlan createJpaPlan(String title, String description) {
         JpaPlan plan = new JpaPlan();
         plan.setTitle(title);
         plan.setDescription(description);
-        return planRepository.save(plan).dto();
+        return plan;
     }
+
 
     @Override
     public void deletePlan(Long id) {

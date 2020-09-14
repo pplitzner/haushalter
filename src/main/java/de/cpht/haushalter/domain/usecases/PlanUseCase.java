@@ -12,6 +12,7 @@ public interface PlanUseCase {
     List<Plan> showAllPlans();
     Plan getPlanById(Long id) throws PlanNotFoundException;
     Plan startPlan(String title, String description);
+    Plan startDefaultPlan(String title, String description);
     void deletePlan(Long id) throws PlanNotFoundException;
     Plan updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException;
     void finishPlan(Long id) throws PlanNotFoundException;

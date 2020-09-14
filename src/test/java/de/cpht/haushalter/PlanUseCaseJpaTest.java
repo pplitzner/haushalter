@@ -101,6 +101,13 @@ public class PlanUseCaseJpaTest {
     }
 
     @Test
+    public void testStartDefaultPlan(){
+        Plan plan = planUseCase.startDefaultPlan("t", "d");
+        Plan planById = planUseCase.getPlanById(plan.id);
+        assertTrue(planById.isDefault);
+    }
+
+    @Test
     public void testGetItemsAddItem(){
         Plan plan = planUseCase.startPlan("t", "d");
         List<PlanItem> items = planUseCase.getItems(plan.id);
