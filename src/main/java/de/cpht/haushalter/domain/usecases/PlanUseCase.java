@@ -27,4 +27,6 @@ public interface PlanUseCase {
 
 
     Plan makePlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
+
+    Plan startPlanForRemainingItems(Long id, String title, String description) throws PlanNotDefaultException;
 }

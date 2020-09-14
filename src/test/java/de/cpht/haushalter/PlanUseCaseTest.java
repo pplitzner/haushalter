@@ -194,9 +194,7 @@ public class PlanUseCaseTest {
         assertFalse(plan.isDefault);
 
         assertEquals(planUseCase.getItems(defaultPlan.id).iterator().next(), planUseCase.getItems(plan.id).iterator().next());
-
     }
-
 
     @Test
     public void testMakePlanFromDefaultPlanNotDefaultException(){
@@ -204,4 +202,32 @@ public class PlanUseCaseTest {
         assertThrows(PlanNotDefaultException.class, ()->planUseCase.makePlanFromDefault(plan.id));
     }
 
+    @Test
+    public void testStartPlanForRemainingItems(){
+        Plan plan = planUseCase.startPlan("", "");
+        planUseCase.addItem(plan.id, new PlanItem("I1", "D1"));
+        planUseCase.addItem(plan.id, new PlanItem("I2", "D2"));
+        final String unchecked_item = "Unchecked Item";
+        planUseCase.addItem(plan.id, new PlanItem(unchecked_item, "should be copied"));
+        planUseCase.getItems(plan.id).stream()
+                .filter(item->!item.title.equals(unchecked_item))
+                .forEach(item->planUseCase.checkItem(item.id));
+        Plan remainingItemsPlan = planUseCase.startPlanForRemainingItems(plan.id, "RemainTitle", "Remain Description");
+        plan = planUseCase.getPlanById(plan.id);
+        assertTrue(plan.done);
+        assertFalse(remainingItemsPlan.done);
+        assertEquals(remainingItemsPlan.title, "RemainTitle");
+        assertEquals(remainingItemsPlan.description, "Remain Description");
+
+        final List<PlanItem> remainingItems = planUseCase.getItems(remainingItemsPlan.id);
+        assertEquals(1, remainingItems.size());
+        remainingItems.stream().forEach(item->assertFalse(item.checked));
+
+    }
+
+
+    @Test
+    public void testStartPlanForRemainingItemsPlanNotFoundException(){
+        assertThrows(PlanNotFoundException.class, ()->planUseCase.startPlanForRemainingItems(1L, "", ""));
+    }
 }

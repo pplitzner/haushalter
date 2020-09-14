@@ -126,6 +126,18 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         return planRepository.save(jpaPlan).dto();
     }
 
+    @Override
+    public Plan startPlanForRemainingItems(Long id, String title, String description) throws PlanNotFoundException {
+        JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
+        plan.setDone(true);
+        planRepository.save(plan);
+        JpaPlan remainingItemsPlan = planRepository.save(createJpaPlan(title, description));
+        getItems(plan.getId()).stream()
+                .filter(item->!item.checked)
+                .forEach(uncheckedItem->addItem(remainingItemsPlan.getId(), uncheckedItem));
+        return  planRepository.save(remainingItemsPlan).dto();
+    }
+
     private JpaPlan createJpaPlan(String title, String description) {
         JpaPlan plan = new JpaPlan();
         plan.setTitle(title);
