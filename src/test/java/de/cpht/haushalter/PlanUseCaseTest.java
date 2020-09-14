@@ -1,6 +1,5 @@
 package de.cpht.haushalter;
 
-import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
@@ -18,12 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-public class PlanUseCaseJpaTest {
+public class PlanUseCaseTest {
 
     @Autowired
     private PlanUseCase planUseCase;
-    @Autowired
-    PlanItemRepository itemRepository;
 
     @Test
     public void testStartPlanShowAllPlans(){
@@ -153,7 +150,7 @@ public class PlanUseCaseJpaTest {
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item2 = new PlanItem("item title2", "item description2");
         planUseCase.updateItem(itemId, item2);
-        PlanItem updatedItem = itemRepository.findById(itemId).get().dto();
+        PlanItem updatedItem = planUseCase.getItems(plan.id).iterator().next();
         assertEquals(itemId, updatedItem.id);
         assertEquals(item2.title, updatedItem.title);
         assertEquals(item2.description, updatedItem.description);
@@ -166,12 +163,16 @@ public class PlanUseCaseJpaTest {
 
     @Test
     public void testCheckItem(){
-        Long itemId = planUseCase.addItem(planUseCase.startPlan("t", "d").id, new PlanItem("it", "id")).id;
-        assertFalse(itemRepository.findById(itemId).get().dto().checked);
+        Plan plan = planUseCase.startPlan("t", "d");
+        Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
+        PlanItem item = planUseCase.getItems(plan.id).iterator().next();
+        assertFalse(item.checked);
         planUseCase.checkItem(itemId);
-        assertTrue(itemRepository.findById(itemId).get().dto().checked);
+        item = planUseCase.getItems(plan.id).iterator().next();
+        assertTrue(item.checked);
         planUseCase.uncheckItem(itemId);
-        assertFalse(itemRepository.findById(itemId).get().dto().checked);
+        item = planUseCase.getItems(plan.id).iterator().next();
+        assertFalse(item.checked);
     }
 
     @Test
