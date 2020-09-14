@@ -5,6 +5,7 @@ import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.exception.PlanFinishedException;
 import de.cpht.haushalter.exception.PlanItemNotFoundException;
 import de.cpht.haushalter.exception.PlanNotFoundException;
+import de.cpht.haushalter.exception.PlanNotDefaultException;
 
 import java.util.List;
 
@@ -25,5 +26,5 @@ public interface PlanUseCase {
     void uncheckItem(Long id) throws  PlanItemNotFoundException;
 
 
-    Plan makePlanFromDefault(Plan defaultPlan);
+    Plan makePlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
 }

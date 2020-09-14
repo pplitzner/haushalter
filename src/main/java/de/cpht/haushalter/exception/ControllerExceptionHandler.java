@@ -22,4 +22,11 @@ public class ControllerExceptionHandler {
     String itemNotFoundHandler(PlanItemNotFoundException ex) {
         return ex.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(PlanNotDefaultException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    String planNotDefaultHandler(PlanNotDefaultException ex) {
+        return ex.getMessage();
+    }
 }

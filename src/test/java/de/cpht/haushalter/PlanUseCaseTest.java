@@ -5,6 +5,7 @@ import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.exception.PlanFinishedException;
 import de.cpht.haushalter.exception.PlanItemNotFoundException;
+import de.cpht.haushalter.exception.PlanNotDefaultException;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -186,7 +187,7 @@ public class PlanUseCaseTest {
         Plan defaultPlan = planUseCase.startDefaultPlan("Default", "plan");
         planUseCase.addItem(defaultPlan.id, new PlanItem("Item1", "Description1"));
         planUseCase.addItem(defaultPlan.id, new PlanItem("Item2", "Description2"));
-        Plan plan = planUseCase.makePlanFromDefault(defaultPlan);
+        Plan plan = planUseCase.makePlanFromDefault(defaultPlan.id);
         assertEquals(defaultPlan.title, plan.title);
         assertEquals(defaultPlan.description, plan.description);
         assertNotEquals(defaultPlan.id, plan.id);
@@ -194,6 +195,13 @@ public class PlanUseCaseTest {
 
         assertEquals(planUseCase.getItems(defaultPlan.id).iterator().next(), planUseCase.getItems(plan.id).iterator().next());
 
+    }
+
+
+    @Test
+    public void testMakePlanFromDefaultPlanNotDefaultException(){
+        Plan plan = planUseCase.startPlan("", "");
+        assertThrows(PlanNotDefaultException.class, ()->planUseCase.makePlanFromDefault(plan.id));
     }
 
 }

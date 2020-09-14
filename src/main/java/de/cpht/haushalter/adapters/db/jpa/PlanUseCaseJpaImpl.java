@@ -9,6 +9,7 @@ import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.exception.PlanFinishedException;
 import de.cpht.haushalter.exception.PlanItemNotFoundException;
+import de.cpht.haushalter.exception.PlanNotDefaultException;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -115,9 +116,13 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public Plan makePlanFromDefault(Plan defaultPlan) {
-        JpaPlan jpaPlan = planRepository.save(createJpaPlan(defaultPlan.title, defaultPlan.description));
-        getItems(defaultPlan.id).stream().forEach(item->addItem(jpaPlan.getId(), item));
+    public Plan makePlanFromDefault(Long defaultPlanId) throws PlanNotFoundException, PlanNotDefaultException {
+        JpaPlan defaultPlan = planRepository.findById(defaultPlanId).orElseThrow(() -> new PlanNotFoundException(defaultPlanId));
+        if(!defaultPlan.isDefault()){
+            throw new PlanNotDefaultException(defaultPlanId);
+        }
+        JpaPlan jpaPlan = planRepository.save(createJpaPlan(defaultPlan.getTitle(), defaultPlan.getDescription()));
+        getItems(defaultPlan.getId()).stream().forEach(item->addItem(jpaPlan.getId(), item));
         return planRepository.save(jpaPlan).dto();
     }
 
