@@ -62,13 +62,4 @@ public class JpaPlan {
         this.description = updatedPlan.description;
     }
 
-    public Plan dto(){
-        Plan dto = new Plan();
-        dto.id = this.id;
-        dto.title = this.title;
-        dto.description = this.description;
-        dto.done = this.done;
-        dto.isDefault = this.isDefault;
-        return dto;
-    }
 }

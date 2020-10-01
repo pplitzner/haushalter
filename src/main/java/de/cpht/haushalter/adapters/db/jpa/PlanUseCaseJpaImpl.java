@@ -28,36 +28,36 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<Plan> showAllPlans() {
-        return planRepository.findAll().stream().map(plan -> plan.dto()).collect(Collectors.toList());
+        return planRepository.findAll().stream().map(plan -> DtoMapper.dtoFrom(plan)).collect(Collectors.toList());
     }
 
     @Override
     public List<Plan> showDefaultPlans() {
-        return planRepository.findByIsDefault(true).stream().map(plan->plan.dto()).collect(Collectors.toList());
+        return planRepository.findByIsDefault(true).stream().map(plan-> DtoMapper.dtoFrom(plan)).collect(Collectors.toList());
     }
 
     @Override
     public List<Plan> showNonDefaultPlans() {
-        return planRepository.findByIsDefault(false).stream().map(plan->plan.dto()).collect(Collectors.toList());
+        return planRepository.findByIsDefault(false).stream().map(plan-> DtoMapper.dtoFrom(plan)).collect(Collectors.toList());
     }
 
     @Override
     public Plan getPlanById(Long id) {
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
-        return plan.dto();
+        return DtoMapper.dtoFrom(plan);
     }
 
     @Override
     public Plan startDefaultPlan(String title, String description) {
         JpaPlan plan = createJpaPlan(title, description);
         plan.setDefault(true);
-        return planRepository.save(plan).dto();
+        return DtoMapper.dtoFrom(planRepository.save(plan));
     }
 
     @Override
     public Plan startPlan(String title, String description) {
         JpaPlan plan = createJpaPlan(title, description);
-        return planRepository.save(plan).dto();
+        return DtoMapper.dtoFrom(planRepository.save(plan));
     }
 
     @Override
@@ -73,7 +73,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
             throw new PlanFinishedException(plan.getId());
         }
         plan.update(updatedPlan);
-        return planRepository.save(plan).dto();
+        return DtoMapper.dtoFrom(planRepository.save(plan));
     }
 
     @Override
@@ -86,24 +86,22 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     @Override
     public List<PlanItem> getItems(Long id) throws PlanNotFoundException{
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
-        return itemRepository.findByPlan(plan).stream().map(item->item.dto()).collect(Collectors.toList());
+        return itemRepository.findByPlan(plan).stream().map(item-> DtoMapper.dtoFrom(item)).collect(Collectors.toList());
     }
 
     @Override
     public PlanItem addItem(Long id, PlanItem item) throws PlanNotFoundException{
+        JpaPlanItem jpaItem = DtoMapper.jpaItemFrom(item);
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
-        JpaPlanItem jpaItem = new JpaPlanItem();
-        jpaItem.setTitle(item.title);
-        jpaItem.setDescription(item.description);
         jpaItem.setPlan(plan);
-        return itemRepository.save(jpaItem).dto();
+        return DtoMapper.dtoFrom(itemRepository.save(jpaItem));
     }
 
     @Override
     public PlanItem updateItem(Long id, PlanItem item) throws PlanNotFoundException {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         jpaItem.update(item);
-        return itemRepository.save(jpaItem).dto();
+        return DtoMapper.dtoFrom(itemRepository.save(jpaItem));
     }
 
     @Override
@@ -131,7 +129,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         jpaItem.setStartDate(startDate);
         jpaItem.setTimeInterval(interval);
-        return itemRepository.save(jpaItem).dto();
+        return DtoMapper.dtoFrom(itemRepository.save(jpaItem));
     }
 
     @Override
@@ -142,7 +140,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         }
         JpaPlan jpaPlan = planRepository.save(createJpaPlan(defaultPlan.getTitle(), defaultPlan.getDescription()));
         getItems(defaultPlan.getId()).stream().forEach(item->addItem(jpaPlan.getId(), item));
-        return planRepository.save(jpaPlan).dto();
+        return DtoMapper.dtoFrom(planRepository.save(jpaPlan));
     }
 
     @Override
@@ -154,7 +152,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         getItems(plan.getId()).stream()
                 .filter(item->!item.checked)
                 .forEach(uncheckedItem->addItem(remainingItemsPlan.getId(), uncheckedItem));
-        return  planRepository.save(remainingItemsPlan).dto();
+        return DtoMapper.dtoFrom(planRepository.save(remainingItemsPlan));
     }
 
     private JpaPlan createJpaPlan(String title, String description) {

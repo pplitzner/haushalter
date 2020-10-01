@@ -78,18 +78,6 @@ public class JpaPlanItem {
         this.timeInterval = timeInterval;
     }
 
-    public PlanItem dto(){
-        PlanItem item = new PlanItem();
-        item.id = this.id;
-        item.title = this.title;
-        item.description = this.description;
-        item.planId = this.plan.getId();
-        item.checked = this.checked;
-        item.startDate = this.startDate;
-        item.timeInterval = this.timeInterval;
-        return item;
-    }
-
     public void update(PlanItem item) {
         this.title = item.title;
         this.description = item.description;
