@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -272,7 +272,7 @@ public class PlanUseCaseTest {
         final PlanItem item = planUseCase.getItems(plan.id).iterator().next();
         assertNull(item.startDate);
         assertNull(item.timeInterval);
-        final Date testDate = new Date();
+        final LocalDate testDate = LocalDate.now();
         final long interval = TimeUnit.DAYS.toMillis(14);
         planUseCase.setTimeInterval(item.id, testDate, interval);
         PlanItem itemWithInterval = planUseCase.getItems(plan.id).iterator().next();

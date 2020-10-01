@@ -7,7 +7,7 @@ import de.cpht.haushalter.exception.PlanItemNotFoundException;
 import de.cpht.haushalter.exception.PlanNotDefaultException;
 import de.cpht.haushalter.exception.PlanNotFoundException;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PlanUseCase {
@@ -29,5 +29,5 @@ public interface PlanUseCase {
     void deleteItem(Long id) throws PlanItemNotFoundException;
     void checkItem(Long id) throws  PlanItemNotFoundException;
     void uncheckItem(Long id) throws  PlanItemNotFoundException;
-    PlanItem setTimeInterval(Long id, Date startDate, long interval) throws PlanItemNotFoundException;
+    PlanItem setTimeInterval(Long id, LocalDate startDate, long interval) throws PlanItemNotFoundException;
 }
