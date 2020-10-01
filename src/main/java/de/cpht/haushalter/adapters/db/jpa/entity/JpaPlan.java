@@ -60,6 +60,8 @@ public class JpaPlan {
     public void update(Plan updatedPlan) {
         this.title = updatedPlan.title;
         this.description = updatedPlan.description;
+        this.done = updatedPlan.done;
+        this.isDefault = updatedPlan.isDefault;
     }
 
 }

@@ -108,12 +108,17 @@ public class PlanUseCaseTest {
         Plan updatedPlan = new Plan();
         updatedPlan.title = "Test Title2";
         updatedPlan.description = "Test description2";
+        updatedPlan.done = true;
+        updatedPlan.isDefault = true;
+
         planUseCase.updatePlan(plan.id, updatedPlan);
         Plan planById = planUseCase.getPlanById(plan.id);
         assertNotNull(planById);
         assertEquals(plan.id, planById.id);
         assertEquals(updatedPlan.title, planById.title);
         assertEquals(updatedPlan.description, planById.description);
+        assertEquals(updatedPlan.done, planById.done);
+        assertEquals(updatedPlan.isDefault, planById.isDefault);
     }
 
     @Test
@@ -184,11 +189,17 @@ public class PlanUseCaseTest {
         Plan plan = planUseCase.startPlan("t", "d");
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item2 = new PlanItem("item title2", "item description2");
+        item2.startDate = LocalDate.now();
+        item2.timeInterval = TimeUnit.DAYS.toMillis(14);
+
         planUseCase.updateItem(itemId, item2);
+
         PlanItem updatedItem = planUseCase.getItems(plan.id).iterator().next();
         assertEquals(itemId, updatedItem.id);
         assertEquals(item2.title, updatedItem.title);
         assertEquals(item2.description, updatedItem.description);
+        assertEquals(item2.startDate, updatedItem.startDate);
+        assertEquals(item2.timeInterval, updatedItem.timeInterval);
     }
 
     @Test

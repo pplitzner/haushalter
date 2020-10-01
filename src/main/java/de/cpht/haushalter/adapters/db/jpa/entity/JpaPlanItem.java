@@ -81,5 +81,7 @@ public class JpaPlanItem {
     public void update(PlanItem item) {
         this.title = item.title;
         this.description = item.description;
+        this.startDate = item.startDate;
+        this.timeInterval = item.timeInterval;
     }
 }
