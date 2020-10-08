@@ -20,7 +20,7 @@ public interface PlanUseCase {
     Plan startDefaultPlan(String title, String description);
     void deletePlan(Long id) throws PlanNotFoundException;
     Plan updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException;
-    void finishPlan(Long id) throws PlanNotFoundException;
+    void toggleDone(Long id) throws PlanNotFoundException;
     Plan makePlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
     Plan startPlanForRemainingItems(Long id, String title, String description) throws PlanNotDefaultException;
 
@@ -28,7 +28,6 @@ public interface PlanUseCase {
     PlanItem addItem(Long planId, PlanItem item) throws PlanNotFoundException;
     PlanItem updateItem(Long id, PlanItem item) throws PlanItemNotFoundException;
     void deleteItem(Long id) throws PlanItemNotFoundException;
-    void checkItem(Long id) throws  PlanItemNotFoundException;
-    void uncheckItem(Long id) throws  PlanItemNotFoundException;
+    void toggleCheck(Long id) throws  PlanItemNotFoundException;
     PlanItem setTimeInterval(Long id, LocalDate startDate, Period interval) throws PlanItemNotFoundException;
 }

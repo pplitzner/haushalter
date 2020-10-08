@@ -24,7 +24,7 @@ public class PlanItemRESTController {
         return planUseCase.addItem(planId, item);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public PlanItem update(@PathVariable Long id, @RequestBody PlanItem updatedItem){
         return planUseCase.updateItem(id, updatedItem);
     }
@@ -32,5 +32,10 @@ public class PlanItemRESTController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id){
         planUseCase.deleteItem(id);
+    }
+
+    @PostMapping("{id}/toggleCheck")
+    public void checkItem(@PathVariable Long id){
+        planUseCase.toggleCheck(id);
     }
 }

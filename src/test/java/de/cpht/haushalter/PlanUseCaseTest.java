@@ -130,7 +130,7 @@ public class PlanUseCaseTest {
     @Test
     public void testUpdatePlanFinishedException() {
         Plan plan = planUseCase.startPlan("t", "d");
-        planUseCase.finishPlan(plan.id);
+        planUseCase.toggleDone(plan.id);
         assertThrows(PlanFinishedException.class, ()->planUseCase.updatePlan(plan.id, new Plan()));
     }
 
@@ -139,14 +139,14 @@ public class PlanUseCaseTest {
         Plan plan = planUseCase.startPlan("t", "d");
         Plan planById = planUseCase.getPlanById(plan.id);
         assertFalse(planById.done);
-        planUseCase.finishPlan(plan.id);
+        planUseCase.toggleDone(plan.id);
         planById = planUseCase.getPlanById(plan.id);
         assertTrue(planById.done);
     }
 
     @Test
     public void testFinishPlanNotFoundException() {
-        assertThrows(PlanNotFoundException.class, ()->planUseCase.finishPlan(1L));
+        assertThrows(PlanNotFoundException.class, ()->planUseCase.toggleDone(1L));
     }
 
     @Test
@@ -216,18 +216,18 @@ public class PlanUseCaseTest {
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item = planUseCase.getItems(plan.id).iterator().next();
         assertFalse(item.checked);
-        planUseCase.checkItem(itemId);
+        planUseCase.toggleCheck(itemId);
         item = planUseCase.getItems(plan.id).iterator().next();
         assertTrue(item.checked);
-        planUseCase.uncheckItem(itemId);
+        planUseCase.toggleCheck(itemId);
         item = planUseCase.getItems(plan.id).iterator().next();
         assertFalse(item.checked);
     }
 
     @Test
     public void testCheckItemPlanItemNotFoundException() {
-        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.checkItem(1L));
-        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.uncheckItem(1L));
+        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.toggleCheck(1L));
+        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.toggleCheck(1L));
     }
 
     @Test
@@ -259,7 +259,7 @@ public class PlanUseCaseTest {
         planUseCase.addItem(plan.id, new PlanItem(unchecked_item, "should be copied"));
         planUseCase.getItems(plan.id).stream()
                 .filter(item->!item.title.equals(unchecked_item))
-                .forEach(item->planUseCase.checkItem(item.id));
+                .forEach(item->planUseCase.toggleCheck(item.id));
         Plan remainingItemsPlan = planUseCase.startPlanForRemainingItems(plan.id, "RemainTitle", "Remain Description");
         plan = planUseCase.getPlanById(plan.id);
         assertTrue(plan.done);

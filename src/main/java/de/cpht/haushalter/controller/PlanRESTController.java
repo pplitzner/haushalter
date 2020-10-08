@@ -34,9 +34,9 @@ public class PlanRESTController {
         return planUseCase.updatePlan(id, updatedPlan);
     }
 
-    @PostMapping("/{id}/done")
+    @PostMapping("/{id}/toggleDone")
     public void finishPlan(@PathVariable Long id){
-        planUseCase.finishPlan(id);
+        planUseCase.toggleDone(id);
     }
 
     @DeleteMapping("{id}")
