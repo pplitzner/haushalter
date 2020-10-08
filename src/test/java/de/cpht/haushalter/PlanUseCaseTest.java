@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -188,18 +189,20 @@ public class PlanUseCaseTest {
     public void testUpdateItem(){
         Plan plan = planUseCase.startPlan("t", "d");
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
-        PlanItem item2 = new PlanItem("item title2", "item description2");
-        item2.startDate = LocalDate.now();
-        item2.timeInterval = Period.ofDays(14);
+        PlanItem item = new PlanItem("item title2", "item description2");
+        item.startDate = LocalDate.now();
+        item.timeInterval = Period.ofDays(14);
+        item.duration = Duration.ofMinutes(10);
 
-        planUseCase.updateItem(itemId, item2);
+        planUseCase.updateItem(itemId, item);
 
         PlanItem updatedItem = planUseCase.getItems(plan.id).iterator().next();
         assertEquals(itemId, updatedItem.id);
-        assertEquals(item2.title, updatedItem.title);
-        assertEquals(item2.description, updatedItem.description);
-        assertEquals(item2.startDate, updatedItem.startDate);
-        assertEquals(item2.timeInterval, updatedItem.timeInterval);
+        assertEquals(item.title, updatedItem.title);
+        assertEquals(item.description, updatedItem.description);
+        assertEquals(item.startDate, updatedItem.startDate);
+        assertEquals(item.timeInterval, updatedItem.timeInterval);
+        assertEquals(item.duration, updatedItem.duration);
     }
 
     @Test
