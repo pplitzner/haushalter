@@ -1,6 +1,20 @@
 spring:
   application:
     name: Haushalter
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+---
+
+spring:
+  profiles: dev
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 ---
 

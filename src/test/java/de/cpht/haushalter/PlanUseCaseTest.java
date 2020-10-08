@@ -13,8 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -190,7 +190,7 @@ public class PlanUseCaseTest {
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item2 = new PlanItem("item title2", "item description2");
         item2.startDate = LocalDate.now();
-        item2.timeInterval = TimeUnit.DAYS.toMillis(14);
+        item2.timeInterval = Period.ofDays(14);
 
         planUseCase.updateItem(itemId, item2);
 
@@ -284,7 +284,7 @@ public class PlanUseCaseTest {
         assertNull(item.startDate);
         assertNull(item.timeInterval);
         final LocalDate testDate = LocalDate.now();
-        final long interval = TimeUnit.DAYS.toMillis(14);
+        final Period interval = Period.ofDays(14);
         planUseCase.setTimeInterval(item.id, testDate, interval);
         PlanItem itemWithInterval = planUseCase.getItems(plan.id).iterator().next();
         assertEquals(testDate, itemWithInterval.startDate);
@@ -293,6 +293,6 @@ public class PlanUseCaseTest {
 
     @Test
     public void testSetTimeIntervalPlanItemNotFoundException(){
-        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.setTimeInterval(1L, null, -1));
+        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.setTimeInterval(1L, null, Period.ofDays(1)));
     }
 }

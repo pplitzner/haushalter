@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,17 +29,17 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<Plan> showAllPlans() {
-        return planRepository.findAll().stream().map(plan -> DtoMapper.dtoFrom(plan)).collect(Collectors.toList());
+        return planRepository.findAll().stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override
     public List<Plan> showDefaultPlans() {
-        return planRepository.findByIsDefault(true).stream().map(plan-> DtoMapper.dtoFrom(plan)).collect(Collectors.toList());
+        return planRepository.findByIsDefault(true).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override
     public List<Plan> showNonDefaultPlans() {
-        return planRepository.findByIsDefault(false).stream().map(plan-> DtoMapper.dtoFrom(plan)).collect(Collectors.toList());
+        return planRepository.findByIsDefault(false).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override
@@ -86,7 +87,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     @Override
     public List<PlanItem> getItems(Long id) throws PlanNotFoundException{
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
-        return itemRepository.findByPlan(plan).stream().map(item-> DtoMapper.dtoFrom(item)).collect(Collectors.toList());
+        return itemRepository.findByPlan(plan).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override
@@ -125,7 +126,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public PlanItem setTimeInterval(Long id, LocalDate startDate, long interval) throws PlanItemNotFoundException {
+    public PlanItem setTimeInterval(Long id, LocalDate startDate, Period interval) throws PlanItemNotFoundException {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         jpaItem.setStartDate(startDate);
         jpaItem.setTimeInterval(interval);
@@ -139,7 +140,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
             throw new PlanNotDefaultException(defaultPlanId);
         }
         JpaPlan jpaPlan = planRepository.save(createJpaPlan(defaultPlan.getTitle(), defaultPlan.getDescription()));
-        getItems(defaultPlan.getId()).stream().forEach(item->addItem(jpaPlan.getId(), item));
+        getItems(defaultPlan.getId()).forEach(item->addItem(jpaPlan.getId(), item));
         return DtoMapper.dtoFrom(planRepository.save(jpaPlan));
     }
 
