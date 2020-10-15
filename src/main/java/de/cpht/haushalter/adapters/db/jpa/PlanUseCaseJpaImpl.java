@@ -14,8 +14,6 @@ import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
