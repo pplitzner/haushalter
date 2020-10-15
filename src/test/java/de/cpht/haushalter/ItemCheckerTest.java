@@ -4,9 +4,11 @@ import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.ItemChecker;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
+import de.cpht.haushalter.service.ItemCheckerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -18,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 public class ItemCheckerTest {
+
+    @MockBean
+    ItemCheckerService itemCheckerService;
 
     @Autowired
     private PlanUseCase planUseCase;
