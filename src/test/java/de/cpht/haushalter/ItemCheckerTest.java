@@ -1,6 +1,6 @@
 package de.cpht.haushalter;
 
-import de.cpht.haushalter.domain.ItemChecker;
+import de.cpht.haushalter.domain.usecases.ItemChecker;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
@@ -22,9 +22,6 @@ public class ItemCheckerTest {
     @Autowired
     private PlanUseCase planUseCase;
 
-    @Autowired
-    private ItemChecker itemChecker;
-
     @Test
     public void testCheckItems(){
         final Plan plan = planUseCase.startPlan("", "");
@@ -45,7 +42,7 @@ public class ItemCheckerTest {
         assertTrue(checkedItems.contains(itemToUncheck));
         assertTrue(checkedItems.contains(itemNotToUncheck));
 
-        itemChecker.checkItems();
+        ItemChecker.checkItems(planUseCase);
 
         final List<PlanItem> checkedItemsAfterItemChecker = planUseCase.getCheckedItems();
         assertEquals(1, checkedItemsAfterItemChecker.size());
