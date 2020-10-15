@@ -278,24 +278,4 @@ public class PlanUseCaseTest {
     public void testStartPlanForRemainingItemsPlanNotFoundException(){
         assertThrows(PlanNotFoundException.class, ()->planUseCase.startPlanForRemainingItems(1L, "", ""));
     }
-
-    @Test
-    public void testSetTimeInterval(){
-        final Plan plan = planUseCase.startPlan("", "");
-        planUseCase.addItem(plan.id, new PlanItem("Brush teeth", "straight movements"));
-        final PlanItem item = planUseCase.getItems(plan.id).iterator().next();
-        assertNull(item.startDate);
-        assertNull(item.timeInterval);
-        final LocalDate testDate = LocalDate.now();
-        final Period interval = Period.ofDays(14);
-        planUseCase.setTimeInterval(item.id, testDate, interval);
-        PlanItem itemWithInterval = planUseCase.getItems(plan.id).iterator().next();
-        assertEquals(testDate, itemWithInterval.startDate);
-        assertEquals(interval, itemWithInterval.timeInterval);
-    }
-
-    @Test
-    public void testSetTimeIntervalPlanItemNotFoundException(){
-        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.setTimeInterval(1L, null, Period.ofDays(1)));
-    }
 }
