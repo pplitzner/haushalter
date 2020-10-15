@@ -150,6 +150,24 @@ public class PlanUseCaseTest {
     }
 
     @Test
+    public void testGetCheckedItems(){
+        final Plan plan1 = planUseCase.startPlan("", "");
+        planUseCase.addItem(plan1.id, new PlanItem("", ""));
+
+        final PlanItem item2 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
+
+        final Plan plan2 = planUseCase.startPlan("", "");
+        final PlanItem item3 = planUseCase.addItem(plan2.id, new PlanItem("", ""));
+
+        planUseCase.toggleCheck(item2.id);
+        planUseCase.toggleCheck(item3.id);
+        final List<PlanItem> checkedItems = planUseCase.getCheckedItems();
+        assertEquals(2, checkedItems.size());
+        assertTrue(checkedItems.stream().anyMatch(item->item.id==item3.id));
+        assertTrue(checkedItems.stream().anyMatch(item->item.id==item3.id));
+    }
+
+    @Test
     public void testGetItemsAddItem(){
         Plan plan = planUseCase.startPlan("t", "d");
         List<PlanItem> items = planUseCase.getItems(plan.id);

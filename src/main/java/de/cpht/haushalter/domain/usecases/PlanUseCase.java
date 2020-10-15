@@ -22,6 +22,11 @@ public interface PlanUseCase {
     Plan makePlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
     Plan startPlanForRemainingItems(Long id, String title, String description) throws PlanNotDefaultException;
 
+    /**
+     * Get all items of all plans with checked set to true
+     * @return a list of checked items
+     */
+    List<PlanItem> getCheckedItems();
     List<PlanItem> getItems(Long planId) throws PlanNotFoundException;
     PlanItem addItem(Long planId, PlanItem item) throws PlanNotFoundException;
     PlanItem updateItem(Long id, PlanItem item) throws PlanItemNotFoundException;

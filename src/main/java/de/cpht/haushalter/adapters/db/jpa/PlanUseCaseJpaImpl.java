@@ -85,6 +85,11 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
+    public List<PlanItem> getCheckedItems() {
+        return itemRepository.findByIsChecked(true).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+    }
+
+    @Override
     public List<PlanItem> getItems(Long id) throws PlanNotFoundException{
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         return itemRepository.findByPlan(plan).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
