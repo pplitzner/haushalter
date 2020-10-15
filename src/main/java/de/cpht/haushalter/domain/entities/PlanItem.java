@@ -1,7 +1,7 @@
 package de.cpht.haushalter.domain.entities;
 
 import java.time.Duration;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ public class PlanItem {
 
     public Long planId;
 
-    public LocalDate startDate;
+    public LocalDateTime startDate;
     public Period timeInterval;
     public Duration duration;
 
@@ -25,7 +25,7 @@ public class PlanItem {
         this.description = description;
     }
 
-    public PlanItem(String title, String description, LocalDate startDate, Period timeInterval, Duration duration) {
+    public PlanItem(String title, String description, LocalDateTime startDate, Period timeInterval, Duration duration) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;

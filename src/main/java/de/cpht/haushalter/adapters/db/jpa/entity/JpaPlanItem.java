@@ -5,6 +5,7 @@ import de.cpht.haushalter.domain.entities.PlanItem;
 import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 
 @Entity
@@ -18,7 +19,7 @@ public class JpaPlanItem {
 
     private boolean isChecked;
 
-    private LocalDate startDate;
+    private LocalDateTime startDate;
     private Period timeInterval; // variable can not be called "interval" -> SQL exception
     private Duration duration;
 
@@ -65,11 +66,11 @@ public class JpaPlanItem {
         this.isChecked = checked;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 

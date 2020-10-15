@@ -2,7 +2,8 @@ package de.cpht.haushalter.domain.usecases;
 
 import de.cpht.haushalter.domain.entities.PlanItem;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class ItemChecker {
 
@@ -24,7 +25,7 @@ public class ItemChecker {
     }
 
     private static boolean hasToBeDoneAgain(PlanItem item) {
-        return item.startDate.until(LocalDate.now()).getDays() > item.timeInterval.getDays();
+        return item.startDate.until(LocalDateTime.now(), ChronoUnit.DAYS) >= item.timeInterval.getDays();
     }
 
 }

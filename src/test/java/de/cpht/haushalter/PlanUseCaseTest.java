@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 
@@ -208,7 +208,7 @@ public class PlanUseCaseTest {
         Plan plan = planUseCase.startPlan("t", "d");
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item = new PlanItem("item title2", "item description2");
-        item.startDate = LocalDate.now();
+        item.startDate = LocalDateTime.now();
         item.timeInterval = Period.ofDays(14);
         item.duration = Duration.ofMinutes(10);
 
