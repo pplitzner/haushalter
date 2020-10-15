@@ -119,14 +119,6 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public PlanItem setTimeInterval(Long id, LocalDate startDate, Period interval) throws PlanItemNotFoundException {
-        JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
-        jpaItem.setStartDate(startDate);
-        jpaItem.setTimeInterval(interval);
-        return DtoMapper.dtoFrom(itemRepository.save(jpaItem));
-    }
-
-    @Override
     public Plan makePlanFromDefault(Long defaultPlanId) throws PlanNotFoundException, PlanNotDefaultException {
         JpaPlan defaultPlan = planRepository.findById(defaultPlanId).orElseThrow(() -> new PlanNotFoundException(defaultPlanId));
         if(!defaultPlan.isDefault()){
