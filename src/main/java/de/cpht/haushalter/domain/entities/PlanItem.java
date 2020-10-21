@@ -11,6 +11,7 @@ public class PlanItem {
     public String description;
 
     public boolean checked;
+    public LocalDateTime checkedAt;
 
     public Long planId;
 

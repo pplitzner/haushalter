@@ -234,12 +234,18 @@ public class PlanUseCaseTest {
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item = planUseCase.getItems(plan.id).iterator().next();
         assertFalse(item.checked);
+
+        LocalDateTime now = LocalDateTime.now();
         planUseCase.toggleCheck(itemId);
         item = planUseCase.getItems(plan.id).iterator().next();
         assertTrue(item.checked);
+        assertNotNull(item.checkedAt);
+        assertTrue(now.isBefore(item.checkedAt));
+
         planUseCase.toggleCheck(itemId);
         item = planUseCase.getItems(plan.id).iterator().next();
         assertFalse(item.checked);
+        assertNull(item.checkedAt);
     }
 
     @Test

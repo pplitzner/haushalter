@@ -18,6 +18,7 @@ public class JpaPlanItem {
     private String description;
 
     private boolean isChecked;
+    private LocalDateTime checkedAt;
 
     private LocalDateTime startDate;
     private Period timeInterval; // variable can not be called "interval" -> SQL exception
@@ -64,6 +65,14 @@ public class JpaPlanItem {
 
     public void setChecked(boolean checked) {
         this.isChecked = checked;
+    }
+
+    public LocalDateTime getCheckedAt() {
+        return checkedAt;
+    }
+
+    public void setCheckedAt(LocalDateTime checkedAt) {
+        this.checkedAt = checkedAt;
     }
 
     public LocalDateTime getStartDate() {

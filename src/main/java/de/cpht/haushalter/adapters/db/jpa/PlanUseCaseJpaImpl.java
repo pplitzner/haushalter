@@ -14,6 +14,7 @@ import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,7 +118,9 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     @Override
     public void toggleCheck(Long id) throws PlanItemNotFoundException {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
-        jpaItem.setChecked(!jpaItem.isChecked());
+        boolean checkedBefore = jpaItem.isChecked();
+        jpaItem.setChecked(!checkedBefore);
+        jpaItem.setCheckedAt(jpaItem.getCheckedAt()==null?LocalDateTime.now():null);
         itemRepository.save(jpaItem);
     }
 
