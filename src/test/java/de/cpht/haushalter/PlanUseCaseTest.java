@@ -2,6 +2,7 @@ package de.cpht.haushalter;
 
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
+import de.cpht.haushalter.domain.entities.PlanType;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.exception.PlanFinishedException;
 import de.cpht.haushalter.exception.PlanItemNotFoundException;
@@ -28,52 +29,18 @@ public class PlanUseCaseTest {
 
     @Test
     public void testStartPlanShowAllPlans(){
-        assertTrue(planUseCase.showAllPlans().isEmpty());
-        Plan plan = planUseCase.startPlan("Test Title", "Test description");
-        List<Plan> plans = planUseCase.showAllPlans();
+        assertTrue(planUseCase.showAllPlans(PlanType.DEFAULT).isEmpty());
+        assertTrue(planUseCase.showAllPlans(PlanType.CHECKLIST).isEmpty());
+        assertTrue(planUseCase.showAllPlans(PlanType.TIMEDLIST).isEmpty());
+
+        Plan plan = planUseCase.startPlan("Test Title", "Test description", PlanType.DEFAULT);
+
+        assertTrue(planUseCase.showAllPlans(PlanType.CHECKLIST).isEmpty());
+        assertTrue(planUseCase.showAllPlans(PlanType.TIMEDLIST).isEmpty());
+        List<Plan> plans = planUseCase.showAllPlans(PlanType.DEFAULT);
         assertEquals(1, plans.size());
         assertFalse(plan.done);
-        assertFalse(plan.isDefault);
-    }
-
-    @Test
-    public void testStartDefaultPlan(){
-        Plan plan = planUseCase.startDefaultPlan("t", "d");
-        Plan planById = planUseCase.getPlanById(plan.id);
-        assertFalse(planById.done);
-        assertTrue(planById.isDefault);
-    }
-
-    @Test
-    public void testShowDefaultPlans(){
-        final Plan defaultPlan = planUseCase.startDefaultPlan("D1", "DD1");
-        final Plan defaultPlan2 = planUseCase.startDefaultPlan("D2", "DD2");
-        planUseCase.startPlan("","");
-        planUseCase.startPlan("","");
-        final List<Plan> defaultPlans = planUseCase.showDefaultPlans();
-        assertEquals(2, defaultPlans.size());
-        assertTrue(defaultPlans.stream().noneMatch(plan->plan.title.equals("")));
-        assertTrue(defaultPlans.stream().noneMatch(plan->plan.description.equals("")));
-        assertTrue(defaultPlans.stream().anyMatch(plan->plan.title.equals(defaultPlan.title)));
-        assertTrue(defaultPlans.stream().anyMatch(plan->plan.description.equals(defaultPlan.description)));
-        assertTrue(defaultPlans.stream().anyMatch(plan->plan.title.equals(defaultPlan2.title)));
-        assertTrue(defaultPlans.stream().anyMatch(plan->plan.description.equals(defaultPlan2.description)));
-    }
-
-    @Test
-    public void testShowNonDefaultPlans(){
-        planUseCase.startDefaultPlan("", "");
-        planUseCase.startDefaultPlan("", "");
-        final Plan nonDefaultPlan = planUseCase.startPlan("ND1","NDD1");
-        final Plan nonDefaultPlan2 = planUseCase.startPlan("ND2","NDD2");
-        final List<Plan> nonDefaultPlans = planUseCase.showNonDefaultPlans();
-        assertEquals(2, nonDefaultPlans.size());
-        assertTrue(nonDefaultPlans.stream().noneMatch(plan->plan.title.equals("")));
-        assertTrue(nonDefaultPlans.stream().noneMatch(plan->plan.description.equals("")));
-        assertTrue(nonDefaultPlans.stream().anyMatch(plan->plan.title.equals(nonDefaultPlan.title)));
-        assertTrue(nonDefaultPlans.stream().anyMatch(plan->plan.description.equals(nonDefaultPlan.description)));
-        assertTrue(nonDefaultPlans.stream().anyMatch(plan->plan.title.equals(nonDefaultPlan2.title)));
-        assertTrue(nonDefaultPlans.stream().anyMatch(plan->plan.description.equals(nonDefaultPlan2.description)));
+        assertEquals(PlanType.DEFAULT, plan.type);
     }
 
     @Test
@@ -256,7 +223,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testMakePlanFromDefault(){
-        Plan defaultPlan = planUseCase.startDefaultPlan("Default", "plan");
+        Plan defaultPlan = planUseCase.startPlan("Default", "plan", PlanType.DEFAULT);
         planUseCase.addItem(defaultPlan.id, new PlanItem("Item1", "Description1"));
         planUseCase.addItem(defaultPlan.id, new PlanItem("Item2", "Description2"));
         Plan plan = planUseCase.makePlanFromDefault(defaultPlan.id);
@@ -270,7 +237,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testMakePlanFromDefaultPlanNotDefaultException(){
-        Plan plan = planUseCase.startPlan("", "");
+        Plan plan = planUseCase.startPlan("", "", PlanType.CHECKLIST);
         assertThrows(PlanNotDefaultException.class, ()->planUseCase.makePlanFromDefault(plan.id));
     }
 

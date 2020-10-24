@@ -1,6 +1,7 @@
 package de.cpht.haushalter.adapters.db.jpa.entity;
 
 import de.cpht.haushalter.domain.entities.Plan;
+import de.cpht.haushalter.domain.entities.PlanType;
 
 import javax.persistence.*;
 
@@ -16,6 +17,7 @@ public class JpaPlan {
 
     private boolean done;
     private boolean isDefault;
+    private PlanType type;
 
     public Long getId() {
         return id;
@@ -55,6 +57,14 @@ public class JpaPlan {
 
     public void setDefault(boolean aDefault) {
         isDefault = aDefault;
+    }
+
+    public PlanType getType() {
+        return type;
+    }
+
+    public void setType(PlanType type) {
+        this.type = type;
     }
 
     public void update(Plan updatedPlan) {

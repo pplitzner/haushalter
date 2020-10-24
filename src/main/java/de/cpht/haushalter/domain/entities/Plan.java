@@ -6,6 +6,7 @@ public class Plan {
     public String description;
     public boolean done;
     public boolean isDefault;
+    public PlanType type;
 
     public Plan(){}
 

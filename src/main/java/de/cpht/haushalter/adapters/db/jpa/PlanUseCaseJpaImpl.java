@@ -6,6 +6,7 @@ import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
+import de.cpht.haushalter.domain.entities.PlanType;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.exception.PlanFinishedException;
 import de.cpht.haushalter.exception.PlanItemNotFoundException;
@@ -28,7 +29,12 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<Plan> showAllPlans() {
-        return planRepository.findAll().stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+        return planRepository.findByType(PlanType.CHECKLIST).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Plan> showAllPlans(PlanType type) {
+        return planRepository.findByType(type).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override
@@ -48,15 +54,13 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public Plan startDefaultPlan(String title, String description) {
-        JpaPlan plan = createJpaPlan(title, description);
-        plan.setDefault(true);
-        return DtoMapper.dtoFrom(planRepository.save(plan));
+    public Plan startPlan(String title, String description) {
+        return startPlan(title, description, PlanType.CHECKLIST);
     }
 
     @Override
-    public Plan startPlan(String title, String description) {
-        JpaPlan plan = createJpaPlan(title, description);
+    public Plan startPlan(String title, String description, PlanType type) {
+        JpaPlan plan = createJpaPlan(title, description, type);
         return DtoMapper.dtoFrom(planRepository.save(plan));
     }
 
@@ -127,10 +131,10 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     @Override
     public Plan makePlanFromDefault(Long defaultPlanId) throws PlanNotFoundException, PlanNotDefaultException {
         JpaPlan defaultPlan = planRepository.findById(defaultPlanId).orElseThrow(() -> new PlanNotFoundException(defaultPlanId));
-        if(!defaultPlan.isDefault()){
+        if(!defaultPlan.getType().equals(PlanType.DEFAULT)){
             throw new PlanNotDefaultException(defaultPlanId);
         }
-        JpaPlan jpaPlan = planRepository.save(createJpaPlan(defaultPlan.getTitle(), defaultPlan.getDescription()));
+        JpaPlan jpaPlan = planRepository.save(createJpaPlan(defaultPlan.getTitle(), defaultPlan.getDescription(), PlanType.CHECKLIST));
         getItems(defaultPlan.getId()).forEach(item->addItem(jpaPlan.getId(), item));
         return DtoMapper.dtoFrom(planRepository.save(jpaPlan));
     }
@@ -140,17 +144,18 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         plan.setDone(true);
         planRepository.save(plan);
-        JpaPlan remainingItemsPlan = planRepository.save(createJpaPlan(title, description));
+        JpaPlan remainingItemsPlan = planRepository.save(createJpaPlan(title, description, PlanType.CHECKLIST));
         getItems(plan.getId()).stream()
                 .filter(item->!item.checked)
                 .forEach(uncheckedItem->addItem(remainingItemsPlan.getId(), uncheckedItem));
         return DtoMapper.dtoFrom(planRepository.save(remainingItemsPlan));
     }
 
-    private JpaPlan createJpaPlan(String title, String description) {
+    private JpaPlan createJpaPlan(String title, String description, PlanType type) {
         JpaPlan plan = new JpaPlan();
         plan.setTitle(title);
         plan.setDescription(description);
+        plan.setType(type);
         return plan;
     }
 }
