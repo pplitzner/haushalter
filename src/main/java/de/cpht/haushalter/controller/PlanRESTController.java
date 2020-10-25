@@ -22,6 +22,7 @@ public class PlanRESTController {
 
     @PostMapping
     public Plan store(@RequestBody Plan plan, @RequestParam PlanType type) {
+        // TODO redundant plan type passed
         return planUseCase.startPlan(plan.title, plan.description, type);
     }
 
