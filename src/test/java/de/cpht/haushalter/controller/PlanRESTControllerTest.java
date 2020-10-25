@@ -2,6 +2,7 @@ package de.cpht.haushalter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.cpht.haushalter.domain.entities.Plan;
+import de.cpht.haushalter.domain.entities.PlanType;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -30,9 +31,9 @@ public class PlanRESTControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        Plan plan = new Plan("Test Plan", "Test Description");
-        when(planUseCase.showAllPlans()).thenReturn(List.of(plan));
-        mvc.perform(get("/plans").accept(MediaType.APPLICATION_JSON))
+        Plan plan = new Plan("Test Plan", "Test Description", PlanType.CHECKLIST);
+        when(planUseCase.showAllPlans(PlanType.CHECKLIST)).thenReturn(List.of(plan));
+        mvc.perform(get("/plans?type=CHECKLIST").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$").isNotEmpty())
@@ -45,9 +46,10 @@ public class PlanRESTControllerTest {
     public void testStore() throws Exception {
         ArgumentCaptor<String> titleCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> descriptionCaptor = ArgumentCaptor.forClass(String.class);
-        Plan plan = new Plan("Test Plan", "Test Description");
-        when(planUseCase.startPlan(titleCaptor.capture(), descriptionCaptor.capture())).thenReturn(plan);
-        mvc.perform(post("/plans")
+        ArgumentCaptor<PlanType> typeCaptor = ArgumentCaptor.forClass(PlanType.class);
+        Plan plan = new Plan("Test Plan", "Test Description", PlanType.CHECKLIST);
+        when(planUseCase.startPlan(titleCaptor.capture(), descriptionCaptor.capture(), typeCaptor.capture())).thenReturn(plan);
+        mvc.perform(post("/plans?type=CHECKLIST")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(plan))
                 .accept(MediaType.APPLICATION_JSON))
@@ -55,12 +57,13 @@ public class PlanRESTControllerTest {
                 .andExpect(jsonPath("$").isNotEmpty())
                 .andExpect(jsonPath("title").value(titleCaptor.getValue()))
                 .andExpect(jsonPath("description").value(descriptionCaptor.getValue()))
+                .andExpect(jsonPath("type").value(typeCaptor.getValue().name()))
                 .andDo(print());
     }
 
     @Test
     public void testShow() throws Exception {
-        Plan plan = new Plan("Test Plan", "Test Description");
+        Plan plan = new Plan("Test Plan", "Test Description", PlanType.CHECKLIST);
         when(planUseCase.getPlanById(any())).thenReturn(plan);
         mvc.perform(get("/plans/16"))
                 .andExpect(status().isOk())
@@ -74,7 +77,7 @@ public class PlanRESTControllerTest {
     @Test
     public void testUpdate() throws Exception {
         ArgumentCaptor<Plan> planCaptor = ArgumentCaptor.forClass(Plan.class);
-        Plan plan = new Plan("Updated Plan", "Updated Description");
+        Plan plan = new Plan("Updated Plan", "Updated Description", PlanType.CHECKLIST);
         plan.isDefault = true;
         plan.done = true;
         when(planUseCase.updatePlan(any(), planCaptor.capture())).thenReturn(plan);

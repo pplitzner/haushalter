@@ -2,6 +2,7 @@ package de.cpht.haushalter;
 
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
+import de.cpht.haushalter.domain.entities.PlanType;
 import de.cpht.haushalter.domain.usecases.ItemChecker;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.service.ItemCheckerService;
@@ -29,7 +30,7 @@ public class ItemCheckerTest {
 
     @Test
     public void testCheckItems(){
-        final Plan plan = planUseCase.startPlan("", "");
+        final Plan plan = planUseCase.startPlan("", "", PlanType.CHECKLIST);
         final PlanItem itemToUncheck = new PlanItem("Has to be done again", null);
         itemToUncheck.startDate = LocalDateTime.now().minusDays(1);
         itemToUncheck.timeInterval = Period.ofDays(1);

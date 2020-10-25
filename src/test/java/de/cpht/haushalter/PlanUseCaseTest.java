@@ -45,10 +45,10 @@ public class PlanUseCaseTest {
 
     @Test
     public void testDeletePlan(){
-        Plan plan = planUseCase.startPlan("Test Title", "Test description");
-        assertEquals(1, planUseCase.showAllPlans().size());
+        Plan plan = planUseCase.startPlan("Test Title", "Test description", PlanType.CHECKLIST);
+        assertEquals(1, planUseCase.showAllPlans(PlanType.CHECKLIST).size());
         planUseCase.deletePlan(plan.id);
-        assertTrue(planUseCase.showAllPlans().isEmpty());
+        assertTrue(planUseCase.showAllPlans(PlanType.CHECKLIST).isEmpty());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testGetPlanById(){
-        Plan plan = planUseCase.startPlan("Test Title", "Test description");
+        Plan plan = planUseCase.startPlan("Test Title", "Test description", PlanType.CHECKLIST);
         Plan planById = planUseCase.getPlanById(plan.id);
         assertNotNull(planById);
         assertEquals("Test Title", planById.title);
@@ -72,7 +72,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testUpdatePlan(){
-        Plan plan = planUseCase.startPlan("Test Title1", "Test description1");
+        Plan plan = planUseCase.startPlan("Test Title1", "Test description1", PlanType.CHECKLIST);
         Plan updatedPlan = new Plan();
         updatedPlan.title = "Test Title2";
         updatedPlan.description = "Test description2";
@@ -96,14 +96,14 @@ public class PlanUseCaseTest {
 
     @Test
     public void testUpdatePlanFinishedException() {
-        Plan plan = planUseCase.startPlan("t", "d");
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
         planUseCase.toggleDone(plan.id);
         assertThrows(PlanFinishedException.class, ()->planUseCase.updatePlan(plan.id, new Plan()));
     }
 
     @Test
     public void testFinishPlan(){
-        Plan plan = planUseCase.startPlan("t", "d");
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
         Plan planById = planUseCase.getPlanById(plan.id);
         assertFalse(planById.done);
         planUseCase.toggleDone(plan.id);
@@ -118,12 +118,12 @@ public class PlanUseCaseTest {
 
     @Test
     public void testGetCheckedItems(){
-        final Plan plan1 = planUseCase.startPlan("", "");
+        final Plan plan1 = planUseCase.startPlan("", "", PlanType.CHECKLIST);
         planUseCase.addItem(plan1.id, new PlanItem("", ""));
 
         final PlanItem item2 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
 
-        final Plan plan2 = planUseCase.startPlan("", "");
+        final Plan plan2 = planUseCase.startPlan("", "", PlanType.CHECKLIST);
         final PlanItem item3 = planUseCase.addItem(plan2.id, new PlanItem("", ""));
 
         planUseCase.toggleCheck(item2.id);
@@ -136,7 +136,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testGetItemsAddItem(){
-        Plan plan = planUseCase.startPlan("t", "d");
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
         List<PlanItem> items = planUseCase.getItems(plan.id);
         assertTrue(items.isEmpty());
 
@@ -157,7 +157,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testDeleteItem(){
-        Plan plan = planUseCase.startPlan("t", "d");
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
         PlanItem item = new PlanItem("it", "id");
         Long itemId = planUseCase.addItem(plan.id, item).id;
         assertFalse(planUseCase.getItems(plan.id).isEmpty());
@@ -172,7 +172,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testUpdateItem(){
-        Plan plan = planUseCase.startPlan("t", "d");
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item = new PlanItem("item title2", "item description2");
         item.startDate = LocalDateTime.now();
@@ -197,7 +197,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testCheckItem(){
-        Plan plan = planUseCase.startPlan("t", "d");
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item = planUseCase.getItems(plan.id).iterator().next();
         assertFalse(item.checked);
@@ -243,7 +243,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testStartPlanForRemainingItems(){
-        Plan plan = planUseCase.startPlan("", "");
+        Plan plan = planUseCase.startPlan("", "", PlanType.CHECKLIST);
         planUseCase.addItem(plan.id, new PlanItem("I1", "D1"));
         planUseCase.addItem(plan.id, new PlanItem("I2", "D2"));
         final String unchecked_item = "Unchecked Item";

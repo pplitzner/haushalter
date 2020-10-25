@@ -10,9 +10,10 @@ public class Plan {
 
     public Plan(){}
 
-    public Plan(String title, String description) {
+    public Plan(String title, String description, PlanType type) {
         this.title = title;
         this.description = description;
+        this.type = type;
     }
 
 }

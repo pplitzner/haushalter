@@ -11,32 +11,10 @@ import de.cpht.haushalter.exception.PlanNotFoundException;
 import java.util.List;
 
 public interface PlanUseCase {
-    @Deprecated
-    /**
-     * @deprecated type should be set, TODO remove
-     */
-    List<Plan> showAllPlans();
+
     List<Plan> showAllPlans(PlanType type);
-
-    @Deprecated
-    /**
-     * FIXME remove
-     */
-    List<Plan> showDefaultPlans();
-
-    @Deprecated
-    /**
-     * FIXME remove
-     */
-    List<Plan> showNonDefaultPlans();
     Plan getPlanById(Long id) throws PlanNotFoundException;
     Plan startPlan(String title, String description, PlanType type);
-    @Deprecated
-    /**
-     * @deprecated type should be set during creation, see {@link #startPlan(String, String, PlanType)}
-     * TODO remove
-     */
-    Plan startPlan(String title, String description);
     void deletePlan(Long id) throws PlanNotFoundException;
     Plan updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException;
     void toggleDone(Long id) throws PlanNotFoundException;

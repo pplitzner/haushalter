@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class PlanUseCaseJpaImpl implements PlanUseCase {
@@ -28,34 +30,14 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     PlanItemRepository itemRepository;
 
     @Override
-    public List<Plan> showAllPlans() {
-        return planRepository.findByType(PlanType.CHECKLIST).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
-    }
-
-    @Override
     public List<Plan> showAllPlans(PlanType type) {
         return planRepository.findByType(type).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Plan> showDefaultPlans() {
-        return planRepository.findByIsDefault(true).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Plan> showNonDefaultPlans() {
-        return planRepository.findByIsDefault(false).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override
     public Plan getPlanById(Long id) {
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         return DtoMapper.dtoFrom(plan);
-    }
-
-    @Override
-    public Plan startPlan(String title, String description) {
-        return startPlan(title, description, PlanType.CHECKLIST);
     }
 
     @Override

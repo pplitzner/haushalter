@@ -1,6 +1,7 @@
 package de.cpht.haushalter.controller;
 
 import de.cpht.haushalter.domain.entities.Plan;
+import de.cpht.haushalter.domain.entities.PlanType;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +15,14 @@ public class PlanRESTController {
     @Autowired
     private PlanUseCase planUseCase;
 
-    @GetMapping
-    public List<Plan> index(){
-        return planUseCase.showAllPlans();
+    @GetMapping()
+    public List<Plan> index(@RequestParam PlanType type){
+        return planUseCase.showAllPlans(type);
     }
 
     @PostMapping
-    public Plan store(@RequestBody Plan plan) {
-        return planUseCase.startPlan(plan.title, plan.description);
+    public Plan store(@RequestBody Plan plan, @RequestParam PlanType type) {
+        return planUseCase.startPlan(plan.title, plan.description, type);
     }
 
     @GetMapping("/{id}")
