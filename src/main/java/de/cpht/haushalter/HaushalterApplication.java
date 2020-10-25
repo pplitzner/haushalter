@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class HaushalterApplication{//} implements CommandLineRunner {
+public class HaushalterApplication {//implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HaushalterApplication.class, args);
@@ -19,12 +19,13 @@ public class HaushalterApplication{//} implements CommandLineRunner {
 //
 //	@Override
 //	public void run(String... args) throws Exception {
-//		Plan plan = new Plan();
+//		JpaPlan plan = new JpaPlan();
 //		plan.setTitle("Küche");
 //		plan.setDescription("Erst die Oberflächen!");
+//		plan.setType(PlanType.TIMEDLIST);
 //		planRepository.save(plan);
 //
-//		PlanItem item = new PlanItem();
+//		JpaPlanItem item = new JpaPlanItem();
 //		item.setTitle("Spülmaschine ausräumen");
 //		item.setDescription("Becher unten trocknen");
 //		item.setPlan(plan);
