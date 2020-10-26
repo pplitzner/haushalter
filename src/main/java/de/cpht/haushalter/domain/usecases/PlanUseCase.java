@@ -17,10 +17,10 @@ public interface PlanUseCase {
     Plan startPlan(String title, String description, PlanType type);
     void deletePlan(Long id) throws PlanNotFoundException;
     Plan updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException;
-    void toggleDone(Long id) throws PlanNotFoundException;
+    Plan finishPlan(Long id, Boolean startPlanForRemainingItems) throws PlanNotFoundException, PlanFinishedException;
     boolean checkPlanDone(Long planId);
     Plan makePlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
-    Plan startPlanForRemainingItems(Long id, String title, String description) throws PlanNotDefaultException;
+    Plan startPlanForRemainingItems(Long id) throws PlanNotDefaultException;
 
     /**
      * Get all items of all plans with checked set to true

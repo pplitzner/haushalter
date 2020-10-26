@@ -97,7 +97,7 @@ public class PlanUseCaseTest {
     @Test
     public void testUpdatePlanFinishedException() {
         Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
-        planUseCase.toggleDone(plan.id);
+        planUseCase.finishPlan(plan.id, false);
         assertThrows(PlanFinishedException.class, ()->planUseCase.updatePlan(plan.id, new Plan()));
     }
 
@@ -106,14 +106,45 @@ public class PlanUseCaseTest {
         Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
         Plan planById = planUseCase.getPlanById(plan.id);
         assertFalse(planById.done);
-        planUseCase.toggleDone(plan.id);
+        planUseCase.finishPlan(plan.id, false);
         planById = planUseCase.getPlanById(plan.id);
         assertTrue(planById.done);
     }
 
     @Test
+    public void testFinishPlanWithStartPlanForRemainingItems(){
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
+        PlanItem unfinishedItem = new PlanItem("","");
+        PlanItem finishedItem = new PlanItem("","");
+        finishedItem.checkedAt = LocalDateTime.now();
+        finishedItem.checked = true;
+        planUseCase.addItem(plan.id, unfinishedItem);
+        planUseCase.addItem(plan.id, finishedItem);
+
+        Plan planById = planUseCase.getPlanById(plan.id);
+        assertFalse(planById.done);
+        final Plan planForRemainingItems = planUseCase.finishPlan(plan.id, true);
+        assertNotNull(planForRemainingItems);
+
+        planById = planUseCase.getPlanById(plan.id);
+        assertTrue(planById.done);
+
+        assertFalse(planForRemainingItems.done);
+        final List<PlanItem> remainingItems = planUseCase.getItems(planForRemainingItems.id);
+        assertFalse(remainingItems.isEmpty());
+        assertTrue(remainingItems.contains(unfinishedItem));
+    }
+
+    @Test
     public void testFinishPlanNotFoundException() {
-        assertThrows(PlanNotFoundException.class, ()->planUseCase.toggleDone(1L));
+        assertThrows(PlanNotFoundException.class, ()->planUseCase.finishPlan(1L, false));
+    }
+
+    @Test
+    public void testFinishPlanFinishedException() {
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
+        assertDoesNotThrow(()->planUseCase.finishPlan(plan.id, false));
+        assertThrows(PlanFinishedException.class, ()->planUseCase.finishPlan(plan.id, false));
     }
 
     @Test
@@ -267,12 +298,12 @@ public class PlanUseCaseTest {
         planUseCase.getItems(plan.id).stream()
                 .filter(item->!item.title.equals(unchecked_item))
                 .forEach(item->planUseCase.toggleCheck(item.id));
-        Plan remainingItemsPlan = planUseCase.startPlanForRemainingItems(plan.id, "RemainTitle", "Remain Description");
+        Plan remainingItemsPlan = planUseCase.startPlanForRemainingItems(plan.id);
         plan = planUseCase.getPlanById(plan.id);
         assertTrue(plan.done);
         assertFalse(remainingItemsPlan.done);
-        assertEquals(remainingItemsPlan.title, "RemainTitle");
-        assertEquals(remainingItemsPlan.description, "Remain Description");
+        assertEquals(remainingItemsPlan.title, plan.title);
+        assertEquals(remainingItemsPlan.description, plan.description);
 
         final List<PlanItem> remainingItems = planUseCase.getItems(remainingItemsPlan.id);
         assertEquals(1, remainingItems.size());
@@ -283,6 +314,6 @@ public class PlanUseCaseTest {
 
     @Test
     public void testStartPlanForRemainingItemsPlanNotFoundException(){
-        assertThrows(PlanNotFoundException.class, ()->planUseCase.startPlanForRemainingItems(1L, "", ""));
+        assertThrows(PlanNotFoundException.class, ()->planUseCase.startPlanForRemainingItems(1L));
     }
 }

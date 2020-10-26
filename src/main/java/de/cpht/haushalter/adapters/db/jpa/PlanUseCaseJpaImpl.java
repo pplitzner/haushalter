@@ -16,10 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class PlanUseCaseJpaImpl implements PlanUseCase {
@@ -63,10 +61,17 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public void toggleDone(Long id) throws PlanNotFoundException {
+    public Plan finishPlan(Long id, Boolean startPlanForRemainingItems) throws PlanNotFoundException {
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
-        plan.setDone(!plan.isDone());
+        if(plan.isDone()){
+            throw new PlanFinishedException(plan.getId());
+        }
+        plan.setDone(true);
         planRepository.save(plan);
+        if(startPlanForRemainingItems){
+            return startPlanForRemainingItems(plan.getId());
+        }
+        return null;
     }
 
     @Override
@@ -122,13 +127,14 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public Plan startPlanForRemainingItems(Long id, String title, String description) throws PlanNotFoundException {
+    public Plan startPlanForRemainingItems(Long id) throws PlanNotFoundException {
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         plan.setDone(true);
         planRepository.save(plan);
-        JpaPlan remainingItemsPlan = planRepository.save(createJpaPlan(title, description, PlanType.CHECKLIST));
+        JpaPlan remainingItemsPlan = planRepository.save(createJpaPlan(plan.getTitle(), plan.getDescription(), plan.getType()));
         getItems(plan.getId()).stream()
                 .filter(item->!item.checked)
+                .filter(item->item.checkedAt==null)
                 .forEach(uncheckedItem->addItem(remainingItemsPlan.getId(), uncheckedItem));
         return DtoMapper.dtoFrom(planRepository.save(remainingItemsPlan));
     }

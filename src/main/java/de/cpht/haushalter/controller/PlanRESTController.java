@@ -4,6 +4,7 @@ import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanType;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,9 +37,12 @@ public class PlanRESTController {
         return planUseCase.updatePlan(id, updatedPlan);
     }
 
-    @PostMapping("/{id}/toggleDone")
-    public void finishPlan(@PathVariable Long id){
-        planUseCase.toggleDone(id);
+    @PostMapping("/{id}/finishPlan")
+    public Plan finishPlan(@PathVariable Long id, @Nullable Boolean startPlanForRemainingItems){
+        if(startPlanForRemainingItems){
+            return planUseCase.startPlanForRemainingItems(id);
+        }
+        return planUseCase.finishPlan(id, startPlanForRemainingItems);
     }
 
     @PostMapping("/{id}/checkPlanDone")
