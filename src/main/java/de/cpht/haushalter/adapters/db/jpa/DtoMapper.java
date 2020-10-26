@@ -40,7 +40,6 @@ public class DtoMapper {
         dto.title = jpaPlan.getTitle();
         dto.description = jpaPlan.getDescription();
         dto.done = jpaPlan.isDone();
-        dto.isDefault = jpaPlan.isDefault();
         dto.type = jpaPlan.getType();
         return dto;
     }

@@ -16,7 +16,6 @@ public class JpaPlan {
     private String description;
 
     private boolean done;
-    private boolean isDefault;
     private PlanType type;
 
     public Long getId() {
@@ -51,14 +50,6 @@ public class JpaPlan {
         this.done = done;
     }
 
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(boolean aDefault) {
-        isDefault = aDefault;
-    }
-
     public PlanType getType() {
         return type;
     }
@@ -71,7 +62,6 @@ public class JpaPlan {
         this.title = updatedPlan.title;
         this.description = updatedPlan.description;
         this.done = updatedPlan.done;
-        this.isDefault = updatedPlan.isDefault;
     }
 
 }
