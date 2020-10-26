@@ -116,7 +116,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public Plan makePlanFromDefault(Long defaultPlanId) throws PlanNotFoundException, PlanNotDefaultException {
+    public Plan startPlanFromDefault(Long defaultPlanId) throws PlanNotFoundException, PlanNotDefaultException {
         JpaPlan defaultPlan = planRepository.findById(defaultPlanId).orElseThrow(() -> new PlanNotFoundException(defaultPlanId));
         if(!defaultPlan.getType().equals(PlanType.DEFAULT)){
             throw new PlanNotDefaultException(defaultPlanId);

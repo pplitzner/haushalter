@@ -253,11 +253,11 @@ public class PlanUseCaseTest {
     }
 
     @Test
-    public void testMakePlanFromDefault(){
+    public void teststartPlanFromDefault(){
         Plan defaultPlan = planUseCase.startPlan("Default", "plan", PlanType.DEFAULT);
         planUseCase.addItem(defaultPlan.id, new PlanItem("Item1", "Description1"));
         planUseCase.addItem(defaultPlan.id, new PlanItem("Item2", "Description2"));
-        Plan plan = planUseCase.makePlanFromDefault(defaultPlan.id);
+        Plan plan = planUseCase.startPlanFromDefault(defaultPlan.id);
         assertEquals(defaultPlan.title, plan.title);
         assertEquals(defaultPlan.description, plan.description);
         assertNotEquals(defaultPlan.id, plan.id);
@@ -267,9 +267,9 @@ public class PlanUseCaseTest {
     }
 
     @Test
-    public void testMakePlanFromDefaultPlanNotDefaultException(){
+    public void teststartPlanFromDefaultPlanNotDefaultException(){
         Plan plan = planUseCase.startPlan("", "", PlanType.CHECKLIST);
-        assertThrows(PlanNotDefaultException.class, ()->planUseCase.makePlanFromDefault(plan.id));
+        assertThrows(PlanNotDefaultException.class, ()->planUseCase.startPlanFromDefault(plan.id));
 
     }
 

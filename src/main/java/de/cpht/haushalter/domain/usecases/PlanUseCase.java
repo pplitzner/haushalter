@@ -19,7 +19,7 @@ public interface PlanUseCase {
     Plan updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException;
     Plan finishPlan(Long id, Boolean startPlanForRemainingItems) throws PlanNotFoundException, PlanFinishedException;
     boolean checkPlanDone(Long planId);
-    Plan makePlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
+    Plan startPlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
     Plan startPlanForRemainingItems(Long id) throws PlanNotDefaultException;
 
     /**
