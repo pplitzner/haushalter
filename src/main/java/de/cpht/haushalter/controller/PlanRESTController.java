@@ -45,9 +45,9 @@ public class PlanRESTController {
         return planUseCase.finishPlan(id, startPlanForRemainingItems);
     }
 
-    @PostMapping("/{id}/checkPlanDone")
-    public boolean checkDonePlan(@PathVariable Long planId){
-        return planUseCase.checkPlanDone(planId);
+    @GetMapping("/{id}/checkPlanDone")
+    public Boolean checkDonePlan(@PathVariable Long id){
+        return planUseCase.checkPlanDone(id);
     }
 
     @DeleteMapping("{id}")
