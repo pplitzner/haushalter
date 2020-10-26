@@ -239,6 +239,22 @@ public class PlanUseCaseTest {
     public void testMakePlanFromDefaultPlanNotDefaultException(){
         Plan plan = planUseCase.startPlan("", "", PlanType.CHECKLIST);
         assertThrows(PlanNotDefaultException.class, ()->planUseCase.makePlanFromDefault(plan.id));
+
+    }
+
+    @Test
+    public void testCheckPlanDone(){
+        Plan plan = planUseCase.startPlan("", "", PlanType.CHECKLIST);
+        final PlanItem itemDone = new PlanItem("", "");
+        itemDone.checkedAt = LocalDateTime.now();
+        itemDone.checked = true;
+        planUseCase.addItem(plan.id, itemDone);
+        assertTrue(planUseCase.checkPlanDone(plan.id));
+
+        final PlanItem itemmNotDone = new PlanItem("", "");
+        planUseCase.addItem(plan.id, itemmNotDone);
+
+        assertFalse(planUseCase.checkPlanDone(plan.id));
     }
 
     @Test

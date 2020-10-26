@@ -18,6 +18,7 @@ public interface PlanUseCase {
     void deletePlan(Long id) throws PlanNotFoundException;
     Plan updatePlan(Long id, Plan updatedPlan) throws PlanNotFoundException, PlanFinishedException;
     void toggleDone(Long id) throws PlanNotFoundException;
+    boolean checkPlanDone(Long planId);
     Plan makePlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
     Plan startPlanForRemainingItems(Long id, String title, String description) throws PlanNotDefaultException;
 

@@ -133,6 +133,11 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         return DtoMapper.dtoFrom(planRepository.save(remainingItemsPlan));
     }
 
+    @Override
+    public boolean checkPlanDone(Long planId) {
+        return getItems(planId).stream().allMatch(planItem -> planItem.checked && planItem.checkedAt!=null);
+    }
+
     private JpaPlan createJpaPlan(String title, String description, PlanType type) {
         JpaPlan plan = new JpaPlan();
         plan.setTitle(title);
