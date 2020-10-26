@@ -29,7 +29,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<Plan> showAllPlans(PlanType type) {
-        return planRepository.findByTypeOrderByTitle(type).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+        return planRepository.findByTypeAndDoneFalseOrderByTitle(type).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override

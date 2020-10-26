@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface PlanRepository extends JpaRepository<JpaPlan, Long> {
     List<JpaPlan> findByIsDefault(boolean isDefault);
-    List<JpaPlan> findByTypeOrderByTitle(PlanType type);
+    List<JpaPlan> findByTypeAndDoneFalseOrderByTitle(PlanType type);
 }
