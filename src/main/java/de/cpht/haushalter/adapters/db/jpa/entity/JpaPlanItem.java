@@ -4,7 +4,6 @@ import de.cpht.haushalter.domain.entities.PlanItem;
 
 import javax.persistence.*;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 
