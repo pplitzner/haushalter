@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create initial tables
+      author: pat
+      changes:
+        - createTable:
+            tableName: plan
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: done
+                  type: bit(1)
+              - column:
+                  name: type
+                  type: varchar(2)
+        - createTable:
+            tableName: plan_item
+            columns:
+                - column:
+                    name: id
+                    type: bigserial
+                    autoIncrement: true
+                    constraints:
+                      unique: true
+                      nullable: false
+                - column:
+                    name: title
+                    type: varchar(50)
+                    constraints:
+                      nullable: false
+                - column:
+                    name: description
+                    type: varchar(255)
+                - column:
+                    name: checked_at
+                    type: datetime
+                - column:
+                    name: start_date
+                    type: datetime
+                - column:
+                    name: duration
+                    type: bigint
+                - column:
+                    name: time_interval
+                    type: tinyblob
+                - column:
+                    name: plan_id
+                    type: bigserial
+                    constraints:
+                      nullable: false
+                      references: plan(id)
+                      foreignKeyName: fk_plan_id
+        - createSequence:
+            sequenceName: hibernate_sequence
