@@ -78,7 +78,7 @@ public class PlanRESTControllerTest {
     public void testUpdate() throws Exception {
         ArgumentCaptor<Plan> planCaptor = ArgumentCaptor.forClass(Plan.class);
         Plan plan = new Plan("Updated Plan", "Updated Description", PlanType.CHECKLIST);
-        plan.isDefault = true;
+        plan.type = PlanType.DEFAULT;
         plan.done = true;
         when(planUseCase.updatePlan(any(), planCaptor.capture())).thenReturn(plan);
         mvc.perform(put("/plans/1")
@@ -89,7 +89,7 @@ public class PlanRESTControllerTest {
                 .andExpect(jsonPath("$").isNotEmpty())
                 .andExpect(jsonPath("title").value(planCaptor.getValue().title))
                 .andExpect(jsonPath("description").value(planCaptor.getValue().description))
-                .andExpect(jsonPath("isDefault").value(planCaptor.getValue().isDefault))
+                .andExpect(jsonPath("type").value(planCaptor.getValue().type.name()))
                 .andExpect(jsonPath("done").value(planCaptor.getValue().done))
                 .andDo(print());
     }

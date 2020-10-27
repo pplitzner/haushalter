@@ -77,7 +77,6 @@ public class PlanUseCaseTest {
         updatedPlan.title = "Test Title2";
         updatedPlan.description = "Test description2";
         updatedPlan.done = true;
-        updatedPlan.isDefault = true;
 
         planUseCase.updatePlan(plan.id, updatedPlan);
         Plan planById = planUseCase.getPlanById(plan.id);
@@ -86,7 +85,6 @@ public class PlanUseCaseTest {
         assertEquals(updatedPlan.title, planById.title);
         assertEquals(updatedPlan.description, planById.description);
         assertEquals(updatedPlan.done, planById.done);
-        assertEquals(updatedPlan.isDefault, planById.isDefault);
     }
 
     @Test
@@ -250,7 +248,7 @@ public class PlanUseCaseTest {
     }
 
     @Test
-    public void teststartPlanFromDefault(){
+    public void testStartPlanFromDefault(){
         Plan defaultPlan = planUseCase.startPlan("Default", "plan", PlanType.DEFAULT);
         planUseCase.addItem(defaultPlan.id, new PlanItem("Item1", "Description1"));
         planUseCase.addItem(defaultPlan.id, new PlanItem("Item2", "Description2"));
@@ -258,7 +256,7 @@ public class PlanUseCaseTest {
         assertEquals(defaultPlan.title, plan.title);
         assertEquals(defaultPlan.description, plan.description);
         assertNotEquals(defaultPlan.id, plan.id);
-        assertFalse(plan.isDefault);
+        assertNotEquals(PlanType.DEFAULT, plan.type);
 
         assertEquals(planUseCase.getItems(defaultPlan.id).iterator().next(), planUseCase.getItems(plan.id).iterator().next());
     }
