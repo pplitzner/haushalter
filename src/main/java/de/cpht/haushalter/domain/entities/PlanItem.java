@@ -10,7 +10,6 @@ public class PlanItem {
     public String title;
     public String description;
 
-    public boolean checked;
     public LocalDateTime checkedAt;
 
     public Long planId;
@@ -39,16 +38,14 @@ public class PlanItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlanItem planItem = (PlanItem) o;
-        return checked == planItem.checked &&
-                title.equals(planItem.title) &&
+        return title.equals(planItem.title) &&
                 Objects.equals(description, planItem.description) &&
-                Objects.equals(startDate, planItem.startDate) &&
                 Objects.equals(timeInterval, planItem.timeInterval) &&
                 Objects.equals(duration, planItem.duration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, checked, startDate, timeInterval, duration);
+        return Objects.hash(title, description, timeInterval, duration);
     }
 }

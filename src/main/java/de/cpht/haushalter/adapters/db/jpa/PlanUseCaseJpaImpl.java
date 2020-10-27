@@ -76,7 +76,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<PlanItem> getCheckedItems() {
-        return itemRepository.findByIsChecked(true).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+        return itemRepository.findByCheckedAtNotNull().stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override
@@ -109,8 +109,6 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     @Override
     public void toggleCheck(Long id) throws PlanItemNotFoundException {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
-        boolean checkedBefore = jpaItem.isChecked();
-        jpaItem.setChecked(!checkedBefore);
         jpaItem.setCheckedAt(jpaItem.getCheckedAt()==null?LocalDateTime.now():null);
         itemRepository.save(jpaItem);
     }
@@ -133,7 +131,6 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         planRepository.save(plan);
         JpaPlan remainingItemsPlan = planRepository.save(createJpaPlan(plan.getTitle(), plan.getDescription(), plan.getType()));
         getItems(plan.getId()).stream()
-                .filter(item->!item.checked)
                 .filter(item->item.checkedAt==null)
                 .forEach(uncheckedItem->addItem(remainingItemsPlan.getId(), uncheckedItem));
         return DtoMapper.dtoFrom(planRepository.save(remainingItemsPlan));
@@ -141,7 +138,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public boolean checkPlanDone(Long planId) {
-        return getItems(planId).stream().allMatch(planItem -> planItem.checked && planItem.checkedAt!=null);
+        return getItems(planId).stream().allMatch(planItem -> planItem.checkedAt!=null);
     }
 
     private JpaPlan createJpaPlan(String title, String description, PlanType type) {

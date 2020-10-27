@@ -17,7 +17,6 @@ public class JpaPlanItem {
     private String title;
     private String description;
 
-    private boolean isChecked;
     private LocalDateTime checkedAt;
 
     private LocalDateTime startDate;
@@ -57,14 +56,6 @@ public class JpaPlanItem {
 
     public void setPlan(JpaPlan plan) {
         this.plan = plan;
-    }
-
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        this.isChecked = checked;
     }
 
     public LocalDateTime getCheckedAt() {

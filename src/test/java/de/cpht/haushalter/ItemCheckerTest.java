@@ -34,13 +34,13 @@ public class ItemCheckerTest {
         final PlanItem itemToUncheck = new PlanItem("Has to be done again", null);
         itemToUncheck.startDate = LocalDateTime.now().minusDays(1);
         itemToUncheck.timeInterval = Period.ofDays(1);
-        itemToUncheck.checked = true;
+        itemToUncheck.checkedAt = LocalDateTime.now();
         planUseCase.addItem(plan.id, itemToUncheck);
 
         final PlanItem itemNotToUncheck = new PlanItem("Still Time to do", null);
         itemNotToUncheck.startDate = LocalDateTime.now().minusWeeks(1);
         itemNotToUncheck.timeInterval = Period.ofWeeks(2);
-        itemNotToUncheck.checked = true;
+        itemNotToUncheck.checkedAt = LocalDateTime.now();
         planUseCase.addItem(plan.id, itemNotToUncheck);
 
         final List<PlanItem> checkedItems = planUseCase.getCheckedItems();

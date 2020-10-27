@@ -117,7 +117,6 @@ public class PlanUseCaseTest {
         PlanItem unfinishedItem = new PlanItem("","");
         PlanItem finishedItem = new PlanItem("","");
         finishedItem.checkedAt = LocalDateTime.now();
-        finishedItem.checked = true;
         planUseCase.addItem(plan.id, unfinishedItem);
         planUseCase.addItem(plan.id, finishedItem);
 
@@ -231,18 +230,16 @@ public class PlanUseCaseTest {
         Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item = planUseCase.getItems(plan.id).iterator().next();
-        assertFalse(item.checked);
+        assertNull(item.checkedAt);
 
         LocalDateTime now = LocalDateTime.now();
         planUseCase.toggleCheck(itemId);
         item = planUseCase.getItems(plan.id).iterator().next();
-        assertTrue(item.checked);
         assertNotNull(item.checkedAt);
         assertTrue(now.isBefore(item.checkedAt));
 
         planUseCase.toggleCheck(itemId);
         item = planUseCase.getItems(plan.id).iterator().next();
-        assertFalse(item.checked);
         assertNull(item.checkedAt);
     }
 
@@ -278,7 +275,6 @@ public class PlanUseCaseTest {
         Plan plan = planUseCase.startPlan("", "", PlanType.CHECKLIST);
         final PlanItem itemDone = new PlanItem("", "");
         itemDone.checkedAt = LocalDateTime.now();
-        itemDone.checked = true;
         planUseCase.addItem(plan.id, itemDone);
         assertTrue(planUseCase.checkPlanDone(plan.id));
 
@@ -308,7 +304,7 @@ public class PlanUseCaseTest {
         final List<PlanItem> remainingItems = planUseCase.getItems(remainingItemsPlan.id);
         assertEquals(1, remainingItems.size());
         final PlanItem uncheckedItem = remainingItems.iterator().next();
-        assertFalse(uncheckedItem.checked);
+        assertNull(uncheckedItem.checkedAt);
         assertEquals(unchecked_item, uncheckedItem.title);
     }
 
