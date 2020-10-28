@@ -64,5 +64,3 @@ databaseChangeLog:
                       nullable: false
                       references: plan(id)
                       foreignKeyName: fk_plan_id
-        - createSequence:
-            sequenceName: hibernate_sequence

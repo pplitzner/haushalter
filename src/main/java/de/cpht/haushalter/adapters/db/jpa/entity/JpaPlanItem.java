@@ -11,7 +11,7 @@ import java.time.Period;
 @Table(name = "plan_item")
 public class JpaPlanItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
