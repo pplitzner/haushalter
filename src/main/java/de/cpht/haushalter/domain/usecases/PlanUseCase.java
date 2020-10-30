@@ -23,10 +23,15 @@ public interface PlanUseCase {
     Plan startPlanForRemainingItems(Long id) throws PlanNotDefaultException;
 
     /**
-     * Get all items of all plans with checked set to true
+     * Get all items of all plans which are done/checked.
      * @return a list of checked items
      */
     List<PlanItem> getCheckedItems();
+    /**
+     * Get all items of all plans which are not done/checked resp. which can be done again.
+     * @return a list of unchecked items
+     */
+    List<PlanItem> getUncheckedItems();
     List<PlanItem> getItems(Long planId) throws PlanNotFoundException;
     PlanItem addItem(Long planId, PlanItem item) throws PlanNotFoundException;
     PlanItem updateItem(Long id, PlanItem item) throws PlanItemNotFoundException;

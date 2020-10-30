@@ -9,4 +9,5 @@ import java.util.List;
 public interface PlanItemRepository extends JpaRepository<JpaPlanItem, Long> {
     List<JpaPlanItem> findByPlan(JpaPlan plan);
     List<JpaPlanItem> findByCheckedAtNotNull();
+    List<JpaPlanItem> findByCheckedAtNull();
 }
