@@ -7,6 +7,8 @@ import java.time.temporal.ChronoUnit;
 
 public class ItemChecker {
 
+    private static final float REDO_FACTOR = 0.9f;
+
     /**
      * Check all items based on start date and interval.
      * Set checked flag and new start date accordingly.
@@ -25,7 +27,7 @@ public class ItemChecker {
     }
 
     private static boolean hasToBeDoneAgain(PlanItem item) {
-        return item.startDate.until(LocalDateTime.now(), ChronoUnit.DAYS) >= item.timeInterval.getDays();
+        return item.startDate.until(LocalDateTime.now(), ChronoUnit.DAYS) >= REDO_FACTOR*item.timeInterval.getDays();
     }
 
 }
