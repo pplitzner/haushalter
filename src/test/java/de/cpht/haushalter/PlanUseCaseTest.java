@@ -146,7 +146,7 @@ public class PlanUseCaseTest {
 
     @Test
     public void testCheckedItems(){
-        final Plan plan1 = planUseCase.startPlan("", "", PlanType.CHECKLIST);
+        final Plan plan1 = planUseCase.startPlan("Plan1", "", PlanType.CHECKLIST);
         final PlanItem item1 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
 
         final PlanItem item2 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
@@ -173,6 +173,7 @@ public class PlanUseCaseTest {
         assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item2.id));
         assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item3.id));
         assertTrue(uncheckedItems.stream().anyMatch(item->item.id==item1.id));
+        assertTrue(uncheckedItems.stream().anyMatch(item->item.planTitle==plan1.title));
     }
 
     @Test

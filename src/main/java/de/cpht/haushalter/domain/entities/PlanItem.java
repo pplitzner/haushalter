@@ -13,6 +13,7 @@ public class PlanItem {
     public LocalDateTime checkedAt;
 
     public Long planId;
+    public String planTitle; //cache field
 
     public LocalDateTime startDate;
     public Period timeInterval;
