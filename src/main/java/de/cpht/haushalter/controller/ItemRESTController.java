@@ -18,7 +18,7 @@ public class ItemRESTController {
 
     @GetMapping("todo")
     public List<PlanItem> getTodos(){
-        return planUseCase.getUncheckedItems();
+        return planUseCase.getTodos();
     }
 
 }

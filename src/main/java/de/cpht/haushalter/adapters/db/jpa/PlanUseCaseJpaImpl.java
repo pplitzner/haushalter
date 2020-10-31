@@ -80,7 +80,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public List<PlanItem> getUncheckedItems() {
+    public List<PlanItem> getTodos() {
         // TODO maybe store plan title already in DB as cache field
         final List<PlanItem> items = itemRepository.findByCheckedAtNull().stream()
                 .map(DtoMapper::dtoFrom).collect(Collectors.toList());

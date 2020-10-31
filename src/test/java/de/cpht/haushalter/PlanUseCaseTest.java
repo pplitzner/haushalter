@@ -156,13 +156,13 @@ public class PlanUseCaseTest {
 
         List<PlanItem> checkedItems = planUseCase.getCheckedItems();
         assertEquals(0, checkedItems.size());
-        List<PlanItem> uncheckedItems = planUseCase.getUncheckedItems();
+        List<PlanItem> uncheckedItems = planUseCase.getTodos();
         assertEquals(3, uncheckedItems.size());
 
         planUseCase.toggleCheck(item2.id);
         planUseCase.toggleCheck(item3.id);
         checkedItems = planUseCase.getCheckedItems();
-        uncheckedItems = planUseCase.getUncheckedItems();
+        uncheckedItems = planUseCase.getTodos();
         assertEquals(2, checkedItems.size());
         assertEquals(1, uncheckedItems.size());
 

@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 public class ItemCheckerTest {
 
+    // mock away service to disable the cron job during testing
     @MockBean
     ItemCheckerService itemCheckerService;
 

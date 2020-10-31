@@ -28,10 +28,10 @@ public interface PlanUseCase {
      */
     List<PlanItem> getCheckedItems();
     /**
-     * Get all items of all plans which are not done/checked resp. which can be done again.
-     * @return a list of unchecked items
+     * Get all items of all plans which are not done/checked and which can be done again.
+     * @return a list of items to do
      */
-    List<PlanItem> getUncheckedItems();
+    List<PlanItem> getTodos();
     List<PlanItem> getItems(Long planId) throws PlanNotFoundException;
     PlanItem addItem(Long planId, PlanItem item) throws PlanNotFoundException;
     PlanItem updateItem(Long id, PlanItem item) throws PlanItemNotFoundException;

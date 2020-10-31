@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 
 public class ItemChecker {
 
-    private static final float REDO_FACTOR = 0.9f;
+    private static final float REDO_FACTOR = 0.7f;
 
     /**
      * Check all items based on start date and interval.
