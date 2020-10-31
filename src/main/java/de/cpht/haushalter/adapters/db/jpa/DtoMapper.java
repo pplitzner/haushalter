@@ -12,7 +12,6 @@ public class DtoMapper {
         jpaPlanItem.setTitle(item.title);
         jpaPlanItem.setDescription(item.description);
         jpaPlanItem.setCheckedAt(item.checkedAt);
-        jpaPlanItem.setStartDate(item.startDate);
         jpaPlanItem.setTimeInterval(item.timeInterval);
         jpaPlanItem.setDuration(item.duration);
         return jpaPlanItem;
@@ -25,7 +24,6 @@ public class DtoMapper {
         item.description = jpaPlanItem.getDescription();
         item.planId = jpaPlanItem.getPlan().getId();
         item.checkedAt = jpaPlanItem.getCheckedAt();
-        item.startDate = jpaPlanItem.getStartDate();
         item.timeInterval = jpaPlanItem.getTimeInterval();
         item.duration = jpaPlanItem.getDuration();
         return item;

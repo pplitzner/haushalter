@@ -1,7 +1,7 @@
 package de.cpht.haushalter.adapters.db.jpa.repository;
 
-import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlanItem;
 import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlan;
+import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlanItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

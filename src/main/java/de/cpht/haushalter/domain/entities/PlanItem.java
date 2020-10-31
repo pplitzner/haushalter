@@ -15,7 +15,6 @@ public class PlanItem {
     public Long planId;
     public String planTitle; //cache field
 
-    public LocalDateTime startDate;
     public Period timeInterval;
     public Duration duration;
 
@@ -26,10 +25,9 @@ public class PlanItem {
         this.description = description;
     }
 
-    public PlanItem(String title, String description, LocalDateTime startDate, Period timeInterval, Duration duration) {
+    public PlanItem(String title, String description, Period timeInterval, Duration duration) {
         this.title = title;
         this.description = description;
-        this.startDate = startDate;
         this.timeInterval = timeInterval;
         this.duration = duration;
     }

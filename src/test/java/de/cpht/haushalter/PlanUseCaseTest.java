@@ -217,7 +217,6 @@ public class PlanUseCaseTest {
         Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
         Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
         PlanItem item = new PlanItem("item title2", "item description2");
-        item.startDate = LocalDateTime.now();
         item.timeInterval = Period.ofDays(14);
         item.duration = Duration.ofMinutes(10);
 
@@ -227,7 +226,6 @@ public class PlanUseCaseTest {
         assertEquals(itemId, updatedItem.id);
         assertEquals(item.title, updatedItem.title);
         assertEquals(item.description, updatedItem.description);
-        assertEquals(item.startDate, updatedItem.startDate);
         assertEquals(item.timeInterval, updatedItem.timeInterval);
         assertEquals(item.duration, updatedItem.duration);
     }

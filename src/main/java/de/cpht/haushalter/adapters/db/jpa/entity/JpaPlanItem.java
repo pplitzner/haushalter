@@ -18,7 +18,6 @@ public class JpaPlanItem {
 
     private LocalDateTime checkedAt;
 
-    private LocalDateTime startDate;
     private Period timeInterval; // variable can not be called "interval" -> SQL exception
     private Duration duration;
 
@@ -65,14 +64,6 @@ public class JpaPlanItem {
         this.checkedAt = checkedAt;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
     public Period getTimeInterval() {
         return timeInterval;
     }
@@ -92,7 +83,6 @@ public class JpaPlanItem {
     public void update(PlanItem item) {
         this.title = item.title;
         this.description = item.description;
-        this.startDate = item.startDate;
         this.timeInterval = item.timeInterval;
         this.duration = item.duration;
     }

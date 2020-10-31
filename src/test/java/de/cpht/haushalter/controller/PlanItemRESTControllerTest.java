@@ -31,8 +31,7 @@ public class PlanItemRESTControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-//        Plan plan = new Plan("Test Plan", "Test Description");
-        PlanItem planItem = new PlanItem("Item Title", "Item Description", LocalDateTime.now(), Period.ofDays(1), Duration.ofMinutes(15));
+        PlanItem planItem = new PlanItem("Item Title", "Item Description", Period.ofDays(1), Duration.ofMinutes(15));
         when(planUseCase.getItems(any())).thenReturn(List.of(planItem));
         mvc.perform(get("/plans/1/items").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -40,7 +39,6 @@ public class PlanItemRESTControllerTest {
                 .andExpect(jsonPath("$").isNotEmpty())
                 .andExpect(jsonPath("$[0].title").value(planItem.title))
                 .andExpect(jsonPath("$[0].description").value(planItem.description))
-                .andExpect(jsonPath("$[0].startDate").value(planItem.startDate.toString()))
                 .andExpect(jsonPath("$[0].timeInterval").value(planItem.timeInterval.toString()))
                 .andExpect(jsonPath("$[0].duration").value(planItem.duration.toString()))
                 .andDo(print());
