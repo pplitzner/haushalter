@@ -36,5 +36,6 @@ public interface PlanUseCase {
     PlanItem addItem(Long planId, PlanItem item) throws PlanNotFoundException;
     PlanItem updateItem(Long id, PlanItem item) throws PlanItemNotFoundException;
     void deleteItem(Long id) throws PlanItemNotFoundException;
+    // TODO do not allow timed items to be unchecked; only untimed checklist items can be toggled
     void toggleCheck(Long id) throws  PlanItemNotFoundException;
 }
