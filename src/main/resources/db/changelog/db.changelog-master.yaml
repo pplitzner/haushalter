@@ -81,3 +81,13 @@ databaseChangeLog:
               - column:
                   name: type
                   type: varchar(2)
+  - changeSet:
+      id: Add plan title cache
+      author: pat
+      changes:
+        - addColumn:
+            tableName: plan_item
+            columns:
+              - column:
+                  name: plan_title
+                  type: varchar(50)

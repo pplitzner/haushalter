@@ -23,6 +23,7 @@ public class JpaPlanItem {
     private Duration duration;
 
     private ItemType type;
+    private String planTitle;
 
     @ManyToOne
     private JpaPlan plan;
@@ -89,6 +90,14 @@ public class JpaPlanItem {
 
     public void setType(ItemType type) {
         this.type = type;
+    }
+
+    public String getPlanTitle() {
+        return planTitle;
+    }
+
+    public void setPlanTitle(String planTitle) {
+        this.planTitle = planTitle;
     }
 
     public void update(PlanItem item) {

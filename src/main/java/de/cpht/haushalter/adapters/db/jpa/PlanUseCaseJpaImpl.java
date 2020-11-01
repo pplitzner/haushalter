@@ -77,15 +77,8 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<PlanItem> getTodos() {
-        final List<PlanItem> items = itemRepository.findByType(ItemType.TIMED).stream()
+        return itemRepository.findByType(ItemType.TIMED).stream()
                 .map(DtoMapper::dtoFrom).collect(Collectors.toList());
-        // TODO maybe store plan title already in DB as cache field
-        items.forEach(planItem -> {
-            final JpaPlan jpaPlan = planRepository.findById(planItem.planId)
-                    .orElseThrow(() -> new PlanNotFoundException(planItem.planId));
-            planItem.planTitle = jpaPlan.getTitle();
-        });
-        return items;
     }
 
     @Override
@@ -99,6 +92,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         JpaPlanItem jpaItem = DtoMapper.jpaItemFrom(item);
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         jpaItem.setPlan(plan);
+        jpaItem.setPlanTitle(plan.getTitle());
         if(plan.getType().equals(PlanType.TIMEDLIST)){
             jpaItem.setType(ItemType.TIMED);
         }

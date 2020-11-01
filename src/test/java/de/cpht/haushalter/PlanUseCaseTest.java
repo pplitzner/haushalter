@@ -190,6 +190,7 @@ public class PlanUseCaseTest {
         PlanItem next = items.iterator().next();
         assertEquals(item.title, next.title);
         assertEquals(item.description, next.description);
+        assertEquals(plan.title, next.planTitle);
     }
 
     @Test
