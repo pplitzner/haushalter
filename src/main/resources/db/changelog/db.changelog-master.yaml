@@ -71,7 +71,13 @@ databaseChangeLog:
         - dropColumn:
             columnName: start_date
             tableName: plan_item
-  #- changeSet:
-  #    id: Add item type
-  #    author: pat
-  #    changes: #TODO implement
+  - changeSet:
+      id: Add item type
+      author: pat
+      changes:
+        - addColumn:
+            tableName: plan_item
+            columns:
+              - column:
+                  name: type
+                  type: varchar(2)

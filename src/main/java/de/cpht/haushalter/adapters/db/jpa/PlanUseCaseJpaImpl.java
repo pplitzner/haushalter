@@ -4,6 +4,7 @@ import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlan;
 import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlanItem;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
+import de.cpht.haushalter.domain.entities.ItemType;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.entities.PlanType;
@@ -76,7 +77,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<PlanItem> getTodos() {
-        final List<PlanItem> items = itemRepository.findByCheckedAtNull().stream()
+        final List<PlanItem> items = itemRepository.findTodos().stream()
                 .map(DtoMapper::dtoFrom).collect(Collectors.toList());
         // TODO maybe store plan title already in DB as cache field
         items.forEach(planItem -> {
@@ -98,6 +99,12 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         JpaPlanItem jpaItem = DtoMapper.jpaItemFrom(item);
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         jpaItem.setPlan(plan);
+        if(plan.getType().equals(PlanType.TIMEDLIST)){
+            jpaItem.setType(ItemType.TIMED);
+        }
+        else{
+            jpaItem.setType(ItemType.DEFAULT);
+        }
         return DtoMapper.dtoFrom(itemRepository.save(jpaItem));
     }
 

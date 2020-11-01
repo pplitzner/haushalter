@@ -1,5 +1,6 @@
 package de.cpht.haushalter;
 
+import de.cpht.haushalter.domain.entities.ItemType;
 import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.entities.PlanType;
@@ -189,6 +190,13 @@ public class PlanUseCaseTest {
         PlanItem next = items.iterator().next();
         assertEquals(item.title, next.title);
         assertEquals(item.description, next.description);
+    }
+
+    @Test
+    public void testAddTimedItemToTimedList(){
+        final Plan timedPlan = planUseCase.startPlan("timed plans", "", PlanType.TIMEDLIST);
+        final PlanItem timedItem = planUseCase.addItem(timedPlan.id, new PlanItem("timed item", "td"));
+        assertEquals(ItemType.TIMED, timedItem.type);
     }
 
     @Test

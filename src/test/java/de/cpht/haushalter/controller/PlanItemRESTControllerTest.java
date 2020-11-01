@@ -1,5 +1,6 @@
 package de.cpht.haushalter.controller;
 
+import de.cpht.haushalter.domain.entities.ItemType;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ public class PlanItemRESTControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        PlanItem planItem = new PlanItem("Item Title", "Item Description", Period.ofDays(1), Duration.ofMinutes(15));
+        PlanItem planItem = new PlanItem("Item Title", "Item Description", Period.ofDays(1), Duration.ofMinutes(15), ItemType.TIMED);
         when(planUseCase.getItems(any())).thenReturn(List.of(planItem));
         mvc.perform(get("/plans/1/items").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

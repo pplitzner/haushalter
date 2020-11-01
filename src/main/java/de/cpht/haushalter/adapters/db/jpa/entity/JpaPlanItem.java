@@ -1,5 +1,6 @@
 package de.cpht.haushalter.adapters.db.jpa.entity;
 
+import de.cpht.haushalter.domain.entities.ItemType;
 import de.cpht.haushalter.domain.entities.PlanItem;
 
 import javax.persistence.*;
@@ -20,6 +21,8 @@ public class JpaPlanItem {
 
     private Period timeInterval; // variable can not be called "interval" -> SQL exception
     private Duration duration;
+
+    private ItemType type;
 
     @ManyToOne
     private JpaPlan plan;
@@ -78,6 +81,14 @@ public class JpaPlanItem {
 
     public void setDuration(Duration duration) {
         this.duration = duration;
+    }
+
+    public ItemType getType() {
+        return type;
+    }
+
+    public void setType(ItemType type) {
+        this.type = type;
     }
 
     public void update(PlanItem item) {

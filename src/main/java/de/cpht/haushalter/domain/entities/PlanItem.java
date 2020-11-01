@@ -18,18 +18,22 @@ public class PlanItem {
     public Period timeInterval;
     public Duration duration;
 
+    public ItemType type;
+
     public PlanItem(){}
 
     public PlanItem(String title, String description) {
         this.title = title;
         this.description = description;
+        type = ItemType.DEFAULT;
     }
 
-    public PlanItem(String title, String description, Period timeInterval, Duration duration) {
+    public PlanItem(String title, String description, Period timeInterval, Duration duration, ItemType type) {
         this.title = title;
         this.description = description;
         this.timeInterval = timeInterval;
         this.duration = duration;
+        this.type = type;
     }
 
     @Override
