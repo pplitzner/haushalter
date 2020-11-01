@@ -21,12 +21,6 @@ public interface PlanUseCase {
     boolean checkPlanDone(Long planId);
     Plan startPlanFromDefault(Long defaultPlan) throws PlanNotFoundException, PlanNotDefaultException;
     Plan startPlanForRemainingItems(Long id) throws PlanNotDefaultException;
-
-    /**
-     * Get all items of all plans which are done/checked.
-     * @return a list of checked items
-     */
-    List<PlanItem> getCheckedItems();
     /**
      * Get all items of all plans which are not done/checked and which can be done again.
      * @return a list of items to do

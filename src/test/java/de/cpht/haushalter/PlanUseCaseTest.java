@@ -144,37 +144,37 @@ public class PlanUseCaseTest {
         assertThrows(PlanFinishedException.class, ()->planUseCase.finishPlan(plan.id, false));
     }
 
-    @Test
-    public void testCheckedItems(){
-        final Plan plan1 = planUseCase.startPlan("Plan1", "", PlanType.CHECKLIST);
-        final PlanItem item1 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
-
-        final PlanItem item2 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
-
-        final Plan plan2 = planUseCase.startPlan("", "", PlanType.CHECKLIST);
-        final PlanItem item3 = planUseCase.addItem(plan2.id, new PlanItem("", ""));
-
-        List<PlanItem> checkedItems = planUseCase.getCheckedItems();
-        assertEquals(0, checkedItems.size());
-        List<PlanItem> uncheckedItems = planUseCase.getTodos();
-        assertEquals(3, uncheckedItems.size());
-
-        planUseCase.toggleCheck(item2.id);
-        planUseCase.toggleCheck(item3.id);
-        checkedItems = planUseCase.getCheckedItems();
-        uncheckedItems = planUseCase.getTodos();
-        assertEquals(2, checkedItems.size());
-        assertEquals(1, uncheckedItems.size());
-
-        assertTrue(checkedItems.stream().anyMatch(item->item.id==item3.id));
-        assertTrue(checkedItems.stream().anyMatch(item->item.id==item2.id));
-        assertTrue(checkedItems.stream().noneMatch(item->item.id==item1.id));
-
-        assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item2.id));
-        assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item3.id));
-        assertTrue(uncheckedItems.stream().anyMatch(item->item.id==item1.id));
-        assertTrue(uncheckedItems.stream().anyMatch(item->item.planTitle==plan1.title));
-    }
+//    @Test
+//    public void testCheckedItems(){
+//        final Plan plan1 = planUseCase.startPlan("Plan1", "", PlanType.CHECKLIST);
+//        final PlanItem item1 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
+//
+//        final PlanItem item2 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
+//
+//        final Plan plan2 = planUseCase.startPlan("", "", PlanType.CHECKLIST);
+//        final PlanItem item3 = planUseCase.addItem(plan2.id, new PlanItem("", ""));
+//
+//        List<PlanItem> checkedItems = planUseCase.getCheckedItems();
+//        assertEquals(0, checkedItems.size());
+//        List<PlanItem> uncheckedItems = planUseCase.getTodos();
+//        assertEquals(3, uncheckedItems.size());
+//
+//        planUseCase.toggleCheck(item2.id);
+//        planUseCase.toggleCheck(item3.id);
+//        checkedItems = planUseCase.getCheckedItems();
+//        uncheckedItems = planUseCase.getTodos();
+//        assertEquals(2, checkedItems.size());
+//        assertEquals(1, uncheckedItems.size());
+//
+//        assertTrue(checkedItems.stream().anyMatch(item->item.id==item3.id));
+//        assertTrue(checkedItems.stream().anyMatch(item->item.id==item2.id));
+//        assertTrue(checkedItems.stream().noneMatch(item->item.id==item1.id));
+//
+//        assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item2.id));
+//        assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item3.id));
+//        assertTrue(uncheckedItems.stream().anyMatch(item->item.id==item1.id));
+//        assertTrue(uncheckedItems.stream().anyMatch(item->item.planTitle==plan1.title));
+//    }
 
     @Test
     public void testGetItemsAddItem(){

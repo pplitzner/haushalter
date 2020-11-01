@@ -75,11 +75,6 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public List<PlanItem> getCheckedItems() {
-        return itemRepository.findByCheckedAtNotNull().stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
-    }
-
-    @Override
     public List<PlanItem> getTodos() {
         final List<PlanItem> items = itemRepository.findByCheckedAtNull().stream()
                 .map(DtoMapper::dtoFrom).collect(Collectors.toList());
