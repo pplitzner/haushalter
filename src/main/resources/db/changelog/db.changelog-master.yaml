@@ -64,3 +64,14 @@ databaseChangeLog:
                       nullable: false
                       references: plan(id)
                       foreignKeyName: fk_plan_id
+  - changeSet:
+      id: Remove startDate
+      author: pat
+      changes:
+        - dropColumn:
+            columnName: start_date
+            tableName: plan_item
+  #- changeSet:
+  #    id: Add item type
+  #    author: pat
+  #    changes: #TODO implement
