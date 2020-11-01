@@ -77,7 +77,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<PlanItem> getTodos() {
-        final List<PlanItem> items = itemRepository.findTodos().stream()
+        final List<PlanItem> items = itemRepository.findByType(ItemType.TIMED).stream()
                 .map(DtoMapper::dtoFrom).collect(Collectors.toList());
         // TODO maybe store plan title already in DB as cache field
         items.forEach(planItem -> {
