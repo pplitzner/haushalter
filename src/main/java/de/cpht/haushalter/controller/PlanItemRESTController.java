@@ -36,6 +36,6 @@ public class PlanItemRESTController {
 
     @PostMapping("{id}/toggleCheck")
     public void checkItem(@PathVariable Long id){
-        planUseCase.toggleCheck(id);
+        planUseCase.checkItem(id);
     }
 }

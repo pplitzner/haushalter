@@ -5,10 +5,7 @@ import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.entities.PlanType;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
-import de.cpht.haushalter.exception.PlanFinishedException;
-import de.cpht.haushalter.exception.PlanItemNotFoundException;
-import de.cpht.haushalter.exception.PlanNotDefaultException;
-import de.cpht.haushalter.exception.PlanNotFoundException;
+import de.cpht.haushalter.exception.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -252,20 +249,34 @@ public class PlanUseCaseTest {
         assertNull(item.checkedAt);
 
         LocalDateTime now = LocalDateTime.now();
-        planUseCase.toggleCheck(itemId);
+        planUseCase.checkItem(itemId);
         item = planUseCase.getItems(plan.id).iterator().next();
         assertNotNull(item.checkedAt);
         assertTrue(now.isBefore(item.checkedAt));
 
-        planUseCase.toggleCheck(itemId);
+        planUseCase.checkItem(itemId);
         item = planUseCase.getItems(plan.id).iterator().next();
         assertNull(item.checkedAt);
     }
 
     @Test
     public void testCheckItemPlanItemNotFoundException() {
-        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.toggleCheck(1L));
-        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.toggleCheck(1L));
+        assertThrows(PlanItemNotFoundException.class, ()->planUseCase.checkItem(1L));
+    }
+
+    @Test
+    public void testFinishTimedItem() {
+        final Plan plan = planUseCase.startPlan("", "", PlanType.TIMEDLIST);
+        PlanItem planItem = planUseCase.addItem(plan.id, new PlanItem("", ""));
+        assertNull(planItem.checkedAt);
+        planUseCase.checkItem(planItem.id);
+        planItem = planUseCase.getItems(plan.id).iterator().next();
+        assertNotNull(planItem.checkedAt);
+        final LocalDateTime checkedAtFirstTime = planItem.checkedAt;
+        planUseCase.checkItem(planItem.id);
+        planItem = planUseCase.getItems(plan.id).iterator().next();
+        assertNotNull(planItem.checkedAt);
+        assertTrue(checkedAtFirstTime.isBefore(planItem.checkedAt));
     }
 
     @Test
@@ -312,7 +323,7 @@ public class PlanUseCaseTest {
         planUseCase.addItem(plan.id, new PlanItem(unchecked_item, "should be copied"));
         planUseCase.getItems(plan.id).stream()
                 .filter(item->!item.title.equals(unchecked_item))
-                .forEach(item->planUseCase.toggleCheck(item.id));
+                .forEach(item->planUseCase.checkItem(item.id));
         Plan remainingItemsPlan = planUseCase.startPlanForRemainingItems(plan.id);
         plan = planUseCase.getPlanById(plan.id);
         assertTrue(plan.done);
