@@ -1,7 +1,10 @@
 package de.cpht.haushalter.domain.entities;
 
 public enum ItemPriority {
-    NOT_AVAILABLE("NA"), CAN_BE_DONE("CB"), PERFECT_TIME("PT"), RED_ALERT("RA");
+    RED_ALERT("RA"),
+    PERFECT_TIME("PT"),
+    CAN_BE_DONE("CB"),
+    NOT_AVAILABLE("NA");
 
     private String code;
 
