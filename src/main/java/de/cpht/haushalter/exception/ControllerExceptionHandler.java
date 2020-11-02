@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ControllerExceptionHandler {
 
     @ResponseBody
-    @ExceptionHandler(PlanNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String planNotFoundHandler(PlanNotFoundException ex) {
+    @ExceptionHandler(PlanFinishedException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    String planFinishedHandler(PlanFinishedException ex) {
         return ex.getMessage();
     }
 
@@ -27,6 +27,13 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(PlanNotDefaultException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     String planNotDefaultHandler(PlanNotDefaultException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(PlanNotFoundException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    String planNotFoundHandler(PlanNotFoundException ex) {
         return ex.getMessage();
     }
 }
