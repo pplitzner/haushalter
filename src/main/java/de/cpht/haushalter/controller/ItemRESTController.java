@@ -18,8 +18,8 @@ public class ItemRESTController {
     @Autowired
     private PlanUseCase planUseCase;
 
-    @GetMapping("todo")
-    public List<PlanItem> getTodos(@RequestParam ItemType type){
+    @GetMapping
+    public List<PlanItem> getItemsByType(@RequestParam ItemType type){
         return planUseCase.getItemsByType(type);
     }
 
