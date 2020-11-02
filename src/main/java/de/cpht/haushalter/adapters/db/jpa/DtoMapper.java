@@ -15,6 +15,7 @@ public class DtoMapper {
         jpaPlanItem.setTimeInterval(item.timeInterval);
         jpaPlanItem.setDuration(item.duration);
         jpaPlanItem.setType(item.type);
+        jpaPlanItem.setPriority(item.priority);
         jpaPlanItem.setPlanTitle(item.planTitle);
         return jpaPlanItem;
     }
@@ -29,6 +30,7 @@ public class DtoMapper {
         item.timeInterval = jpaPlanItem.getTimeInterval();
         item.duration = jpaPlanItem.getDuration();
         item.type = jpaPlanItem.getType();
+        item.priority = jpaPlanItem.getPriority();
         item.planTitle = jpaPlanItem.getPlanTitle();
         return item;
     }

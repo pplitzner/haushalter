@@ -115,5 +115,6 @@ public class JpaPlanItem {
         this.description = item.description;
         this.timeInterval = item.timeInterval;
         this.duration = item.duration;
+        this.priority = item.priority;
     }
 }
