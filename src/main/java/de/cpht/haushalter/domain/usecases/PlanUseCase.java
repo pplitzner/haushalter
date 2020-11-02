@@ -24,5 +24,5 @@ public interface PlanUseCase {
     PlanItem addItem(Long planId, PlanItem item) throws PlanNotFoundException;
     PlanItem updateItem(Long id, PlanItem item) throws PlanItemNotFoundException;
     void deleteItem(Long id) throws PlanItemNotFoundException;
-    void checkItem(Long id) throws PlanItemNotFoundException;
+    void checkItem(Long id) throws PlanItemNotFoundException, TimedItemNotFinishableException;
 }

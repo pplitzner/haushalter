@@ -24,6 +24,13 @@ public class ControllerExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(TimedItemNotFinishableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String timedItemNotFinishableHandler(TimedItemNotFinishableException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
     @ExceptionHandler(PlanNotDefaultException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     String planNotDefaultHandler(PlanNotDefaultException ex) {

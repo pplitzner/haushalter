@@ -1,17 +1,13 @@
 package de.cpht.haushalter;
 
-import de.cpht.haushalter.domain.entities.ItemType;
-import de.cpht.haushalter.domain.entities.Plan;
-import de.cpht.haushalter.domain.entities.PlanItem;
-import de.cpht.haushalter.domain.entities.PlanType;
+import de.cpht.haushalter.domain.entities.*;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
-import de.cpht.haushalter.exception.PlanFinishedException;
-import de.cpht.haushalter.exception.PlanItemNotFoundException;
-import de.cpht.haushalter.exception.PlanNotDefaultException;
-import de.cpht.haushalter.exception.PlanNotFoundException;
+import de.cpht.haushalter.exception.*;
+import de.cpht.haushalter.service.ItemPrioritizerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
@@ -25,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 public class PlanUseCaseTest {
+
+    @MockBean
+    private ItemPrioritizerService itemPrioritizerService; // mock away for testing
 
     @Autowired
     private PlanUseCase planUseCase;
@@ -264,19 +263,48 @@ public class PlanUseCaseTest {
     @Test
     public void testCheckItem(){
         Plan plan = planUseCase.startPlan("t", "d", PlanType.CHECKLIST);
-        Long itemId = planUseCase.addItem(plan.id, new PlanItem("it", "id")).id;
-        PlanItem item = planUseCase.getItems(plan.id).iterator().next();
+        PlanItem item = planUseCase.addItem(plan.id, new PlanItem("it", "id"));
         assertNull(item.checkedAt);
 
         LocalDateTime now = LocalDateTime.now();
-        planUseCase.checkItem(itemId);
+        planUseCase.checkItem(item.id);
         item = planUseCase.getItems(plan.id).iterator().next();
         assertNotNull(item.checkedAt);
         assertTrue(now.isBefore(item.checkedAt));
 
-        planUseCase.checkItem(itemId);
+        planUseCase.checkItem(item.id);
         item = planUseCase.getItems(plan.id).iterator().next();
         assertNull(item.checkedAt);
+    }
+
+    @Test
+    public void testCheckTimedItem(){
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.TIMEDLIST);
+        PlanItem item = planUseCase.addItem(plan.id, new PlanItem("it", "id"));
+        item.timeInterval = Period.ofMonths(1);
+        item = planUseCase.updateItem(item.id, item);
+        assertNull(item.checkedAt);
+
+        LocalDateTime now = LocalDateTime.now();
+        planUseCase.checkItem(item.id);
+        item = planUseCase.getItems(plan.id).iterator().next();
+        assertNotNull(item.checkedAt);
+        assertTrue(now.isBefore(item.checkedAt));
+
+        assertNotNull(item.priority);
+        assertEquals(ItemPriority.NOT_AVAILABLE, item.priority);
+
+    }
+
+    @Test
+    public void testCheckTimedItemNotFinishableException(){
+        Plan plan = planUseCase.startPlan("t", "d", PlanType.TIMEDLIST);
+        PlanItem item = planUseCase.addItem(plan.id, new PlanItem("it", "id"));
+        item.timeInterval = Period.ofMonths(1);
+        PlanItem updatedItem = planUseCase.updateItem(item.id, item);
+        planUseCase.checkItem(updatedItem.id);
+        assertThrows(TimedItemNotFinishableException.class, ()->planUseCase.checkItem(updatedItem.id));
+
     }
 
     @Test

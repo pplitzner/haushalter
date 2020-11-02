@@ -4,15 +4,10 @@ import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlan;
 import de.cpht.haushalter.adapters.db.jpa.entity.JpaPlanItem;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
-import de.cpht.haushalter.domain.entities.ItemType;
-import de.cpht.haushalter.domain.entities.Plan;
-import de.cpht.haushalter.domain.entities.PlanItem;
-import de.cpht.haushalter.domain.entities.PlanType;
+import de.cpht.haushalter.domain.entities.*;
+import de.cpht.haushalter.domain.usecases.ItemPrioritizer;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
-import de.cpht.haushalter.exception.PlanFinishedException;
-import de.cpht.haushalter.exception.PlanItemNotFoundException;
-import de.cpht.haushalter.exception.PlanNotDefaultException;
-import de.cpht.haushalter.exception.PlanNotFoundException;
+import de.cpht.haushalter.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -115,13 +110,17 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public void checkItem(Long id) throws PlanItemNotFoundException {
+    public void checkItem(Long id) throws PlanItemNotFoundException, TimedItemNotFinishableException {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         if(jpaItem.getType().equals(ItemType.DEFAULT)){
             jpaItem.setCheckedAt(jpaItem.getCheckedAt()==null?LocalDateTime.now():null);
         }
         else if(jpaItem.getType().equals(ItemType.TIMED)){
+            if(jpaItem.getPriority()!=null && jpaItem.getPriority().equals(ItemPriority.NOT_AVAILABLE)){
+                throw new TimedItemNotFinishableException(jpaItem.getId());
+            }
             jpaItem.setCheckedAt(LocalDateTime.now());
+            jpaItem.setPriority(ItemPrioritizer.getPriority(jpaItem.getCheckedAt(), jpaItem.getTimeInterval()));
         }
         itemRepository.save(jpaItem);
     }
