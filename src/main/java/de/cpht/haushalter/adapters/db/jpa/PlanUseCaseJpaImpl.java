@@ -9,7 +9,10 @@ import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.entities.PlanType;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
-import de.cpht.haushalter.exception.*;
+import de.cpht.haushalter.exception.PlanFinishedException;
+import de.cpht.haushalter.exception.PlanItemNotFoundException;
+import de.cpht.haushalter.exception.PlanNotDefaultException;
+import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -73,9 +76,8 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public List<PlanItem> getTodos() {
-        return itemRepository.findByType(ItemType.TIMED).stream()
-                .map(DtoMapper::dtoFrom).collect(Collectors.toList());
+    public List<PlanItem> getItemsByType(ItemType type) {
+        return itemRepository.findByType(type).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override

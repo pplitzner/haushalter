@@ -5,7 +5,10 @@ import de.cpht.haushalter.domain.entities.Plan;
 import de.cpht.haushalter.domain.entities.PlanItem;
 import de.cpht.haushalter.domain.entities.PlanType;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
-import de.cpht.haushalter.exception.*;
+import de.cpht.haushalter.exception.PlanFinishedException;
+import de.cpht.haushalter.exception.PlanItemNotFoundException;
+import de.cpht.haushalter.exception.PlanNotDefaultException;
+import de.cpht.haushalter.exception.PlanNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +18,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -142,37 +146,53 @@ public class PlanUseCaseTest {
         assertThrows(PlanFinishedException.class, ()->planUseCase.finishPlan(plan.id, false));
     }
 
-//    @Test
-//    public void testCheckedItems(){
-//        final Plan plan1 = planUseCase.startPlan("Plan1", "", PlanType.CHECKLIST);
-//        final PlanItem item1 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
-//
-//        final PlanItem item2 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
-//
-//        final Plan plan2 = planUseCase.startPlan("", "", PlanType.CHECKLIST);
-//        final PlanItem item3 = planUseCase.addItem(plan2.id, new PlanItem("", ""));
-//
-//        List<PlanItem> checkedItems = planUseCase.getCheckedItems();
-//        assertEquals(0, checkedItems.size());
-//        List<PlanItem> uncheckedItems = planUseCase.getTodos();
-//        assertEquals(3, uncheckedItems.size());
-//
-//        planUseCase.toggleCheck(item2.id);
-//        planUseCase.toggleCheck(item3.id);
-//        checkedItems = planUseCase.getCheckedItems();
-//        uncheckedItems = planUseCase.getTodos();
-//        assertEquals(2, checkedItems.size());
-//        assertEquals(1, uncheckedItems.size());
-//
-//        assertTrue(checkedItems.stream().anyMatch(item->item.id==item3.id));
-//        assertTrue(checkedItems.stream().anyMatch(item->item.id==item2.id));
-//        assertTrue(checkedItems.stream().noneMatch(item->item.id==item1.id));
-//
-//        assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item2.id));
-//        assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item3.id));
-//        assertTrue(uncheckedItems.stream().anyMatch(item->item.id==item1.id));
-//        assertTrue(uncheckedItems.stream().anyMatch(item->item.planTitle==plan1.title));
-//    }
+    @Test
+    public void testItemsByType(){
+        final Plan timedPlan = planUseCase.startPlan("", "", PlanType.TIMEDLIST);
+        final PlanItem timedItem = planUseCase.addItem(timedPlan.id, new PlanItem("timed", "item"));
+
+        final Plan checklist = planUseCase.startPlan("", "", PlanType.CHECKLIST);
+        final PlanItem defaultItem = planUseCase.addItem(checklist.id, new PlanItem("default", "item"));
+
+        final List<PlanItem> timedItems = planUseCase.getItemsByType(ItemType.TIMED);
+        final List<PlanItem> defaultItems = planUseCase.getItemsByType(ItemType.DEFAULT);
+
+        assertEquals(1, timedItems.size());
+        assertTrue(timedItems.contains(timedItem));
+        assertEquals(1, defaultItems.size());
+        assertTrue(defaultItems.contains(defaultItem));
+
+    }
+
+    @Test
+    public void testCheckedItems(){
+        final Plan plan1 = planUseCase.startPlan("Plan1", "", PlanType.CHECKLIST);
+        final PlanItem item1 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
+
+        final PlanItem item2 = planUseCase.addItem(plan1.id, new PlanItem("", ""));
+
+        final Plan plan2 = planUseCase.startPlan("", "", PlanType.CHECKLIST);
+        final PlanItem item3 = planUseCase.addItem(plan2.id, new PlanItem("", ""));
+
+        planUseCase.checkItem(item2.id);
+        planUseCase.checkItem(item3.id);
+        List<PlanItem> defaultItems = planUseCase.getItemsByType(ItemType.DEFAULT);
+        final List<PlanItem> checkedItems = defaultItems.stream()
+                .filter(planItem -> planItem.checkedAt != null).collect(Collectors.toList());
+        final List<PlanItem> uncheckedItems = defaultItems.stream()
+                .filter(planItem -> planItem.checkedAt == null).collect(Collectors.toList());
+        assertEquals(2, checkedItems.size());
+        assertEquals(1, uncheckedItems.size());
+
+        assertTrue(checkedItems.stream().anyMatch(item->item.id==item3.id));
+        assertTrue(checkedItems.stream().anyMatch(item->item.id==item2.id));
+        assertTrue(checkedItems.stream().noneMatch(item->item.id==item1.id));
+
+        assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item2.id));
+        assertTrue(uncheckedItems.stream().noneMatch(item->item.id==item3.id));
+        assertTrue(uncheckedItems.stream().anyMatch(item->item.id==item1.id));
+        assertTrue(uncheckedItems.stream().anyMatch(item->item.planTitle==plan1.title));
+    }
 
     @Test
     public void testGetItemsAddItem(){

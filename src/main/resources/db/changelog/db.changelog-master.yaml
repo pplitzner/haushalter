@@ -91,3 +91,13 @@ databaseChangeLog:
               - column:
                   name: plan_title
                   type: varchar(50)
+  - changeSet:
+      id: Add item priority
+      author: pat
+      changes:
+        - addColumn:
+            tableName: plan_item
+            columns:
+              - column:
+                  name: priority
+                  type: varchar(2)

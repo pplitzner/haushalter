@@ -1,5 +1,6 @@
 package de.cpht.haushalter.adapters.db.jpa.entity;
 
+import de.cpht.haushalter.domain.entities.ItemPriority;
 import de.cpht.haushalter.domain.entities.ItemType;
 import de.cpht.haushalter.domain.entities.PlanItem;
 
@@ -23,6 +24,7 @@ public class JpaPlanItem {
     private Duration duration;
 
     private ItemType type;
+    private ItemPriority priority;
     private String planTitle;
 
     @ManyToOne
@@ -90,6 +92,14 @@ public class JpaPlanItem {
 
     public void setType(ItemType type) {
         this.type = type;
+    }
+
+    public ItemPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(ItemPriority priority) {
+        this.priority = priority;
     }
 
     public String getPlanTitle() {

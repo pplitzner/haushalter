@@ -19,6 +19,7 @@ public class PlanItem {
     public Duration duration;
 
     public ItemType type;
+    public ItemPriority priority;
 
     public PlanItem(){}
 
