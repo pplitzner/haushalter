@@ -11,7 +11,7 @@ public class ItemPrioritizerService {
     @Autowired
     private PlanUseCase planUseCase;
 
-    @Scheduled(fixedRate = 86400000) // 24h
+    @Scheduled(fixedRate = 46800000) // 13h
     private void setItemPriority() {
         ItemPrioritizer.setPriority(planUseCase);
     }
