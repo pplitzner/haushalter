@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,11 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     @Override
     public List<PlanItem> getItemsByType(ItemType type) {
         return itemRepository.findByType(type).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PlanItem> getItemsByTimeInterval(Period timeInterval) {
+        return itemRepository.findByTimeInterval(timeInterval).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
     @Override

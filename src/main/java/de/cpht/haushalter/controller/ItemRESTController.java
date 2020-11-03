@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Period;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,11 @@ public class ItemRESTController {
     @GetMapping
     public List<PlanItem> getItemsByType(@RequestParam ItemType type){
         return planUseCase.getItemsByType(type);
+    }
+
+    @GetMapping
+    public List<PlanItem> getItemsByTimeInterval(@RequestParam Period timeInterval){
+        return planUseCase.getItemsByTimeInterval(timeInterval);
     }
 
 }
