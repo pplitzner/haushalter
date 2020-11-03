@@ -15,6 +15,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ItemPriorityTest {
 
     @Test
+    public void testItemPriorityDaily(){
+        assertEquals(ItemPriority.PERFECT_TIME, ItemPrioritizer.getPriority(null, null));
+        LocalDateTime now = LocalDateTime.now();
+
+        Period timeInterval = Period.ofDays(1);
+
+        LocalDateTime checkedAt = now.minusDays(1).minusMinutes(1);
+        assertEquals(ItemPriority.RED_ALERT, ItemPrioritizer.getPriority(checkedAt, timeInterval));
+
+        checkedAt = now.minusDays(1).plusMinutes(1);
+        assertEquals(ItemPriority.PERFECT_TIME, ItemPrioritizer.getPriority(checkedAt, timeInterval));
+
+        checkedAt = now.minusHours(12).minusMinutes(1);
+        assertEquals(ItemPriority.CAN_BE_DONE, ItemPrioritizer.getPriority(checkedAt, timeInterval));
+
+        checkedAt = now.minusMinutes(1);
+        assertEquals(ItemPriority.NOT_AVAILABLE, ItemPrioritizer.getPriority(checkedAt, timeInterval));
+
+    }
+
+    @Test
     public void testItemPriorityWeekly(){
         assertEquals(ItemPriority.PERFECT_TIME, ItemPrioritizer.getPriority(null, null));
         LocalDateTime now = LocalDateTime.now();
@@ -53,7 +74,7 @@ public class ItemPriorityTest {
     public void testItemPriorityMonthly(){
         assertEquals(ItemPriority.PERFECT_TIME, ItemPrioritizer.getPriority(null, null));
         LocalDateTime now = LocalDateTime.now();
-        // weekly items
+        // monthly items
         Period timeInterval = Period.ofMonths(1);
 
         LocalDateTime checkedAt = now.minusWeeks(5);

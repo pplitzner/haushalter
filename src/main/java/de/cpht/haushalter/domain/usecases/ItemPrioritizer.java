@@ -24,11 +24,11 @@ public class ItemPrioritizer {
             // initial case
             return ItemPriority.PERFECT_TIME;
         }
-        final long timeSinceLastDone = ChronoUnit.DAYS.between(checkedAt, LocalDateTime.now());
-        final long timeAfterOneInterval = ChronoUnit.DAYS.between(checkedAt, checkedAt.plus(timeInterval));
+        long timeSinceLastDone = ChronoUnit.MINUTES.between(checkedAt, LocalDateTime.now());
+        long timeAfterOneInterval = ChronoUnit.MINUTES.between(checkedAt, checkedAt.plus(timeInterval));
 
         float halfInterval = Math.round(timeAfterOneInterval / 2f);
-        int perfectInterval = Math.round(timeAfterOneInterval * .9f);
+        int perfectInterval = Math.round(timeAfterOneInterval * .8f);
         if(timeSinceLastDone<halfInterval){
             return ItemPriority.NOT_AVAILABLE;
         }
