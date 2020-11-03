@@ -12,4 +12,5 @@ public interface PlanItemRepository extends JpaRepository<JpaPlanItem, Long> {
     List<JpaPlanItem> findByPlan(JpaPlan plan);
     List<JpaPlanItem> findByType(ItemType type);
     List<JpaPlanItem> findByTimeInterval(Period timeInterval);
+    List<JpaPlanItem> findByTimeIntervalNot(Period timeInterval);
 }

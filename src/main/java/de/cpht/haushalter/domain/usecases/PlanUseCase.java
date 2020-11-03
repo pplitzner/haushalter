@@ -22,6 +22,8 @@ public interface PlanUseCase {
     Plan startPlanForRemainingItems(Long id) throws PlanNotDefaultException;
     List<PlanItem> getItemsByType(ItemType type);
     List<PlanItem> getItemsByTimeInterval(Period timeInterval);
+    List<PlanItem> getDaylies();
+    List<PlanItem> getNotDaylies();
     List<PlanItem> getItems(Long planId) throws PlanNotFoundException;
     PlanItem addItem(Long planId, PlanItem item) throws PlanNotFoundException;
     PlanItem updateItem(Long id, PlanItem item) throws PlanItemNotFoundException;

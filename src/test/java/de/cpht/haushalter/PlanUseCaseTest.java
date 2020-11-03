@@ -179,7 +179,25 @@ public class PlanUseCaseTest {
         assertTrue(timedItems.contains(timedItem));
         assertEquals(1, defaultItems.size());
         assertTrue(defaultItems.contains(defaultItem));
+    }
 
+    @Test
+    public void testGetDailiesGetNotDaylies(){
+        final Plan plan = planUseCase.startPlan("", "", PlanType.TIMEDLIST);
+        final PlanItem i1 = planUseCase.addItem(plan.id, new PlanItem("i1", ""));
+        i1.timeInterval = Period.ofDays(1);
+        planUseCase.updateItem(i1.id, i1);
+        final PlanItem i2 = planUseCase.addItem(plan.id, new PlanItem("i2", ""));
+        i2.timeInterval = Period.ofMonths(1);
+        planUseCase.updateItem(i2.id, i2);
+
+        final List<PlanItem> dailys = planUseCase.getDaylies();
+        assertEquals(1, dailys.size());
+        assertTrue(dailys.contains(i1));
+
+        final List<PlanItem> monthlys = planUseCase.getNotDaylies();
+        assertEquals(1, monthlys.size());
+        assertTrue(monthlys.contains(i2));
     }
 
     @Test
