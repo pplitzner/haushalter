@@ -16,14 +16,14 @@ public class ItemRESTController {
     @Autowired
     private PlanUseCase planUseCase;
 
-    @GetMapping("daylies")
-    public List<PlanItem> getDaylies(){
-        return planUseCase.getDaylies();
+    @GetMapping("daily")
+    public List<PlanItem> getDaily(){
+        return planUseCase.getDaily();
     }
 
-    @GetMapping("notDaylies")
-    public List<PlanItem> getNotDaylies(){
-        return planUseCase.getNotDaylies();
+    @GetMapping("notDaily")
+    public List<PlanItem> getNotDaily(){
+        return planUseCase.getNotDaily();
     }
 
 }

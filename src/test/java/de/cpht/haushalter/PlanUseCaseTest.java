@@ -191,11 +191,11 @@ public class PlanUseCaseTest {
         i2.timeInterval = Period.ofMonths(1);
         planUseCase.updateItem(i2.id, i2);
 
-        final List<PlanItem> dailys = planUseCase.getDaylies();
+        final List<PlanItem> dailys = planUseCase.getDaily();
         assertEquals(1, dailys.size());
         assertTrue(dailys.contains(i1));
 
-        final List<PlanItem> monthlys = planUseCase.getNotDaylies();
+        final List<PlanItem> monthlys = planUseCase.getNotDaily();
         assertEquals(1, monthlys.size());
         assertTrue(monthlys.contains(i2));
     }

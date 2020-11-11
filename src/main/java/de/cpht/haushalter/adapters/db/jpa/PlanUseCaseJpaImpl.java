@@ -82,12 +82,12 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
     }
 
     @Override
-    public List<PlanItem> getDaylies() {
+    public List<PlanItem> getDaily() {
         return getItemsByTimeInterval(Period.ofDays(1));
     }
 
     @Override
-    public List<PlanItem> getNotDaylies() {
+    public List<PlanItem> getNotDaily() {
         return itemRepository.findByTimeIntervalNot(Period.ofDays(1)).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
     }
 
