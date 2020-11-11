@@ -18,7 +18,7 @@ import java.time.Period;
 
 @SpringBootApplication
 @EnableScheduling
-public class HaushalterApplication /* implements CommandLineRunner*/ {
+public class HaushalterApplication {// implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HaushalterApplication.class, args);
@@ -77,10 +77,37 @@ public class HaushalterApplication /* implements CommandLineRunner*/ {
 //		JpaPlanItem item4 = new JpaPlanItem();
 //		item4.setTitle("Hundefutter einweichen");
 //		item4.setType(ItemType.TIMED);
-//		item4.setDuration(Duration.ofMinutes(30));
+//		item4.setDuration(Duration.ofMinutes(60));
 //		item4.setTimeInterval(Period.ofMonths(1));
 //		item4.setCheckedAt(LocalDateTime.now().minusMonths(1).minusDays(1));
 //		item4.setPlan(plan);
 //		itemRepository.save(item4);
+//
+//		JpaPlanItem item6 = new JpaPlanItem();
+//		item6.setTitle("Zähne putzen");
+//		item6.setType(ItemType.TIMED);
+//		item6.setDuration(Duration.ofMinutes(1));
+//		item6.setTimeInterval(Period.ofDays(1));
+//		item6.setCheckedAt(LocalDateTime.now().minusHours(1));
+//		item6.setPlan(plan);
+//		itemRepository.save(item6);
+//
+//		JpaPlanItem item7 = new JpaPlanItem();
+//		item7.setTitle("Gesicht waschen");
+//		item7.setType(ItemType.TIMED);
+//		item7.setDuration(Duration.ofMinutes(3));
+//		item7.setTimeInterval(Period.ofDays(1));
+//		item7.setCheckedAt(LocalDateTime.now().minusHours(13));
+//		item7.setPlan(plan);
+//		itemRepository.save(item7);
+//
+//		JpaPlanItem item8 = new JpaPlanItem();
+//		item8.setTitle("Zahnseide");
+//		item8.setType(ItemType.TIMED);
+//		item8.setDuration(Duration.ofMinutes(3));
+//		item8.setTimeInterval(Period.ofDays(1));
+//		item8.setCheckedAt(LocalDateTime.now().minusHours(23));
+//		item8.setPlan(plan);
+//		itemRepository.save(item8);
 //	}
 }
