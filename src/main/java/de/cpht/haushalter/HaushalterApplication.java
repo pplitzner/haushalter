@@ -6,10 +6,12 @@ import de.cpht.haushalter.adapters.db.jpa.repository.PlanItemRepository;
 import de.cpht.haushalter.adapters.db.jpa.repository.PlanRepository;
 import de.cpht.haushalter.domain.entities.ItemType;
 import de.cpht.haushalter.domain.entities.PlanType;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.Duration;
@@ -28,6 +30,12 @@ public class HaushalterApplication {// implements CommandLineRunner {
 //	private PlanRepository planRepository;
 //	@Autowired
 //	private PlanItemRepository itemRepository;
+
+	@Bean
+	public ModelMapper modelMapper() {
+		final ModelMapper modelMapper = new ModelMapper();
+		return modelMapper;
+	}
 //
 //	@Override
 //	public void run(String... args) {

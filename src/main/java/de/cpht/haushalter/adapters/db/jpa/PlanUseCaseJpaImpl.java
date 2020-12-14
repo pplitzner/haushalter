@@ -8,6 +8,7 @@ import de.cpht.haushalter.domain.entities.*;
 import de.cpht.haushalter.domain.usecases.ItemPrioritizer;
 import de.cpht.haushalter.domain.usecases.PlanUseCase;
 import de.cpht.haushalter.exception.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,25 +21,30 @@ import java.util.stream.Collectors;
 public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Autowired
-    PlanRepository planRepository;
+    private PlanRepository planRepository;
     @Autowired
-    PlanItemRepository itemRepository;
+    private PlanItemRepository itemRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<Plan> showAllPlans(PlanType type) {
-        return planRepository.findByTypeAndDoneFalseOrderByTitle(type).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+        return planRepository.findByTypeAndDoneFalseOrderByTitle(type).stream()
+                .map(plan -> modelMapper.map(plan, Plan.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Plan getPlanById(Long id) {
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
-        return DtoMapper.dtoFrom(plan);
+        return modelMapper.map(plan, Plan.class);
     }
 
     @Override
     public Plan startPlan(String title, String description, PlanType type) {
         JpaPlan plan = createJpaPlan(title, description, type);
-        return DtoMapper.dtoFrom(planRepository.save(plan));
+        return modelMapper.map(planRepository.save(plan), Plan.class);
     }
 
     @Override
@@ -54,7 +60,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
             throw new PlanFinishedException(plan.getId());
         }
         plan.update(updatedPlan);
-        return DtoMapper.dtoFrom(planRepository.save(plan));
+        return modelMapper.map(planRepository.save(plan), Plan.class);
     }
 
     @Override
@@ -73,12 +79,12 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<PlanItem> getItemsByType(ItemType type) {
-        return itemRepository.findByType(type).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+        return itemRepository.findByType(type).stream().map(item -> modelMapper.map(item, PlanItem.class)).collect(Collectors.toList());
     }
 
     @Override
     public List<PlanItem> getItemsByTimeInterval(Period timeInterval) {
-        return itemRepository.findByTimeInterval(timeInterval).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+        return itemRepository.findByTimeInterval(timeInterval).stream().map(item -> modelMapper.map(item, PlanItem.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -88,35 +94,34 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
 
     @Override
     public List<PlanItem> getNotDaily() {
-        return itemRepository.findByTimeIntervalNot(Period.ofDays(1)).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+        return itemRepository.findByTimeIntervalNot(Period.ofDays(1)).stream().map(item -> modelMapper.map(item, PlanItem.class)).collect(Collectors.toList());
     }
 
     @Override
     public List<PlanItem> getItems(Long id) throws PlanNotFoundException{
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
-        return itemRepository.findByPlan(plan).stream().map(DtoMapper::dtoFrom).collect(Collectors.toList());
+        return itemRepository.findByPlan(plan).stream().map(item -> modelMapper.map(item, PlanItem.class)).collect(Collectors.toList());
     }
 
     @Override
     public PlanItem addItem(Long id, PlanItem item) throws PlanNotFoundException{
-        JpaPlanItem jpaItem = DtoMapper.jpaItemFrom(item);
+        JpaPlanItem jpaItem = modelMapper.map(item, JpaPlanItem.class);
         JpaPlan plan = planRepository.findById(id).orElseThrow(() -> new PlanNotFoundException(id));
         jpaItem.setPlan(plan);
-        jpaItem.setPlanTitle(plan.getTitle());
         if(plan.getType().equals(PlanType.TIMEDLIST)){
             jpaItem.setType(ItemType.TIMED);
         }
         else{
             jpaItem.setType(ItemType.DEFAULT);
         }
-        return DtoMapper.dtoFrom(itemRepository.save(jpaItem));
+        return modelMapper.map(itemRepository.save(jpaItem), PlanItem.class);
     }
 
     @Override
     public PlanItem updateItem(Long id, PlanItem item) throws PlanNotFoundException {
         JpaPlanItem jpaItem = itemRepository.findById(id).orElseThrow(() -> new PlanItemNotFoundException(id));
         jpaItem.update(item);
-        return DtoMapper.dtoFrom(itemRepository.save(jpaItem));
+        return modelMapper.map(itemRepository.save(jpaItem), PlanItem.class);
     }
 
     @Override
@@ -149,7 +154,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         }
         JpaPlan jpaPlan = planRepository.save(createJpaPlan(defaultPlan.getTitle(), defaultPlan.getDescription(), PlanType.CHECKLIST));
         getItems(defaultPlan.getId()).forEach(item->addItem(jpaPlan.getId(), item));
-        return DtoMapper.dtoFrom(planRepository.save(jpaPlan));
+        return modelMapper.map(planRepository.save(jpaPlan), Plan.class);
     }
 
     @Override
@@ -161,7 +166,7 @@ public class PlanUseCaseJpaImpl implements PlanUseCase {
         getItems(plan.getId()).stream()
                 .filter(item->item.checkedAt==null)
                 .forEach(uncheckedItem->addItem(remainingItemsPlan.getId(), uncheckedItem));
-        return DtoMapper.dtoFrom(planRepository.save(remainingItemsPlan));
+        return modelMapper.map(planRepository.save(remainingItemsPlan), Plan.class);
     }
 
     @Override

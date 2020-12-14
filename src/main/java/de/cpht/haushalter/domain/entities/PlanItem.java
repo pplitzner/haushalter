@@ -37,6 +37,86 @@ public class PlanItem {
         this.type = type;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getCheckedAt() {
+        return checkedAt;
+    }
+
+    public void setCheckedAt(LocalDateTime checkedAt) {
+        this.checkedAt = checkedAt;
+    }
+
+    public Long getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(Long planId) {
+        this.planId = planId;
+    }
+
+    public String getPlanTitle() {
+        return planTitle;
+    }
+
+    public void setPlanTitle(String planTitle) {
+        this.planTitle = planTitle;
+    }
+
+    public Period getTimeInterval() {
+        return timeInterval;
+    }
+
+    public void setTimeInterval(Period timeInterval) {
+        this.timeInterval = timeInterval;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public ItemType getType() {
+        return type;
+    }
+
+    public void setType(ItemType type) {
+        this.type = type;
+    }
+
+    public ItemPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(ItemPriority priority) {
+        this.priority = priority;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

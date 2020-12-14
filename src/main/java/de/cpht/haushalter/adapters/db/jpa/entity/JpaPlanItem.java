@@ -25,7 +25,6 @@ public class JpaPlanItem {
 
     private ItemType type;
     private ItemPriority priority;
-    private String planTitle;
 
     @ManyToOne
     private JpaPlan plan;
@@ -100,14 +99,6 @@ public class JpaPlanItem {
 
     public void setPriority(ItemPriority priority) {
         this.priority = priority;
-    }
-
-    public String getPlanTitle() {
-        return planTitle;
-    }
-
-    public void setPlanTitle(String planTitle) {
-        this.planTitle = planTitle;
     }
 
     public void update(PlanItem item) {
